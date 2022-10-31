@@ -1,0 +1,236 @@
+#form-container {
+  position: absolute;
+  top: 0%;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#form-reservation {
+  padding-top: 10%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2%;
+  font-family: inherit;
+  overflow-y: scroll;
+  position: relative;
+  
+}
+
+input {
+  border-radius: 15px;
+  padding: 5px 15px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+
+}
+
+input[type=checkbox] {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+#name-cx {
+  width: 20rem;
+}
+
+#dates {
+  display: flex;
+  gap: 1rem;
+}
+
+#rooms-l {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem 1rem;
+  accent-color: var(--action);
+  height: 10%;
+  min-height: 10%;
+  width: 90vw;
+  overflow-x: scroll;
+}
+
+p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+#rooms-l label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  font-size: 1.1rem;
+}
+
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.1rem;
+}
+
+#adults-childs {
+  display: flex;
+  gap: 1rem;
+}
+
+#adults-l,
+#childs-l,
+#avans-l,
+#reducere-l,
+#total-l {
+  flex-direction: row;
+  gap: 5px;
+}
+
+#adults,
+#childs,
+#avans,
+#reducere {
+  width: 4rem;
+}
+
+#avans, 
+#total {
+  width: 6rem;
+  margin: 0px .3rem;
+}
+
+#cancel {
+  filter: invert(12%) sepia(87%) saturate(7494%) hue-rotate(10deg) brightness(99%) contrast(120%);
+  align-self: flex-start;
+  left: 5%;
+  top: 2%;
+  position: absolute;
+}
+
+#submit {
+  padding: 1rem;
+  font-family: inherit;
+  background-color: var(--action);
+  color: var(--main);
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1rem;
+  letter-spacing: 1px;
+}
+
+.error-layout {
+  position: absolute;
+  pointer-events: all;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  
+  font-family: inherit;
+  background-color: brown;
+  max-width: 75%;
+  padding: 1rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  font-weight: 500;
+  gap: 1rem;
+  line-height: 2rem;
+  letter-spacing: .5px;
+  border-radius: 25px;
+  margin-top: -50%;
+}
+
+
+
+#confirm-submission {
+
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+
+#money-field {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  font-family: inherit;
+  margin-top: 2rem;
+}
+
+#balance {
+
+  font-size: 1.1rem;
+  justify-self: center;
+  align-self: center;
+}
+
+#confirm-submission-container {
+  position: absolute;
+  top: 0%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .4);
+  pointer-events: all;
+  z-index: 15;
+}
+
+#confirm-submission {
+
+  background-color: rgba(255, 255, 255, 1);
+  width: 20rem;
+  height: 15rem;
+  color: black;
+  font-family: inherit;
+  border-radius: 50px;
+  padding: 2rem;
+  box-shadow: 2px 2px 20px 1px  rgba(150,150,150, .9);
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: space-between;
+  font-size: 1.1rem;
+    
+}
+
+#confirm-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#submit-confirm, 
+#exit-confirm  {
+
+  padding: .8rem;
+  background-color: var(--action);
+  color: white;
+  font-family: inherit;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  cursor: pointer;
+
+}

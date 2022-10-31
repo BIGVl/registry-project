@@ -1,0 +1,19 @@
+#table-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#add-reservation {
+
+    background-color: var(--action);
+    border-radius: 50px;
+    color: white;
+    font-family: inherit;
+    font-size: 1.4rem;
+    margin-top: 5rem;
+    padding: 1rem 3rem;
+    align-self: center;
+    font-weight:900;
+}
