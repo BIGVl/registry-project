@@ -3,7 +3,6 @@
   top: 0%;
   z-index: 5;
   width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: all;
   display: flex;
@@ -14,14 +13,13 @@
 }
 
 #form-reservation {
-  padding-top: 10%;
+  padding: 10%;
   width: 100%;
-  height: 100%;
   background-color: var(--secondary);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2%;
+  gap: 1.5rem;
   font-family: inherit;
   overflow-y: scroll;
   position: relative;
@@ -50,16 +48,22 @@ input[type=checkbox] {
   gap: 1rem;
 }
 
+.rooms-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 #rooms-l {
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
-  gap: 1rem 1rem;
+  justify-content: space-evenly;
+  row-gap: 1.5rem;
+  column-gap: 5rem;
   accent-color: var(--action);
-  height: 10%;
-  min-height: 10%;
-  width: 90vw;
-  overflow-x: scroll;
+  width: 15rem;
+  height: 17rem;
+  padding: 1rem;
 }
 
 p {
@@ -94,7 +98,6 @@ label {
 #reducere-l,
 #total-l {
   flex-direction: row;
-  gap: 5px;
 }
 
 #adults,
@@ -115,7 +118,7 @@ label {
   align-self: flex-start;
   left: 5%;
   top: 2%;
-  position: absolute;
+  position: ab  solute;
 }
 
 #submit {
@@ -155,7 +158,6 @@ label {
   line-height: 2rem;
   letter-spacing: .5px;
   border-radius: 25px;
-  margin-top: -50%;
 }
 
 

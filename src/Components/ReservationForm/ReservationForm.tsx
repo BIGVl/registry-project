@@ -1,6 +1,6 @@
 import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../assets/cancel.svg';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropertyContext from '../../Contexts/PopertyContext';
 import checknSaveRooms from './checknSaveRooms';
 
@@ -51,6 +51,13 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   for (let i = 1; i <= rooms; i++) {
     roomsArray.push(i);
   }
+  let { balance, total, reducere, avans } = formData;
+  useEffect(() => {
+    balance = total - avans - (total * reducere) / 100;
+    setBalanceState(balance);
+
+    console.log(formData);
+  }, [balance, total, reducere, avans]);
 
   const change = (e: any) => {
     setFormData((prev) => {
@@ -76,12 +83,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     }
   };
 
-  const calcBalance = () => {
-    let { balance, total, reducere, avans } = formData;
-    balance = total - avans - (total * reducere) / 100;
-    setBalanceState(balance);
-  };
-
   //Check if the inputs are available and if yes prompt the user the confirmation pop up
   const confirm = () => {
     if (formData.camera.length < 1) {
@@ -105,6 +106,9 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
     e.preventDefault();
+    setFormData((prev: FormData) => {
+      return { ...prev, balance: balanceState };
+    });
     setConfirmSubmit(false);
 
     await checknSaveRooms(
@@ -165,19 +169,19 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           Numar de telefon :
           <input onChange={change} type="number" name="phone" id="phone-cx" />
         </label>
-
-        <p>Camera : </p>
-        <fieldset id="rooms-l">
-          {roomsArray.map((room) => {
-            return (
-              <label key={`room${room}`} htmlFor={`camera-${room}`}>
-                {room}
-                <input onChange={handleCheck} type="checkbox" value={room} name={`camera`} id={`camera-${room}`} />
-              </label>
-            );
-          })}
-        </fieldset>
-
+        <div className="rooms-container">
+          <p>Camera : </p>
+          <fieldset id="rooms-l">
+            {roomsArray.map((room) => {
+              return (
+                <label key={`room${room}`} htmlFor={`camera-${room}`}>
+                  {room}
+                  <input onChange={handleCheck} type="checkbox" value={room} name={`camera`} id={`camera-${room}`} />
+                </label>
+              );
+            })}
+          </fieldset>
+        </div>
         <fieldset id="adults-childs">
           <label id="adults-l" htmlFor="adults">
             Adulti :
@@ -198,7 +202,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
               name="total"
               onChange={(e) => {
                 change(e);
-                calcBalance();
               }}
             />
             lei
@@ -208,7 +211,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             <input
               onChange={(e) => {
                 change(e);
-                calcBalance();
               }}
               type="number"
               name="avans"
@@ -221,7 +223,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             <input
               onChange={(e) => {
                 change(e);
-                calcBalance();
               }}
               type="number"
               name="reducere"

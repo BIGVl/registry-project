@@ -14,9 +14,8 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
   const [monthNumber, setMonthNumber] = useState(month);
-
-  if (monthNumber > 12 && monthNumber <= 23) setMonthNumber(monthNumber - 11);
-  if (monthNumber > 23) setMonthNumber(monthNumber - 23);
+  if (monthNumber > 12 && monthNumber <= 24) setMonthNumber(monthNumber - 12);
+  if (monthNumber > 24) setMonthNumber(monthNumber - 24);
 
   //Fill in the days number in an array so it can be populated on the table
   for (let i = 1; i <= days; i++) {
@@ -30,14 +29,13 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
 
   daysArray.map((day) => {
     let thisMonth = month;
-    if (thisMonth > 12 && thisMonth <= 23) {
-      thisMonth = thisMonth - 11;
-    } else if (thisMonth > 23) {
-      thisMonth = thisMonth - 23;
+    if (thisMonth > 12 && thisMonth <= 24) {
+      thisMonth = thisMonth - 12;
+    } else if (thisMonth > 24) {
+      thisMonth = thisMonth - 24;
     }
     weekdayIndexes.push(new Date(year, thisMonth - 1, day).getDay());
   });
-
   for (let i = 0; i < rows; i++) {
     cellsArray.push(
       <tr key={i + 1}>
