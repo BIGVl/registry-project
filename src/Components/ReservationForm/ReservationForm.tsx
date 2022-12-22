@@ -39,11 +39,10 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
 
   const [balanceState, setBalanceState] = useState<number>(0);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  //This state is used for the confirmation pop-up, after the client side validation, so the data will be send to the db
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
-  //These state objects will be used to store the available and unavailable dates for the respective room, to be later saved to the db
-  //if they are available and if not to be displayed in the error so the admin user knows what dates are occupied
-  const [availables, setAvailables] = useState<any>({ 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} });
-  const [unavailables, setUnavailables] = useState<any>({ 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} });
+  //This state is used to check if the write of the data was successful and if yes to save data about the entry in a useEffect
+  const [sendSucceed, setSendSucceed] = useState<boolean>(false);
 
   //Used to loop through to create the numbers of rooms that the component will receive
   const roomsArray: number[] = [];
@@ -51,12 +50,17 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   for (let i = 1; i <= rooms; i++) {
     roomsArray.push(i);
   }
+
+  useEffect(() => {
+    if (sendSucceed === true) setOpenForm(false);
+    console.log(sendSucceed);
+  });
+
+  //Update the balance remaining every time one of these values change
   let { balance, total, reducere, avans } = formData;
   useEffect(() => {
     balance = total - avans - (total * reducere) / 100;
     setBalanceState(balance);
-
-    console.log(formData);
   }, [balance, total, reducere, avans]);
 
   const change = (e: any) => {
@@ -115,13 +119,10 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       formData.camera,
       formData.dateEnter,
       formData.dateLeave,
-      setAvailables,
-      setUnavailables,
-      availables,
-      unavailables,
       property,
       setErrorMsg,
-      setOpenForm
+      setOpenForm,
+      setSendSucceed
     );
   };
 

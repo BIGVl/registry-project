@@ -14,7 +14,6 @@ interface PropTypes {
 
 const Calendar = ({ rows }: PropTypes) => {
   const [month, setMonth] = useState<number>(parseInt(new Date().toLocaleDateString().slice(0, 2)) + 12);
-  console.log(new Date().toLocaleDateString());
   let currentYear = parseInt(new Date().toLocaleDateString().slice(5, 9));
   if (isNaN(currentYear)) {
     currentYear = parseInt(new Date().toLocaleDateString().slice(6, 10));

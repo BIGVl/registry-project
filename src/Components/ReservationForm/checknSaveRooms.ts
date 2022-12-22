@@ -5,22 +5,20 @@ const checknSaveRooms = async (
   rooms: any,
   enterDate: string,
   leaveDate: string,
-  setAvailables: any,
-  setUnavailables: any,
-  availables: any,
-  unavailables: any,
   property: string,
   setErrorMsg: (value: string | ((prevState: string) => string)) => void,
-  setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void
+  setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void,
+  setSendSucced: (value: boolean | ((prevState: boolean) => boolean)) => void
 ) => {
+  const availables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
+  const unavailables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
+
   const responseNrCx = await getDoc(doc(db, property, 'numar-clienti'));
   const nrCxData = responseNrCx.data();
   let nrCx = 0;
-  let sentSuccessfully = false;
+
   //Check for each room the availability on choosen dates with the db and then give the proper feedback
   rooms?.map(async (room: string) => {
-    setAvailables({ 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} });
-    setUnavailables({ 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} });
     const startDate = new Date(enterDate);
     const currentDate = new Date(enterDate);
     const dates: any = {};
@@ -55,12 +53,12 @@ const checknSaveRooms = async (
         endDate.getDate()
       ];
     }
-    //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied(if occupied will be 2) or not
+    //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
     Object.keys(dates).map(async (year) => {
       const response = await getDoc(doc(db, `${property}${year}`, room));
       let data: any = response.data();
-      Object.keys(dates[year]).map((month) => {
-        dates[year][month].map((date: number, i: number) => {
+      Object.keys(dates[year]).forEach((month) => {
+        dates[year][month].forEach((date: number, i: number) => {
           if (
             (data && data[month] && data[month][date] !== undefined && data[month][date].slice(0, 4) === 'full') ||
             (data &&
@@ -101,7 +99,7 @@ const checknSaveRooms = async (
       });
 
       if (isOccupied) {
-        Object.keys(unavailables[year]).map((month) => {
+        Object.keys(unavailables[year]).forEach((month) => {
           setErrorMsg(
             `Camera cu numarul ${room} este ocupata in perioada ${unavailables[year][month][0]}/${month}/${[year]} - ${
               unavailables[year][month][unavailables[year][month].length - 1]
@@ -112,12 +110,17 @@ const checknSaveRooms = async (
         nrCxData !== undefined ? (nrCx = nrCxData['numar-clienti'] + 1) : (nrCx = 1);
         setErrorMsg('');
         Object.keys(availables[year]).map(async (month) => {
-          const docRef = doc(db, `sura${year}`, room);
-          const response = await getDoc(doc(db, `${property}${year}`, room));
+          const docRef = doc(db, `${property}${year}`, room);
+          const response = await getDoc(docRef);
           const data = response.data();
           availables[year][month].map(async (day: number) => {
+            console.log(
+              `${enterYear}-${enterMonth}-${enterDay}`,
+              `${year}-${month}-${day}`,
+              `${exitYear}-${exitMonth}-${exitDay}`
+            );
             if (`${enterYear}-${enterMonth}-${enterDay}` === `${year}-${month}-${day}`) {
-              if (data && data[month][day] && data[month][day].slice(0, 4) === 'exit') {
+              if (data && data[month] && data[month][day] && data[month][day].slice(0, 4) === 'exit') {
                 await setDoc(
                   docRef,
                   {
@@ -135,7 +138,7 @@ const checknSaveRooms = async (
                 );
               }
             } else if (`${exitYear}-${exitMonth}-${exitDay}` === `${year}-${month}-${day}`) {
-              if (data && data[month][day].slice(0, 5) === 'enter') {
+              if (data && data[month] && data[month][day] && data[month][day].slice(0, 5) === 'enter') {
                 await setDoc(
                   docRef,
                   {
@@ -162,17 +165,11 @@ const checknSaveRooms = async (
               );
             }
           });
-          sentSuccessfully = true;
+          setSendSucced(true);
         });
       }
     });
   });
-  setTimeout(() => {
-    setDoc(doc(db, property, 'numar-clienti'), {
-      'numar-clienti': nrCx
-    });
-    if (sentSuccessfully) setOpenForm(false);
-  }, 2000);
 };
 
 export default checknSaveRooms;

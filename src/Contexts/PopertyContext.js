@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const PropertyContext = createContext('sura');
+const PropertyContext = createContext('');
 
 export default PropertyContext;
