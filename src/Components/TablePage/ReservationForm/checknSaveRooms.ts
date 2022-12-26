@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../../firebase';
 
 const checknSaveRooms = async (
   rooms: any,
@@ -16,7 +16,6 @@ const checknSaveRooms = async (
   const responseNrCx = await getDoc(doc(db, property, 'numar-clienti'));
   const nrCxData = responseNrCx.data();
   let nrCx = 0;
-
   //Check for each room the availability on choosen dates with the db and then give the proper feedback
   rooms?.map(async (room: string) => {
     const startDate = new Date(enterDate);
@@ -164,6 +163,9 @@ const checknSaveRooms = async (
                 { merge: true }
               );
             }
+          });
+          await setDoc(doc(db, property, 'numar-clienti'), {
+            'numar-clienti': nrCx
           });
           setSendSucced(true);
         });

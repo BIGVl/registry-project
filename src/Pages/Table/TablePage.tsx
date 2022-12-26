@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ReservationForm from '../../Components/ReservationForm/ReservationForm';
-import Table from '../../Components/Table/Table';
+import ReservationForm from '../../Components/TablePage/ReservationForm/ReservationForm';
+import Table from '../../Components/TablePage/Table/Table';
 import './TablePage.css';
 
 interface Props {

@@ -94,7 +94,7 @@ label {
 
 #adults-l,
 #childs-l,
-#avans-l,
+#advance-l,
 #reducere-l,
 #total-l {
   flex-direction: row;
@@ -102,12 +102,12 @@ label {
 
 #adults,
 #childs,
-#avans,
+#advance,
 #reducere {
   width: 4rem;
 }
 
-#avans, 
+#advance, 
 #total {
   width: 6rem;
   margin: 0px .3rem;
@@ -118,7 +118,7 @@ label {
   align-self: flex-start;
   left: 5%;
   top: 2%;
-  position: ab  solute;
+  position: absolute;
 }
 
 #submit {

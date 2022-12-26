@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import months from '../../../assets/months';
+import months from '../../../../assets/months';
 import Month from './Month';
 import '../Table.css';
-import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
-import { ReactComponent as ArrowRight } from '../../../assets/arrow-right.svg';
-import PropertyContext from '../../../Contexts/PopertyContext';
+import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
+import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
+import PropertyContext from '../../../../Contexts/PopertyContext';
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 
 interface PropTypes {
   rows: number;

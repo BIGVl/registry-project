@@ -1,40 +1,43 @@
 import './ReservationForm.css';
-import { ReactComponent as Cancel } from '../../assets/cancel.svg';
+import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
-import PropertyContext from '../../Contexts/PopertyContext';
+import PropertyContext from '../../../Contexts/PopertyContext';
 import checknSaveRooms from './checknSaveRooms';
+import saveEntry from './saveEntry';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
   rooms: number;
 }
 
-interface FormData {
+export interface FormData {
   adults: string;
-  avans: number;
-  dateEnter: string;
-  dateLeave: string;
+  advance: number;
+  entryDate: string;
+  leaveDate: string;
   name: string;
   phone: string;
-  reducere: number;
-  camera: string[];
+  discount: number;
+  rooms: string[];
   total: number;
   balance: number;
+  kids: string;
 }
 
 const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   const property = useContext(PropertyContext);
   const [formData, setFormData] = useState<FormData>({
     adults: '',
-    dateEnter: '',
-    dateLeave: '',
+    entryDate: '',
+    leaveDate: '',
     name: '',
     phone: '',
-    camera: [],
+    rooms: [],
     total: 0,
-    avans: 0,
-    reducere: 0,
-    balance: 0
+    advance: 0,
+    discount: 0,
+    balance: 0,
+    kids: ''
   });
 
   const [balanceState, setBalanceState] = useState<number>(0);
@@ -50,18 +53,20 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   for (let i = 1; i <= rooms; i++) {
     roomsArray.push(i);
   }
-
   useEffect(() => {
-    if (sendSucceed === true) setOpenForm(false);
-    console.log(sendSucceed);
-  });
+    if (sendSucceed === true) {
+      setOpenForm(false);
+      saveEntry(property, formData);
+      setSendSucceed(false);
+    }
+  }, [sendSucceed]);
 
   //Update the balance remaining every time one of these values change
-  let { balance, total, reducere, avans } = formData;
+  let { balance, total, discount, advance } = formData;
   useEffect(() => {
-    balance = total - avans - (total * reducere) / 100;
+    balance = total - advance - (total * discount) / 100;
     setBalanceState(balance);
-  }, [balance, total, reducere, avans]);
+  }, [balance, total, discount, advance]);
 
   const change = (e: any) => {
     setFormData((prev) => {
@@ -74,10 +79,10 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       setFormData((prev: any) => {
         return { ...prev, [e.target.name]: [...prev[e.target.name], e.target.value] };
       });
-    } else if (formData.camera !== undefined) {
-      formData.camera.map((room, i) => {
+    } else if (formData.rooms !== undefined) {
+      formData.rooms.forEach((room, i) => {
         if (room === e.target.value) {
-          const rooms = formData.camera;
+          const rooms = formData.rooms;
           rooms?.splice(i, 1);
           setFormData((prev) => {
             return { ...prev, [e.target.name]: rooms };
@@ -89,13 +94,13 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
 
   //Check if the inputs are available and if yes prompt the user the confirmation pop up
   const confirm = () => {
-    if (formData.camera.length < 1) {
+    if (formData.rooms.length < 1) {
       return setErrorMsg('Nu ai selectat nici o camera.');
-    } else if (formData.dateEnter >= formData.dateLeave) {
+    } else if (formData.entryDate >= formData.leaveDate) {
       return setErrorMsg('Data de intrare trebuie sa fie inaintea datei de iesire.');
-    } else if (formData.dateEnter === '') {
+    } else if (formData.entryDate === '') {
       return setErrorMsg('Nu ai selectat o data de intrare.');
-    } else if (formData.dateLeave === '') {
+    } else if (formData.leaveDate === '') {
       return setErrorMsg('Nu ai selectat nici o data de iesire.');
     } else if (formData.name.length < 3) {
       return setErrorMsg('Numele trebuie sa aiba cel putin 4 litere.');
@@ -115,10 +120,10 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     });
     setConfirmSubmit(false);
 
-    await checknSaveRooms(
-      formData.camera,
-      formData.dateEnter,
-      formData.dateLeave,
+    let id = await checknSaveRooms(
+      formData.rooms,
+      formData.entryDate,
+      formData.leaveDate,
       property,
       setErrorMsg,
       setOpenForm,
@@ -152,13 +157,13 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         />
 
         <fieldset id="dates">
-          <label htmlFor="dateEnter">
+          <label htmlFor="entryDate">
             Data intrare :
-            <input onChange={change} type="date" name="dateEnter" id="date-enter" />
+            <input onChange={change} type="date" name="entryDate" id="date-enter" />
           </label>
-          <label htmlFor="dateLeave">
+          <label htmlFor="leaveDate">
             Data iesire :
-            <input onChange={change} type="date" name="dateLeave" id="date-leave" />
+            <input onChange={change} type="date" name="leaveDate" id="date-leave" />
           </label>
         </fieldset>
 
@@ -175,9 +180,9 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           <fieldset id="rooms-l">
             {roomsArray.map((room) => {
               return (
-                <label key={`room${room}`} htmlFor={`camera-${room}`}>
+                <label key={`room${room}`} htmlFor={`rooms-${room}`}>
                   {room}
-                  <input onChange={handleCheck} type="checkbox" value={room} name={`camera`} id={`camera-${room}`} />
+                  <input onChange={handleCheck} type="checkbox" value={room} name={`rooms`} id={`rooms-${room}`} />
                 </label>
               );
             })}
@@ -190,7 +195,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           </label>
           <label id="childs-l" htmlFor="childs">
             Copii :
-            <input onChange={change} type="number" name="childs" id="childs" />
+            <input onChange={change} type="number" name="kids" id="childs" />
           </label>
         </fieldset>
 
@@ -207,26 +212,26 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             />
             lei
           </label>
-          <label id="avans-l" htmlFor="avans">
+          <label id="advance-l" htmlFor="advance">
             Avans :
             <input
               onChange={(e) => {
                 change(e);
               }}
               type="number"
-              name="avans"
-              id="avans"
+              name="advance"
+              id="advance"
             />
             lei
           </label>
-          <label htmlFor="reducere" id="reducere-l">
+          <label htmlFor="discount" id="discount-l">
             Reducere :
             <input
               onChange={(e) => {
                 change(e);
               }}
               type="number"
-              name="reducere"
+              name="discount"
               id="reducere"
             />{' '}
             %
