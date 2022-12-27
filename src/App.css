@@ -1,3 +1,6 @@
-.RootLayout {
-    background-color: var(--main);
+
+
+.main-nav {
+    position: fixed;
+    bottom: 0%;
 }
