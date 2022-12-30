@@ -5,7 +5,6 @@
   width: 95vw;
   display: flex;
   position: relative;
-  background-color: var(--main);
 }
 
 .calendar-container,
@@ -14,14 +13,14 @@
 }
 
 tr:nth-child(2n + 0) {
-  background-color: rgba(60, 60, 160, 0.2);
+  background-color: var(--third)
 }
 tr:nth-child(2n + 1) {
-  background-color: rgba(0, 60, 100, 0.2);
+  background-color: var(--secondary);
 }
 
 th {
-  border: 1px solid var(--action);
+  border: 1px solid var(--secondary);
   font-family: 'Open Sans', sans-serif;
   background-color: var(--secondary);
   color: white;

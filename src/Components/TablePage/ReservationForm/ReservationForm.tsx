@@ -1,7 +1,7 @@
 import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
-import PropertyContext from '../../../Contexts/PopertyContext';
+import { PropertyContext } from '../../../Contexts';
 import checknSaveRooms from './checknSaveRooms';
 import saveEntry from './saveEntry';
 

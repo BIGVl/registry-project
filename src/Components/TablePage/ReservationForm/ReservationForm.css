@@ -26,7 +26,7 @@
   
 }
 
-input {
+#form-reservation input {
   border-radius: 15px;
   padding: 5px 15px;
   font-family: 'Open Sans', sans-serif;
@@ -34,7 +34,7 @@ input {
 
 }
 
-input[type=checkbox] {
+#form-reservation input[type=checkbox] {
   width: 1.2rem;
   height: 1.2rem;
 }

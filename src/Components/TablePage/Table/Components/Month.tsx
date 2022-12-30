@@ -1,3 +1,4 @@
+import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import '../Table.css';
 
@@ -7,7 +8,7 @@ interface PropTypes {
   monthName: string;
   month: number;
   year: number;
-  data: any;
+  data: DocumentData;
 }
 
 const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
@@ -36,16 +37,16 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
     }
     weekdayIndexes.push(new Date(year, thisMonth - 1, day).getDay());
   });
-  for (let i = 0; i < rows; i++) {
+  for (let i = 1; i <= rows; i++) {
     cellsArray.push(
-      <tr key={i + 1}>
+      <tr key={i}>
         {daysArray.map((d) => {
           let occupancyDisplay;
-          if ((data as any)[i + 1] && (data as any)[i + 1][monthNumber]) {
+          if (data[i] && data[i][monthNumber]) {
             if (
-              (data as any)[i + 1][monthNumber][d] &&
-              (data as any)[i + 1][monthNumber][d].includes('enter') &&
-              (data as any)[i + 1][monthNumber][d].includes('exit')
+              data[i][monthNumber][d] &&
+              data[i][monthNumber][d].includes('enter') &&
+              data[i][monthNumber][d].includes('exit')
             ) {
               occupancyDisplay = (
                 <div id="show-container">
@@ -53,19 +54,19 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if ((data as any)[i + 1][monthNumber][d] && (data as any)[i + 1][monthNumber][d].slice(0, 5) === 'enter') {
+            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 5) === 'enter') {
               occupancyDisplay = (
                 <div id="show-container-enter">
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if ((data as any)[i + 1][monthNumber][d] && (data as any)[i + 1][monthNumber][d].slice(0, 4) === 'exit') {
+            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'exit') {
               occupancyDisplay = (
                 <div id="show-container">
                   <div id="exit-show"></div>
                 </div>
               );
-            } else if ((data as any)[i + 1][monthNumber][d] && (data as any)[i + 1][monthNumber][d].slice(0, 4) === 'full') {
+            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'full') {
               occupancyDisplay = (
                 <div id="show-container">
                   <div id="full-show"></div>
@@ -73,7 +74,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
               );
             }
           }
-          return <td key={i + 1 + '/' + d + '/' + monthNumber}>{occupancyDisplay}</td>;
+          return <td key={i + '/' + d + '/' + monthNumber}>{occupancyDisplay}</td>;
         })}
       </tr>
     );

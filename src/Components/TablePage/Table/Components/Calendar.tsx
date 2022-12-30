@@ -4,7 +4,7 @@ import Month from './Month';
 import '../Table.css';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
-import PropertyContext from '../../../../Contexts/PopertyContext';
+import { PropertyContext } from '../../../../Contexts';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../../../../firebase';
 
@@ -27,6 +27,7 @@ const Calendar = ({ rows }: PropTypes) => {
 
   useEffect(() => {
     const q = query(collection(db, `${property}${year}`));
+    //This is done because of the React.StrictMode executing the useEffect twice in development modew
     setData({});
     const unsub = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
