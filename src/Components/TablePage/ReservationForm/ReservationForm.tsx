@@ -1,7 +1,7 @@
 import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
-import { PropertyContext } from '../../../Contexts';
+import { LocationContext, UserIDContext } from '../../../Contexts';
 import checknSaveRooms from './checknSaveRooms';
 import saveEntry from './saveEntry';
 
@@ -25,7 +25,8 @@ export interface FormData {
 }
 
 const ReservationForm = ({ setOpenForm, rooms }: Props) => {
-  const property = useContext(PropertyContext);
+  const location = useContext(LocationContext);
+  const userID = useContext(UserIDContext);
   const [formData, setFormData] = useState<FormData>({
     adults: '',
     entryDate: '',
@@ -56,7 +57,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   useEffect(() => {
     if (sendSucceed === true) {
       setOpenForm(false);
-      saveEntry(property, formData);
+      saveEntry(`${Location}${userID}`, formData);
       setSendSucceed(false);
     }
   }, [sendSucceed]);
@@ -124,7 +125,8 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       formData.rooms,
       formData.entryDate,
       formData.leaveDate,
-      property,
+      location,
+      userID,
       setErrorMsg,
       setOpenForm,
       setSendSucceed

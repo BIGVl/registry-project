@@ -1,4 +1,4 @@
 import { createContext } from 'react';
 
-export const PropertyContext = createContext('');
+export const LocationContext = createContext('');
 export const UserIDContext = createContext();

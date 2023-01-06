@@ -12,7 +12,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     userID && navigate('/');
-  }, []);
+  }, [userID]);
 
   return (
     <div className="login-page">

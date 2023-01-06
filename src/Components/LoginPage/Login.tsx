@@ -10,7 +10,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   //Update the state that hold the info for creating the account
-
   const update = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };

@@ -5,7 +5,8 @@ const checknSaveRooms = async (
   rooms: any,
   enterDate: string,
   leaveDate: string,
-  property: string,
+  location: string,
+  userID: string,
   setErrorMsg: (value: string | ((prevState: string) => string)) => void,
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void,
   setSendSucced: (value: boolean | ((prevState: boolean) => boolean)) => void
@@ -13,7 +14,7 @@ const checknSaveRooms = async (
   const availables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
   const unavailables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
 
-  const responseNrCx = await getDoc(doc(db, property, 'numar-clienti'));
+  const responseNrCx = await getDoc(doc(db, `${location}${userID}`, 'numar-clienti'));
   const nrCxData = responseNrCx.data();
   let nrCx = 0;
   //Check for each room the availability on choosen dates with the db and then give the proper feedback
@@ -54,7 +55,7 @@ const checknSaveRooms = async (
     }
     //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
     Object.keys(dates).map(async (year) => {
-      const response = await getDoc(doc(db, `${property}${year}`, room));
+      const response = await getDoc(doc(db, `${location}${year}`, room));
       let data: any = response.data();
       Object.keys(dates[year]).forEach((month) => {
         dates[year][month].forEach((date: number, i: number) => {
@@ -92,7 +93,7 @@ const checknSaveRooms = async (
     Object.keys(unavailables).map(async (year) => {
       //We await on getDoc just so this will get to the end on the stack flow in order to run after the codeblock above so the arrays
       // will be modified by the above mentioned block by the time this block runs as this depends on those arrays to be updated with the db
-      await getDoc(doc(db, `${property}${year}`, room));
+      await getDoc(doc(db, `${location}${year}`, room));
       const isOccupied = Object.keys(unavailables).find((year) => {
         return Object.keys(unavailables[year]).length > 0;
       });
@@ -109,7 +110,7 @@ const checknSaveRooms = async (
         nrCxData !== undefined ? (nrCx = nrCxData['numar-clienti'] + 1) : (nrCx = 1);
         setErrorMsg('');
         Object.keys(availables[year]).map(async (month) => {
-          const docRef = doc(db, `${property}${year}`, room);
+          const docRef = doc(db, `${location}${userID}${year}`, room);
           const response = await getDoc(docRef);
           const data = response.data();
           availables[year][month].map(async (day: number) => {
@@ -164,7 +165,7 @@ const checknSaveRooms = async (
               );
             }
           });
-          await setDoc(doc(db, property, 'numar-clienti'), {
+          await setDoc(doc(db, `${location}${userID}`, 'numar-clienti'), {
             'numar-clienti': nrCx
           });
           setSendSucced(true);

@@ -12,6 +12,7 @@ interface PropTypes {
 }
 
 const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
+  console.log(data);
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
   const [monthNumber, setMonthNumber] = useState(month);

@@ -3,75 +3,70 @@ import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore'
 import { useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import AddProperty from './Components/App/AddProperty';
-import { PropertyContext, UserIDContext } from './Contexts';
+import AddLocation from './Components/App/AddLocation';
+import { LocationContext, UserIDContext } from './Contexts';
 import { auth, db } from './firebase';
 import DashboardPage from './Pages/Dashboard/DasboardPage';
 import LoginPage from './Pages/Login/LoginPage';
 import TablePage from './Pages/Table/TablePage';
+import { ReactComponent as Hamburger } from './assets/menu.svg';
+import HamburgerMenu from './Components/App/HamburgerMenu';
 
 interface UserInfo {
   uid: string;
+  name: string;
+  email: string;
+  photoURL: string | null;
 }
 
 const App = () => {
-  const [properties, setProperties] = useState<DocumentData[] | []>([]);
-  const [openAddPropertyForm, setOpenAddPropertyForm] = useState(false);
-  const [user, setUser] = useState<UserInfo>({} as UserInfo);
+  const [locations, setLocations] = useState<DocumentData[] | []>([]);
+  const [user, setUser] = useState<UserInfo>({ uid: '' });
+  const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
+  const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser((prev) => {
-        return { ...prev, uid: user.uid };
-      });
-    } else {
-    }
-  });
+  useEffect(() => {
+    const unsubAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser((prev) => {
+          return { ...prev, uid: user.uid };
+        });
+      } else {
+        navigate('/login');
+      }
+    });
 
-  function getProperties() {
-    setProperties([]);
-    const unsub = onSnapshot(query(collection(db, 'properties')), (querySnap) => {
+    const unsubQuerry = onSnapshot(query(collection(db, `locations${user.uid}`)), (querySnap) => {
       querySnap.forEach((doc) => {
-        setProperties((prev): DocumentData[] => {
+        setLocations((prev): DocumentData[] => {
           return [...prev, doc.data()];
         });
       });
     });
-  }
 
-  //TODO Comment this out when in production (it won't break anything but is not necessary)
-  /*This is used only in development to make useEffect run just once, so we could get the data from the firestore just once
-  to avoid useless warnings and duplicates
-  */
-  let didEffectRun = false;
-
-  useEffect(() => {
-    if (didEffectRun) return;
-    getProperties();
-    didEffectRun = true;
-  }, []);
-
-  function openModal() {
-    setOpenAddPropertyForm(true);
-  }
+    return () => {
+      unsubAuth();
+      unsubQuerry();
+    };
+  }, [user.uid]);
 
   return (
-    <>
-      <UserIDContext.Provider value={user.uid}>
-        {openAddPropertyForm ? <AddProperty setOpenAddProperty={setOpenAddPropertyForm} /> : ''}
+    <UserIDContext.Provider value={user.uid}>
+      <div className="App">
+        {openAddLocationForm ? <AddLocation setOpenAddLocation={setOpenAddLocationForm} /> : ''}
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/login" element={<LoginPage />} />
-          {properties.map((property) => {
+          {locations.map((location) => {
             return (
               <Route
-                key={property.name}
-                path={property.name}
+                key={location.name}
+                path={location.name}
                 element={
-                  <PropertyContext.Provider value={property.name}>
-                    <TablePage rooms={property.rooms} />
-                  </PropertyContext.Provider>
+                  <LocationContext.Provider value={location.name}>
+                    <TablePage rooms={location.rooms} />
+                  </LocationContext.Provider>
                 }
               />
             );
@@ -79,19 +74,19 @@ const App = () => {
           '
         </Routes>
         <nav className="main-nav">
-          {properties.map((property) => {
-            const tag = property.name.charAt(0).toUpperCase() + property.name.slice(1);
+          {locations.map((location: DocumentData) => {
+            const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
             return (
-              <Link key={property.name} to={`/${property.name}`}>
-                {' '}
-                {tag}{' '}
+              <Link key={location.name} to={`/${location.name}`}>
+                {tag}
               </Link>
             );
           })}
-          <button onClick={openModal}>Adauga proprietate</button>
+          <Hamburger onClick={() => setOpenHamburger(!openHamburger)} />
         </nav>
-      </UserIDContext.Provider>
-    </>
+        {openHamburger && <HamburgerMenu setOpenAddLocationForm={setOpenAddLocationForm} />}
+      </div>
+    </UserIDContext.Provider>
   );
 };
 

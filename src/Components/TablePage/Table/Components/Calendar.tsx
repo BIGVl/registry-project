@@ -4,8 +4,8 @@ import Month from './Month';
 import '../Table.css';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
-import { PropertyContext } from '../../../../Contexts';
-import { collection, onSnapshot, query } from 'firebase/firestore';
+import { LocationContext, UserIDContext } from '../../../../Contexts';
+import { collection, doc, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../../../../firebase';
 
 interface PropTypes {
@@ -14,29 +14,25 @@ interface PropTypes {
 
 const Calendar = ({ rows }: PropTypes) => {
   const [month, setMonth] = useState<number>(parseInt(new Date().toLocaleDateString().slice(0, 2)) + 12);
-  let currentYear = parseInt(new Date().toLocaleDateString().slice(5, 9));
-  if (isNaN(currentYear)) {
-    currentYear = parseInt(new Date().toLocaleDateString().slice(6, 10));
-    if (isNaN(currentYear)) {
-      currentYear = parseInt(new Date().toLocaleDateString().slice(4, 8));
-    }
-  }
-  const property = useContext(PropertyContext);
+
+  let currentYear = new Date().getFullYear();
+  const location = useContext(LocationContext);
+  const userID = useContext(UserIDContext);
   const [year, setYear] = useState<number>(currentYear);
   const [data, setData] = useState({});
 
   useEffect(() => {
-    const q = query(collection(db, `${property}${year}`));
-    //This is done because of the React.StrictMode executing the useEffect twice in development modew
-    setData({});
-    const unsub = onSnapshot(q, (querySnapshot) => {
+    const q = query(collection(db, `${location}${userID}${year}`));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      console.log(querySnapshot.docs);
       querySnapshot.forEach((doc) => {
         setData((prev) => {
           return { ...prev, [doc.id]: doc.data() };
         });
       });
     });
-  }, [year, property]);
+    return () => unsubscribe();
+  });
 
   //Check what year is the displaying month in
   useEffect(() => {
