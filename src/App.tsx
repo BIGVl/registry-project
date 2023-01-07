@@ -1,43 +1,34 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import AddLocation from './Components/App/AddLocation';
 import { LocationContext, UserIDContext } from './Contexts';
 import { auth, db } from './firebase';
-import DashboardPage from './Pages/Dashboard/DasboardPage';
 import LoginPage from './Pages/Login/LoginPage';
 import TablePage from './Pages/Table/TablePage';
-import { ReactComponent as Hamburger } from './assets/menu.svg';
-import HamburgerMenu from './Components/App/HamburgerMenu';
-
-interface UserInfo {
-  uid: string;
-  name: string;
-  email: string;
-  photoURL: string | null;
-}
+import { UserInfo } from './globalInterfaces';
+import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore';
+import Nav from './Components/App/Nav';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
-  const [user, setUser] = useState<UserInfo>({ uid: '' });
-  const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
-  const [openHamburger, setOpenHamburger] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser((prev) => {
-          return { ...prev, uid: user.uid };
+        setUserInfo((prev) => {
+          return { ...prev, uid: user.uid, name: user.displayName, email: user.email, photoURL: user.photoURL };
         });
       } else {
+        setUserInfo({ uid: '', name: '', email: '', photoURL: '' });
         navigate('/login');
       }
     });
+    const unsubQuerry = onSnapshot(query(collection(db, `locations${userInfo.uid}`)), (querySnap) => {
+      setLocations([]);
 
-    const unsubQuerry = onSnapshot(query(collection(db, `locations${user.uid}`)), (querySnap) => {
       querySnap.forEach((doc) => {
         setLocations((prev): DocumentData[] => {
           return [...prev, doc.data()];
@@ -49,14 +40,12 @@ const App = () => {
       unsubAuth();
       unsubQuerry();
     };
-  }, [user.uid]);
+  }, [userInfo.uid]);
 
   return (
-    <UserIDContext.Provider value={user.uid}>
+    <UserIDContext.Provider value={userInfo.uid}>
       <div className="App">
-        {openAddLocationForm ? <AddLocation setOpenAddLocation={setOpenAddLocationForm} /> : ''}
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
           <Route path="/login" element={<LoginPage />} />
           {locations.map((location) => {
             return (
@@ -73,19 +62,8 @@ const App = () => {
           })}
           '
         </Routes>
-        <nav className="main-nav">
-          {locations.map((location: DocumentData) => {
-            const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
-            return (
-              <Link key={location.name} to={`/${location.name}`}>
-                {tag}
-              </Link>
-            );
-          })}
-          <Hamburger onClick={() => setOpenHamburger(!openHamburger)} />
-        </nav>
-        {openHamburger && <HamburgerMenu setOpenAddLocationForm={setOpenAddLocationForm} />}
       </div>
+      {userInfo.uid && <Nav user={userInfo} locations={locations} setLocations={setLocations} />}
     </UserIDContext.Provider>
   );
 };

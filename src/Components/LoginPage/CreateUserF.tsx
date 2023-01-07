@@ -54,15 +54,15 @@ const CreateUser = () => {
     <form className="create-acc-form" action="" noValidate onSubmit={submitCreateUser}>
       <label htmlFor="full-name">
         Nume si prenume
-        <input type="text" name="fullName" id="full-name" onChange={update} />
+        <input type="text" name="fullName" id="full-name" onChange={update} required />
       </label>
       <label htmlFor="email">
         Email
-        <input type="email" name="email" id="email" onChange={update} />
+        <input type="email" name="email" id="email" onChange={update} required />
       </label>
       <label htmlFor="password">
         Parola
-        <input type="password" name="password" id="password" onChange={update} />
+        <input type="password" name="password" id="password" onChange={update} required />
       </label>
       <label htmlFor="confirm-password">
         Confirma parola
