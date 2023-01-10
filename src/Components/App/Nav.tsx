@@ -13,7 +13,6 @@ interface Props {
 }
 
 const Nav = ({ locations, setLocations, user }: Props) => {
-  console.log(user.uid);
   const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
 
@@ -23,19 +22,26 @@ const Nav = ({ locations, setLocations, user }: Props) => {
 
       <nav className="main-nav">
         {locations.map((location: DocumentData) => {
-          const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+          if (location.selected) {
+            const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
 
-          return (
-            <Link key={location.name} to={`/${location.name}`}>
-              {tag}
-            </Link>
-          );
+            return (
+              <Link key={location.name} to={`/${location.name}`}>
+                {tag}
+              </Link>
+            );
+          }
         })}
 
         <HamburgerIcon onClick={() => setOpenHamburger(!openHamburger)} />
       </nav>
       {openHamburger && (
-        <HamburgerMenu setOpenHamburger={setOpenHamburger} userInfo={user} setOpenAddLocationForm={setOpenAddLocationForm} />
+        <HamburgerMenu
+          locations={locations}
+          setOpenHamburger={setOpenHamburger}
+          userInfo={user}
+          setOpenAddLocationForm={setOpenAddLocationForm}
+        />
       )}
     </>
   );

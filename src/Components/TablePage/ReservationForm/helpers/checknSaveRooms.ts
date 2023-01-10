@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 
 const checknSaveRooms = async (
   rooms: any,
@@ -114,11 +114,6 @@ const checknSaveRooms = async (
           const response = await getDoc(docRef);
           const data = response.data();
           availables[year][month].map(async (day: number) => {
-            console.log(
-              `${enterYear}-${enterMonth}-${enterDay}`,
-              `${year}-${month}-${day}`,
-              `${exitYear}-${exitMonth}-${exitDay}`
-            );
             if (`${enterYear}-${enterMonth}-${enterDay}` === `${year}-${month}-${day}`) {
               if (data && data[month] && data[month][day] && data[month][day].slice(0, 4) === 'exit') {
                 await setDoc(

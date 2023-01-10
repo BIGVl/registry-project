@@ -10,9 +10,10 @@ import { db } from '../../../../firebase';
 
 interface PropTypes {
   rows: number;
+  openForm: boolean;
 }
 
-const Calendar = ({ rows }: PropTypes) => {
+const Calendar = ({ rows, openForm }: PropTypes) => {
   const [month, setMonth] = useState<number>(parseInt(new Date().toLocaleDateString().slice(0, 2)) + 12);
 
   let currentYear = new Date().getFullYear();
@@ -24,7 +25,6 @@ const Calendar = ({ rows }: PropTypes) => {
   useEffect(() => {
     const q = query(collection(db, `${location}${userID}${year}`));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      console.log(querySnapshot.docs);
       querySnapshot.forEach((doc) => {
         setData((prev) => {
           return { ...prev, [doc.id]: doc.data() };
@@ -32,7 +32,7 @@ const Calendar = ({ rows }: PropTypes) => {
       });
     });
     return () => unsubscribe();
-  });
+  }, [month, userID, openForm]);
 
   //Check what year is the displaying month in
   useEffect(() => {

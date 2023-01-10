@@ -2,8 +2,8 @@ import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
-import checknSaveRooms from './checknSaveRooms';
-import saveEntry from './saveEntry';
+import checknSaveRooms from './helpers/checknSaveRooms';
+import saveEntry from './helpers/saveEntry';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
@@ -57,7 +57,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   useEffect(() => {
     if (sendSucceed === true) {
       setOpenForm(false);
-      saveEntry(`${Location}${userID}`, formData);
+      saveEntry(`${location}${userID}`, formData);
       setSendSucceed(false);
     }
   }, [sendSucceed]);

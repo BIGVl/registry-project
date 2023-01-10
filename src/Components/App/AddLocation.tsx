@@ -2,7 +2,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { FormEvent, useContext, useState } from 'react';
 import { db } from '../../firebase';
 import './AddLocation.css';
-import { ReactComponent as Cancel } from '../../assets/cancel.svg';
+import Cancel from '../../assets/cancel.svg';
 import { UserIDContext } from '../../Contexts';
 
 type FormData = {
@@ -24,13 +24,13 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
 
     await setDoc(doc(db, `locations${userID}`, formData.locationName), {
       name: formData.locationName,
-      rooms: formData.rooms
+      rooms: formData.rooms,
+      selected: false
     });
     setOpenAddLocation(false);
   };
 
   const change = (e: any) => {
-    console.log(formData);
     setFormData((prev: any) => {
       return { ...prev, [e.target.name]: e.target.value };
     });

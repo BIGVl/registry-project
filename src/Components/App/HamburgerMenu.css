@@ -6,14 +6,19 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     padding: 2rem 0rem;
-    background-color: rgb(240, 240, 240, .96)
+    background-color: rgb(240, 240, 240, .96);
+    display: flex;
+    ;
 }
 
-.open-addLocation-button {
+.open-addLocation-button,
+.open-list-locations {
     background-color: var(--action);
     color: white;
     padding: .5rem 0rem;
+    width: 100%;
     border-radius: 5px;
     
 }

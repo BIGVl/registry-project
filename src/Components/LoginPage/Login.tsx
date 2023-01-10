@@ -14,8 +14,6 @@ const Login = () => {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-
-    console.log(formData);
   };
 
   const signIn = async (e: FormEvent) => {

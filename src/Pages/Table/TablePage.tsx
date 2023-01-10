@@ -12,8 +12,10 @@ const TablePage = ({ rooms }: Props) => {
 
   return (
     <div id="table-page">
-      <Table rooms={rooms} />
-
+      <Table rooms={rooms} openForm={openForm} />
+      {/* We pass openForm just to add it in the dependency array of the useEffect in calendar that makes requests for data, in order to avoid constant requests
+    and also outdated calendar shown, we add it so everytime a new entry is made the useEffect will be run and data will pe up to date without the costly 
+    infinitely query otherwise */}
       {openForm === true ? <ReservationForm rooms={rooms} setOpenForm={setOpenForm} /> : ''}
       <button
         id="add-reservation"

@@ -47,7 +47,6 @@ const CreateUser = () => {
     setFormData((prev: FormData) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    console.log(formData);
   };
 
   return (
