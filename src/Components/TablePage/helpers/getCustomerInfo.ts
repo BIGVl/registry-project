@@ -1,5 +1,6 @@
 import { doc, DocumentData, getDoc } from 'firebase/firestore';
-import { db } from '../../../../../firebase';
+import { db } from '../../../firebase';
+import { FormData } from '../../../interfaces';
 
 const getCustomerInfo = async (
   location: string,
@@ -7,21 +8,21 @@ const getCustomerInfo = async (
   year: number,
   month: number,
   customerId: number,
-  setData: (value: DocumentData | undefined) => void
+  setCustomerData: (value: FormData | DocumentData) => void,
+  setLocationData: (value: DocumentData) => void,
+  setInitialCustomerData: (value: FormData | DocumentData) => void
 ) => {
   const docRef = doc(db, `${location}${userId}`, `${year}`, `${month}`, `${customerId}`);
-  console.log(`${location}${userId}`, `${year}`, `${month}`, `${customerId}`);
   try {
     const docSnap = await getDoc(docRef);
     const locationRef = await getDoc(doc(db, `locations${userId}`, `${location}`));
     if (docSnap && locationRef) {
       //All the properties in data are strings except : advance, balance, discount and total which are numbers
-      const roomsOccupied = locationRef.data();
-      setData(docSnap.data());
-      if (roomsOccupied)
-        setData((prev: DocumentData) => {
-          return { ...prev, rooms: roomsOccupied.rooms };
-        });
+      const data = docSnap.data();
+      const locationData = locationRef.data();
+      data && setCustomerData(data);
+      data && setInitialCustomerData(data);
+      locationData && setLocationData(locationData);
     }
   } catch (err) {
     console.error(err);

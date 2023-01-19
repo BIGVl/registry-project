@@ -2,7 +2,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { FormEvent, useContext, useState } from 'react';
 import { db } from '../../firebase';
 import './AddLocation.css';
-import Cancel from '../../assets/cancel.svg';
+import { ReactComponent as Cancel } from '../../assets/cancel.svg';
 import { UserIDContext } from '../../Contexts';
 
 type FormData = {

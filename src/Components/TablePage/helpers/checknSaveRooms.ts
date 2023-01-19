@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase';
+import { db } from '../../../firebase';
 
 const checknSaveRooms = async (
   rooms: any,
@@ -8,51 +8,49 @@ const checknSaveRooms = async (
   location: string,
   userID: string,
   setErrorMsg: (value: string | ((prevState: string) => string)) => void,
-  setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void,
-  setSendSucced: (value: boolean | ((prevState: boolean) => boolean)) => void
+  setSendSucceed: (value: boolean | ((prevState: boolean) => boolean)) => void,
+  customerID: number
 ) => {
   const availables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
   const unavailables: any = { 2022: {}, 2023: {}, 2024: {}, 2025: {}, 2026: {} };
+  const startDate = new Date(enterDate);
+  const currentDate = new Date(enterDate);
+  const dates: any = {};
+  const endDate = new Date(leaveDate);
 
-  const responseNrCx = await getDoc(doc(db, `${location}${userID}`, 'numar-clienti'));
-  const nrCxData = responseNrCx.data();
-  let nrCx = 0;
+  //Loop through all days between the enter day and the leave day and store them in an array to later be checked if they are available
+  while (currentDate <= endDate) {
+    /*This saves the dates  in a format like this dates = {2022:{11:[1,2,3], 12:[1,2,3,4]}}, in order to be later compared 
+        with the db to check the availability of the rooms */
+    if (dates[currentDate.getFullYear()]) {
+      if (dates[currentDate.getFullYear()][currentDate.getMonth() + 1]) {
+        dates[currentDate.getFullYear()][currentDate.getMonth() + 1] = [
+          ...dates[currentDate.getFullYear()][currentDate.getMonth() + 1],
+          currentDate.getDate()
+        ];
+      } else {
+        dates[currentDate.getFullYear()][currentDate.getMonth() + 1] = [currentDate.getDate()];
+      }
+    } else {
+      dates[currentDate.getFullYear()] = { [currentDate.getMonth() + 1]: [currentDate.getDate()] };
+    }
+
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  //Check if the last date is in the dates object, we do this because of a weird behavior when we deal with a reservation that includes 31st of October
+  //the endDate which represent the last day would not be in the dates object
+  if (!dates[endDate.getFullYear()][endDate.getMonth() + 1]) {
+    dates[endDate.getFullYear()][endDate.getMonth() + 1] = [endDate.getDate()];
+  } else if (!dates[endDate.getFullYear()][endDate.getMonth() + 1][endDate.getDate()]) {
+    dates[endDate.getFullYear()][endDate.getMonth() + 1] = [
+      ...dates[endDate.getFullYear()][endDate.getMonth() + 1],
+      endDate.getDate()
+    ];
+  }
+
   //Check for each room the availability on choosen dates with the db and then give the proper feedback
   rooms?.map(async (room: string) => {
-    const startDate = new Date(enterDate);
-    const currentDate = new Date(enterDate);
-    const dates: any = {};
-    const endDate = new Date(leaveDate);
-
-    //Loop through all days between the enter day and the leave day and store them in an array to later be checked if they are available
-    while (currentDate <= endDate) {
-      /*This saves the dates  in a format like this dates = {2022:{11:[1,2,3], 12:[1,2,3,4]}}, in order to be later compared 
-        with the db to check the availability of the rooms */
-      if (dates[currentDate.getFullYear()]) {
-        if (dates[currentDate.getFullYear()][currentDate.getMonth() + 1]) {
-          dates[currentDate.getFullYear()][currentDate.getMonth() + 1] = [
-            ...dates[currentDate.getFullYear()][currentDate.getMonth() + 1],
-            currentDate.getDate()
-          ];
-        } else {
-          dates[currentDate.getFullYear()][currentDate.getMonth() + 1] = [currentDate.getDate()];
-        }
-      } else {
-        dates[currentDate.getFullYear()] = { [currentDate.getMonth() + 1]: [currentDate.getDate()] };
-      }
-
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-    //Check if the last date is in the dates object, we do this because of a weird behavior when we deal with a reservation that includes 31st of October
-    //the endDate which represent the last day would not be in the dates object
-    if (!dates[endDate.getFullYear()][endDate.getMonth() + 1]) {
-      dates[endDate.getFullYear()][endDate.getMonth() + 1] = [endDate.getDate()];
-    } else if (!dates[endDate.getFullYear()][endDate.getMonth() + 1][endDate.getDate()]) {
-      dates[endDate.getFullYear()][endDate.getMonth() + 1] = [
-        ...dates[endDate.getFullYear()][endDate.getMonth() + 1],
-        endDate.getDate()
-      ];
-    }
     //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
     Object.keys(dates).map(async (year) => {
       const response = await getDoc(doc(db, `${location}${year}`, room));
@@ -107,7 +105,6 @@ const checknSaveRooms = async (
           );
         });
       } else {
-        nrCxData !== undefined ? (nrCx = nrCxData['numar-clienti'] + 1) : (nrCx = 1);
         setErrorMsg('');
         Object.keys(availables[year]).map(async (month) => {
           const docRef = doc(db, `${location}${userID}${year}`, room);
@@ -119,7 +116,7 @@ const checknSaveRooms = async (
                 await setDoc(
                   docRef,
                   {
-                    [month]: { [day]: `enter-${nrCx}/${data[month][day]}` }
+                    [month]: { [day]: `enter-${customerID}/${data[month][day]}` }
                   },
                   { merge: true }
                 );
@@ -127,7 +124,7 @@ const checknSaveRooms = async (
                 await setDoc(
                   docRef,
                   {
-                    [month]: { [day]: `enter-${nrCx}` }
+                    [month]: { [day]: `enter-${customerID}` }
                   },
                   { merge: true }
                 );
@@ -137,7 +134,7 @@ const checknSaveRooms = async (
                 await setDoc(
                   docRef,
                   {
-                    [month]: { [day]: `${data[month][day]}/exit-${nrCx}` }
+                    [month]: { [day]: `${data[month][day]}/exit-${customerID}` }
                   },
                   { merge: true }
                 );
@@ -145,7 +142,7 @@ const checknSaveRooms = async (
                 await setDoc(
                   docRef,
                   {
-                    [month]: { [day]: `exit-${nrCx}` }
+                    [month]: { [day]: `exit-${customerID}` }
                   },
                   { merge: true }
                 );
@@ -154,16 +151,16 @@ const checknSaveRooms = async (
               await setDoc(
                 docRef,
                 {
-                  [month]: { [day]: `full-${nrCx}` }
+                  [month]: { [day]: `full-${customerID}` }
                 },
                 { merge: true }
               );
             }
           });
           await setDoc(doc(db, `${location}${userID}`, 'numar-clienti'), {
-            'numar-clienti': nrCx
+            'numar-clienti': customerID
           });
-          setSendSucced(true);
+          setSendSucceed(true);
         });
       }
     });

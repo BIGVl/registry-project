@@ -2,26 +2,15 @@ import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
-import checknSaveRooms from './helpers/checknSaveRooms';
-import saveEntry from './helpers/saveEntry';
+import checknSaveRooms from '../helpers/checknSaveRooms';
+import saveEntry from '../helpers/saveEntry';
+import getCxNr from '../helpers/getCxNr';
+import validateDetails from '../helpers/validateDetails';
+import { FormData } from '../../../interfaces';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
   rooms: number;
-}
-
-export interface FormData {
-  adults: string;
-  advance: number;
-  entryDate: string;
-  leaveDate: string;
-  name: string;
-  phone: string;
-  discount: number;
-  rooms: string[];
-  total: number;
-  balance: number;
-  kids: string;
 }
 
 const ReservationForm = ({ setOpenForm, rooms }: Props) => {
@@ -40,6 +29,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
+  const [customerID, setCustomerID] = useState<number>(0);
 
   const [balanceState, setBalanceState] = useState<number>(0);
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -54,10 +44,17 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   for (let i = 1; i <= rooms; i++) {
     roomsArray.push(i);
   }
+
+  //Create customerID
+  useEffect(() => {
+    getCxNr(userID, location, setCustomerID);
+  }, []);
+
+  //Save a document with the customer's information after the dates of the entry have been checked and saved in calendar
   useEffect(() => {
     if (sendSucceed === true) {
       setOpenForm(false);
-      saveEntry(`${location}${userID}`, formData);
+      saveEntry(`${location}${userID}`, formData, customerID);
       setSendSucceed(false);
     }
   }, [sendSucceed]);
@@ -93,26 +90,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     }
   };
 
-  //Check if the inputs are available and if yes prompt the user the confirmation pop up
-  const confirm = () => {
-    if (formData.rooms.length < 1) {
-      return setErrorMsg('Nu ai selectat nici o camera.');
-    } else if (formData.entryDate >= formData.leaveDate) {
-      return setErrorMsg('Data de intrare trebuie sa fie inaintea datei de iesire.');
-    } else if (formData.entryDate === '') {
-      return setErrorMsg('Nu ai selectat o data de intrare.');
-    } else if (formData.leaveDate === '') {
-      return setErrorMsg('Nu ai selectat nici o data de iesire.');
-    } else if (formData.name.length < 3) {
-      return setErrorMsg('Numele trebuie sa aiba cel putin 4 litere.');
-    } else if (formData.phone.length < 9) {
-      return setErrorMsg('Numarul trebuie sa aiba cel putin 10 cifre.');
-    } else if (formData.adults === '') {
-      return setErrorMsg('E nevoie de cel putin un adult pentru rezervare.');
-    }
-    setErrorMsg('');
-    setConfirmSubmit(true);
-  };
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
     e.preventDefault();
@@ -128,8 +105,8 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       location,
       userID,
       setErrorMsg,
-      setOpenForm,
-      setSendSucceed
+      setSendSucceed,
+      customerID
     );
   };
 
@@ -241,7 +218,13 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           <div id="balance">De platit : {balanceState} lei</div>
         </fieldset>
 
-        <button type="button" id="submit" onClick={confirm}>
+        <button
+          type="button"
+          id="submit"
+          onClick={() => {
+            validateDetails(formData, setErrorMsg, setConfirmSubmit);
+          }}
+        >
           Confirm intrare
         </button>
 

@@ -1,7 +1,8 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import '../Table.css';
-import EntryDetails from './EntryDetails';
+import UpdateDetails from './UpdateDetails';
+import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 
 interface PropTypes {
   rows: number;
@@ -16,6 +17,8 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
   const [monthNumber, setMonthNumber] = useState(month);
+  const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [entryDetails, setEntryDetails] = useState({ year: year, month: month, customerId: 0 });
   if (monthNumber > 12 && monthNumber <= 24) setMonthNumber(monthNumber - 12);
@@ -50,9 +53,9 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
             if (data[i][monthNumber][d].includes('enter') && data[i][monthNumber][d].includes('exit')) {
               occupancyDisplay = (
                 <div
-                  onClick={(e) => {
+                  onClick={() => {
                     setEntryDetails({ year, month: monthNumber, customerId });
-                    setOpenDetails(!openDetails);
+                    setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
                 >
@@ -65,7 +68,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month: monthNumber, customerId });
-                    setOpenDetails(!openDetails);
+                    setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container-enter"
                 >
@@ -77,7 +80,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month: monthNumber, customerId });
-                    setOpenDetails(!openDetails);
+                    setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
                 >
@@ -89,7 +92,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month: monthNumber, customerId });
-                    setOpenDetails(!openDetails);
+                    setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
                 >
@@ -125,7 +128,37 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
           })}
         </tbody>
       </table>
-      {openDetails && <EntryDetails entryDetails={entryDetails} />}
+      {openUpdateDelete && (
+        <div className="bubble-update-delete">
+          <Cancel
+            onClick={() => {
+              setOpenUpdateDelete(false);
+            }}
+          />
+          <div className="buttons">
+            <button
+              className="open-update"
+              onClick={() => {
+                setOpenDetails(true);
+                setOpenUpdateDelete(false);
+              }}
+            >
+              Detalii
+            </button>
+            <button
+              className="open-delete"
+              onClick={() => {
+                setOpenDelete(true);
+                setOpenUpdateDelete(false);
+              }}
+            >
+              Sterge
+            </button>
+          </div>
+        </div>
+      )}
+
+      {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} />}
     </>
   );
 };

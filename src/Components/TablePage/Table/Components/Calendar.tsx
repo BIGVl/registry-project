@@ -22,7 +22,15 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
   const [year, setYear] = useState<number>(currentYear);
   const [data, setData] = useState({});
 
+  //Check what year is the displaying month in
+
   useEffect(() => {
+    setData({});
+    if (month < 13) setYear(currentYear - 1);
+    else if (month > 24) setYear(currentYear + 1);
+    else {
+      setYear(currentYear);
+    }
     const q = query(collection(db, `${location}${userID}${year}`));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -32,16 +40,8 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
       });
     });
     return () => unsubscribe();
-  }, [month, userID, openForm]);
+  }, [month, userID, openForm, year]);
 
-  //Check what year is the displaying month in
-  useEffect(() => {
-    if (month < 13) setYear(currentYear - 1);
-    else if (month > 24) setYear(currentYear + 1);
-    else {
-      setYear(currentYear);
-    }
-  }, [month, currentYear]);
   //Change the month presented to one back or on ahead based on what arrow it's clicked
   const lastMonth = () => {
     if (month === 1) return;
