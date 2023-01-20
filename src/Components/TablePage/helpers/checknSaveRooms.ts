@@ -53,23 +53,17 @@ const checknSaveRooms = async (
   rooms?.map(async (room: string) => {
     //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
     Object.keys(dates).map(async (year) => {
-      const response = await getDoc(doc(db, `${location}${year}`, room));
+      const response = await getDoc(doc(db, `${location}${userID}${year}`, room));
       let data: any = response.data();
       Object.keys(dates[year]).forEach((month) => {
         dates[year][month].forEach((date: number, i: number) => {
-          if (
-            (data && data[month] && data[month][date] !== undefined && data[month][date].slice(0, 4) === 'full') ||
-            (data &&
-              data[month] &&
-              data[month][date] &&
-              data[month][date].includes('enter') &&
-              data[month][date].includes('exit')) ||
-            (data &&
-              data[month] &&
-              data[startDate.getMonth() + 1][startDate.getDate()] &&
-              data[startDate.getMonth() + 1][startDate.getDate()].slice(0, 5) === 'enter')
-          ) {
-            unavailables[year][month] ? unavailables[year][month].push(date) : (unavailables[year][month] = [date]);
+          if (data && data[month] && data[month][date] && !data[month][date].includes(customerID)) {
+            if (
+              data[month][date].includes('full') ||
+              (data[month][date].includes('enter') && data[month][date].includes('exit'))
+            ) {
+              unavailables[year][month] ? unavailables[year][month].push(date) : (unavailables[year][month] = [date]);
+            }
           } else {
             availables[year][month] ? availables[year][month].push(date) : (availables[year][month] = [date]);
           }
@@ -89,9 +83,7 @@ const checknSaveRooms = async (
 
     //Loop through each month in each year in the unavailables array to check if any dates choosen for the rooms are occupied
     Object.keys(unavailables).map(async (year) => {
-      //We await on getDoc just so this will get to the end on the stack flow in order to run after the codeblock above so the arrays
-      // will be modified by the above mentioned block by the time this block runs as this depends on those arrays to be updated with the db
-      await getDoc(doc(db, `${location}${year}`, room));
+      await getDoc(doc(db, `${location}${userID}${year}`, room));
       const isOccupied = Object.keys(unavailables).find((year) => {
         return Object.keys(unavailables[year]).length > 0;
       });

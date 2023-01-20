@@ -21,7 +21,6 @@ const deleteDates = async (
     monthsArray.push(currentMonth);
     currentMonth++;
   }
-  console.log(customerId);
 
   rooms.forEach(async (room) => {
     const firstYearOfReservationRef = await getDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, room));

@@ -98,7 +98,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     });
     setConfirmSubmit(false);
 
-    let id = await checknSaveRooms(
+    await checknSaveRooms(
       formData.rooms,
       formData.entryDate,
       formData.leaveDate,

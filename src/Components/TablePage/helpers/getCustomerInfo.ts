@@ -9,8 +9,8 @@ const getCustomerInfo = async (
   month: number,
   customerId: number,
   setCustomerData: (value: FormData | DocumentData) => void,
-  setLocationData: (value: DocumentData) => void,
-  setInitialCustomerData: (value: FormData | DocumentData) => void
+  setLocationData?: (value: DocumentData) => void,
+  setInitialCustomerData?: (value: FormData | DocumentData) => void
 ) => {
   const docRef = doc(db, `${location}${userId}`, `${year}`, `${month}`, `${customerId}`);
   try {
@@ -21,8 +21,8 @@ const getCustomerInfo = async (
       const data = docSnap.data();
       const locationData = locationRef.data();
       data && setCustomerData(data);
-      data && setInitialCustomerData(data);
-      locationData && setLocationData(locationData);
+      data && setInitialCustomerData && setInitialCustomerData(data);
+      locationData && setLocationData && setLocationData(locationData);
     }
   } catch (err) {
     console.error(err);

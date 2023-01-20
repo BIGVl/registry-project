@@ -3,6 +3,8 @@ import { useState } from 'react';
 import '../Table.css';
 import UpdateDetails from './UpdateDetails';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
+import deleteDates from '../../helpers/deleteDates';
+import DeleteModal from './DeleteModal';
 
 interface PropTypes {
   rows: number;
@@ -72,7 +74,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   }}
                   id="show-container-enter"
                 >
-                  <div id="enter-show">{customerId}</div>
+                  <div id="enter-show"></div>
                 </div>
               );
             } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'exit') {
@@ -84,7 +86,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   }}
                   id="show-container"
                 >
-                  <div id="exit-show">{customerId}</div>
+                  <div id="exit-show"></div>
                 </div>
               );
             } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'full') {
@@ -157,7 +159,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
           </div>
         </div>
       )}
-
+      {openDelete && <DeleteModal entryDetails={entryDetails} setOpenDelete={setOpenDelete} />}
       {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} />}
     </>
   );

@@ -1,4 +1,4 @@
-import { DocumentData } from 'firebase/firestore';
+import { connectFirestoreEmulator, DocumentData } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
@@ -55,6 +55,15 @@ const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
     );
   }, []);
 
+  //Close the form when the update finishes successfully
+  useEffect(() => {
+    if (sendSucceed) {
+      saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
+      setOpenDetails(false);
+      setSendSucceed(false);
+    }
+  }, [sendSucceed]);
+
   //Update the balance remaining every time one of these values change
 
   let { balance, total, discount, advance } = customerData;
@@ -74,37 +83,29 @@ const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
   for (let i = 1; i <= locationData?.rooms; i++) {
     roomsArr.push();
   }
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const roomsChanged = initialCustomerData.rooms.filter((room: string) => !customerData.rooms.includes(room));
 
-    if (
-      initialCustomerData.entryDate !== customerData.entryDate ||
-      initialCustomerData.leaveDate !== customerData.leaveDate ||
-      roomsChanged.length > 0
-    ) {
-      console.log('Information has changed');
-      deleteDates(
-        location,
-        userID,
-        initialCustomerData.entryDate,
-        initialCustomerData.leaveDate,
-        initialCustomerData.rooms,
-        entryDetails.customerId
-      );
-      checknSaveRooms(
-        customerData.rooms,
-        customerData.entryDate,
-        customerData.leaveDate,
-        location,
-        userID,
-        setErrorMessage,
-        setSendSucceed,
-        entryDetails.customerId
-      );
-    }
-    saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
-    setOpenDetails(false);
+    console.log('Information has changed');
+    await deleteDates(
+      location,
+      userID,
+      initialCustomerData.entryDate,
+      initialCustomerData.leaveDate,
+      initialCustomerData.rooms,
+      entryDetails.customerId
+    );
+
+    await checknSaveRooms(
+      customerData.rooms,
+      customerData.entryDate,
+      customerData.leaveDate,
+      location,
+      userID,
+      setErrorMessage,
+      setSendSucceed,
+      entryDetails.customerId
+    );
   };
 
   return (
