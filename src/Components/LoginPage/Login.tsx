@@ -44,20 +44,20 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <form action="" className="login-form" noValidate onSubmit={signIn}>
-        <label htmlFor="email">
-          Email
-          <input type="email" name="email" id="email" onChange={update} />
-        </label>
-        <label htmlFor="password">
-          Password
-          <input type="password" name="password" id="password" onChange={update} />
-        </label>
-        {errorMessage !== '' && <div className="error-message"> {errorMessage} </div>}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <form action="" className="login-form" noValidate onSubmit={signIn}>
+      <label htmlFor="email">
+        Email
+        <input type="email" name="email" id="email" onChange={update} />
+      </label>
+      <label htmlFor="password">
+        Password
+        <input type="password" name="password" id="password" onChange={update} />
+      </label>
+      {errorMessage !== '' && <div className="error-message"> {errorMessage} </div>}
+      <button className="submit-login" type="submit">
+        Logheaza-te
+      </button>
+    </form>
   );
 };
 

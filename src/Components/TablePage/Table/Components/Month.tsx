@@ -1,6 +1,6 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import '../Table.css';
+import '../../../../Pages/Table/TablePage.css';
 import UpdateDetails from './UpdateDetails';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import deleteDates from '../../helpers/deleteDates';

@@ -1,10 +1,13 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AddLocation from './AddLocation';
 import HamburgerMenu from './HamburgerMenu';
 import { ReactComponent as HamburgerIcon } from '../../assets/menu.svg';
-import { DocumentData } from 'firebase/firestore';
+import { doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { UserInfo } from '../../globalInterfaces';
+import './Nav.css';
+import { ReactComponent as Cancel } from '../../assets/cancel.svg';
+import { db } from '../../firebase';
 
 interface Props {
   locations: DocumentData[];
@@ -16,24 +19,35 @@ const Nav = ({ locations, setLocations, user }: Props) => {
   const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
 
+  const removeFromNav = async (e: any) => {
+    await updateDoc(doc(db, `locations${user.uid}`, `${e.target.parentNode.id}`), {
+      selected: false
+    });
+  };
+
   return (
     <>
       {openAddLocationForm ? <AddLocation setOpenAddLocation={setOpenAddLocationForm} /> : ''}
 
       <nav className="main-nav">
-        {locations.map((location: DocumentData) => {
-          if (location.selected) {
-            const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+        <div className="nav-locations-container">
+          {locations.map((location: DocumentData) => {
+            if (location.selected) {
+              let tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+              if (tag.length > 5) tag = tag.slice(0, 5) + '...';
 
-            return (
-              <Link key={location.name} to={`/${location.name}`}>
-                {tag}
-              </Link>
-            );
-          }
-        })}
-
-        <HamburgerIcon onClick={() => setOpenHamburger(!openHamburger)} />
+              return (
+                <div className="nav-location-bubble">
+                  <Link className="nav-location-link" key={location.name} to={`/${location.name}`}>
+                    {tag}
+                  </Link>
+                  <Cancel className="nav-remove-location" id={location.name} onClick={removeFromNav} />
+                </div>
+              );
+            }
+          })}
+        </div>
+        <HamburgerIcon className="hamburger-icon" onClick={() => setOpenHamburger(!openHamburger)} />
       </nav>
       {openHamburger && (
         <HamburgerMenu

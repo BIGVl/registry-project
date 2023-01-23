@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import months from '../../../../assets/months';
 import Month from './Month';
-import '../Table.css';
+import '../../../../Pages/Table/TablePage.css';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
 import { LocationContext, UserIDContext } from '../../../../Contexts';

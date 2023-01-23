@@ -44,17 +44,21 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
         }}
         className="close-add-location"
       />
-      <form onSubmit={submitLocation} id="add-location-form" action="POST">
-        <fieldset>Adauga o proprietate noua sau schimba numarul de camere al unei proprietati deja existente</fieldset>
+      <form onSubmit={submitLocation} className="add-location-form" id="add-location-form" action="POST">
+        <fieldset className="add-fieldset">
+          Adauga o proprietate noua sau schimba numarul de camere al unei proprietati deja existente
+        </fieldset>
         <label htmlFor="location-name">
           Numele proprietatii:
-          <input type="text" name="locationName" id="locationName" minLength={3} required onChange={change} />
+          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={16} required onChange={change} />
         </label>
-        <label htmlFor="rooms">
+        <label htmlFor="add-rooms">
           Numar de camere:
-          <input type="number" name="rooms" id="rooms" required min={1} max={50} onChange={change} />
+          <input type="number" name="add-rooms" id="add-rooms" required min={1} max={50} onChange={change} />
         </label>
-        <button type="submit">Adauga</button>
+        <button className="add-location" type="submit">
+          Adauga
+        </button>
       </form>
     </div>
   );

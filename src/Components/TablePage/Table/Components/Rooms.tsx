@@ -1,4 +1,4 @@
-import '../Table.css';
+import '../../../../Pages/Table/TablePage.css';
 
 interface PropTypes {
   rows: number;

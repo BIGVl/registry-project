@@ -1,4 +1,4 @@
-import './Table.css';
+import '../../../Pages/Table/TablePage.css';
 import Rooms from './Components/Rooms';
 import Calendar from './Components/Calendar';
 

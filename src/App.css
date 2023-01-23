@@ -1,6 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Open+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+*,
+*::before,
+*::after {
+    border: none;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font);
+}
+
+:root {
+    --action: #e09e50;
+    --secondary:#2d3e4e;
+    --main: #e8eceb;
+    --third: #8cbdb9;
+    --font: 'Open Sans', sans-serif;
+}
 
 
-.main-nav {
-    position: fixed;
-    bottom: 0%;
+body {
+    background-color: var(--main);
+
+
+}
+
+.App {
+    min-height: 100vh;
+    padding-bottom: 6rem;
+}
+
+button {
+    font-family: var(--font);
 }

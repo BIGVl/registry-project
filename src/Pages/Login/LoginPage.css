@@ -1,18 +1,60 @@
-.login-container {
-display: flex;
-flex-direction: column;
-align-items: center;
+.login-page {
+    padding: 2rem;
+}
 
 
+
+.buttons-form-container {
+    display: flex;
+    flex-direction: column;
+    gap:.5rem;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    height: 50%;
+}
+
+.login-button-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.login-button-container button {
+    background-color: var(--third);
+    padding: .7rem .5rem;
+    font-size: .9rem;
+    border-radius: 5px;
+    font-weight: 500;
 }
 
 .create-acc-form,
-.login-container {
-
+.login-form {
     background-color: var(--secondary);
     padding: 2rem;
     border-radius: 5px;
-    box-shadow: 2px 2px 0px 2px rgb(30, 30, 30);
-
+    box-shadow: 2px 2px 0px 5px rgb(30, 30, 30);
+    color:white;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
 
 }
+
+.create-acc-form input,
+.login-form input {
+    border-radius: 5px;
+    font-size: .9rem;
+    padding: 3px 5px;
+}
+
+.submit-create-account,
+.submit-login {
+    background-color: var(--action);
+    align-self: center;
+    padding: .4rem .7rem;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 1rem;
+}   

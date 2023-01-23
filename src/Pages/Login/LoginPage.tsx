@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateUser from '../../Components/LoginPage/CreateUserF';
+import CreateUser from '../../Components/LoginPage/CreateUser';
 import Login from '../../Components/LoginPage/Login';
 import { UserIDContext } from '../../Contexts';
 import './LoginPage.css';
@@ -17,15 +17,17 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <h2>Unealta ideala pentru ati gestiona cazarile.</h2>
-      <div className="open-forms-container">
-        <button className="open-create-user" onClick={() => setHasAccount(false)}>
-          Creeaza coont
-        </button>
-        <button className="open-login" onClick={() => setHasAccount(true)}>
-          Intra in cont
-        </button>
+      <div className="buttons-form-container">
+        <div className="login-button-container">
+          <button className="open-create-user" onClick={() => setHasAccount(false)}>
+            Creeaza cont
+          </button>
+          <button className="open-login" onClick={() => setHasAccount(true)}>
+            Intra in cont
+          </button>
+        </div>
+        {hasAccount ? <Login /> : <CreateUser />}
       </div>
-      {hasAccount ? <Login /> : <CreateUser />}
     </div>
   );
 };

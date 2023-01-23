@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
@@ -27,6 +27,8 @@ const CreateUser = () => {
     try {
       const userRef = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userRef.user;
+      //TODO Update the profile with the name for the displayName
+      //await updateProfile
       user && navigate('/');
     } catch (e) {
       const error = e as { code: string };
@@ -75,7 +77,7 @@ const CreateUser = () => {
         />
       </label>
       {errorMessage !== '' && <div className="error-message"> {errorMessage} </div>}
-      <button type="submit" aria-label="confirm creating account">
+      <button className="submit-create-account" type="submit" aria-label="confirm creating account">
         Creeaza cont
       </button>
     </form>

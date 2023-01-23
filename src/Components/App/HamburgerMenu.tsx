@@ -31,17 +31,19 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
     await updateDoc(doc(db, `locations${userInfo.uid}`, e.target.id), {
       selected: true
     });
-
     navigate(`/${e.target.id}`);
+    setOpenHamburger(false);
   };
 
   return (
     <section className="hamburger-menu">
-      <Close onClick={(e) => setOpenHamburger(false)} />
-      <p> {userInfo.name} </p>
-      <p> {userInfo.email} </p>
+      <div className="hamburger-close">
+        <Close className="hamburger-close-svg" onClick={(e) => setOpenHamburger(false)} />
+      </div>
+      <p className="hamburger-user"> {userInfo.name} </p>
+      <p className="hamburger-email"> {userInfo.email} </p>
       {openLocationsList && (
-        <ul>
+        <ul className="locations-list">
           {locations.map((location) => {
             const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
             return (
@@ -52,7 +54,12 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
           })}
         </ul>
       )}
-      <button onClick={(e) => setOpenLocationsList(!openLocationsList)} className="open-list-locations">
+      <button
+        onClick={(e) => {
+          setOpenLocationsList(!openLocationsList);
+        }}
+        className="open-list-locations"
+      >
         Locatii
       </button>
 
@@ -62,7 +69,7 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
           setOpenAddLocationForm(true);
         }}
       >
-        Adauga locatie
+        Adauga locatie noua
       </button>
 
       <button onClick={logOut} className="sign-out">
