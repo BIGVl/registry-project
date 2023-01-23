@@ -47,7 +47,7 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
           {locations.map((location) => {
             const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
             return (
-              <li onClick={openLocation} id={location.name}>
+              <li key={location.name} onClick={openLocation} id={location.name}>
                 {tag}
               </li>
             );

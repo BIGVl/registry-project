@@ -4,6 +4,7 @@ import { db } from '../../firebase';
 import './AddLocation.css';
 import { ReactComponent as Cancel } from '../../assets/cancel.svg';
 import { UserIDContext } from '../../Contexts';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
   locationName: string;
@@ -18,6 +19,7 @@ interface Props {
 export default function AddLocation({ setOpenAddLocation }: Props) {
   const [formData, setFormData] = useState<FormData>({ locationName: '', rooms: '' });
   const userID = useContext(UserIDContext);
+  const navigate = useNavigate();
 
   const submitLocation = async (e: FormEvent) => {
     e.preventDefault();
@@ -25,8 +27,9 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
     await setDoc(doc(db, `locations${userID}`, formData.locationName), {
       name: formData.locationName,
       rooms: formData.rooms,
-      selected: false
+      selected: true
     });
+    navigate(`/${formData.locationName}`);
     setOpenAddLocation(false);
   };
 

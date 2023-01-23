@@ -71,6 +71,7 @@
     border-radius: 10px;
     border: 5px solid var(--action);
     font-weight: 500;
+    min-width: 12rem;
 }
 
 .locations-list li {
