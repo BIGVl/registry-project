@@ -14,7 +14,7 @@ interface PropTypes {
 }
 
 const Calendar = ({ rows, openForm }: PropTypes) => {
-  const [month, setMonth] = useState<number>(parseInt(new Date().toLocaleDateString().slice(0, 2)) + 12);
+  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
 
   let currentYear = new Date().getFullYear();
   const location = useContext(LocationContext);

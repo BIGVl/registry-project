@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
@@ -18,7 +18,7 @@ const CreateUser = () => {
 
   const submitCreateUser = async (e: FormEvent) => {
     e.preventDefault();
-
+    setErrorMessage('');
     const { fullName, email, password } = formData;
     if (password !== confirmPass) return setErrorMessage('Parolele nu se potrivesc.');
     if (fullName.length < 3) return setErrorMessage('Numele trebuie sa aiba cel putin trei litere.');
@@ -27,8 +27,14 @@ const CreateUser = () => {
     try {
       const userRef = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userRef.user;
-      //TODO Update the profile with the name for the displayName
-      //await updateProfile
+
+      const authRef = getAuth();
+      console.log(authRef.currentUser);
+      authRef.currentUser &&
+        (await updateProfile(authRef.currentUser, {
+          displayName: formData.fullName
+        }));
+
       user && navigate('/');
     } catch (e) {
       const error = e as { code: string };

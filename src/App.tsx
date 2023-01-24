@@ -48,7 +48,7 @@ const App = () => {
     if (userInfo.uid && locations.length === 0) {
       navigate('/first-location');
     }
-  }, []);
+  }, [userInfo.uid]);
 
   return (
     <UserIDContext.Provider value={userInfo.uid}>

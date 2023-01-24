@@ -58,7 +58,7 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
         </label>
         <label htmlFor="add-rooms">
           Numar de camere:
-          <input type="number" name="rooms" className="add-rooms" id="rooms" required min={1} max={50} onChange={change} />
+          <input type="number" name="rooms" className="add-rooms" id="add-rooms" required min={1} max={50} onChange={change} />
         </label>
         <button className="add-location" type="submit">
           Adauga

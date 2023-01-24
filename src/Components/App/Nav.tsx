@@ -37,8 +37,8 @@ const Nav = ({ locations, setLocations, user }: Props) => {
               if (tag.length > 5) tag = tag.slice(0, 5) + '...';
 
               return (
-                <div className="nav-location-bubble">
-                  <Link className="nav-location-link" key={location.name} to={`/${location.name}`}>
+                <div className="nav-location-bubble" key={location.name}>
+                  <Link className="nav-location-link" to={`/${location.name}`}>
                     {tag}
                   </Link>
                   <Cancel className="nav-remove-location" id={location.name} onClick={removeFromNav} />
