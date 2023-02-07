@@ -22,7 +22,6 @@ const App = () => {
         setUserInfo((prev) => {
           return { ...prev, uid: user.uid, name: user.displayName, email: user.email, photoURL: user.photoURL };
         });
-        console.log(user);
       } else {
         setUserInfo({ uid: '', name: '', email: '', photoURL: '' });
         navigate('/login');
@@ -37,7 +36,7 @@ const App = () => {
         });
       });
     });
-
+    console.log(locations);
     return () => {
       unsubAuth();
       unsubQuerry();
@@ -47,8 +46,10 @@ const App = () => {
   useEffect(() => {
     if (userInfo.uid && locations.length === 0) {
       navigate('/first-location');
+    } else {
+      navigate(`/${locations[0].name}`);
     }
-  }, [userInfo.uid]);
+  }, [userInfo.uid, locations]);
 
   return (
     <UserIDContext.Provider value={userInfo.uid}>
