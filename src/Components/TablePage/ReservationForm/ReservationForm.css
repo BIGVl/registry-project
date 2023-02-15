@@ -64,6 +64,7 @@
   width: 15rem;
   height: 17rem;
   padding: 1rem;
+  overflow-y: scroll;
 }
 
 p {

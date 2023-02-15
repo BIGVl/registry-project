@@ -62,7 +62,7 @@
     position: fixed;
     top: 50%;
     left: 25%;
-    transform: translate(-50%, -70%);
+    transform: translate(-40%);
     background-color: white;
     padding: 1rem;
     display: flex;

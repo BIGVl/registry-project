@@ -18,13 +18,10 @@ interface PropTypes {
 const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
-  const [monthNumber, setMonthNumber] = useState(month);
   const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [entryDetails, setEntryDetails] = useState({ year: year, month: month, customerId: 0 });
-  if (monthNumber > 12 && monthNumber <= 24) setMonthNumber(monthNumber - 12);
-  if (monthNumber > 24) setMonthNumber(monthNumber - 24);
 
   //Fill in the days number in an array so it can be populated on the table
   for (let i = 1; i <= days; i++) {
@@ -33,30 +30,23 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
 
   const WEEKDAYS: string[] = ['Duminica', 'Luni', 'Marti', 'Miercuri', 'Joi', 'Vineri', 'Sambata'];
   const weekdayIndexes: number[] = [];
-
   //Loop through the days in our calendar and check what day of the week is each and assing the weekday to each one
   daysArray.forEach((day) => {
-    // let thisMonth = month;
-    // if (thisMonth > 12 && thisMonth <= 24) {
-    //   thisMonth = thisMonth - 12;
-    // } else if (thisMonth > 24) {
-    //   thisMonth = thisMonth - 24;
-    // }
-    weekdayIndexes.push(new Date(year, monthNumber - 1, day).getDay());
+    weekdayIndexes.push(new Date(year, month - 1, day).getDay());
   });
   for (let i = 1; i <= rows; i++) {
     cellsArray.push(
       <tr key={i}>
         {daysArray.map((d) => {
           let occupancyDisplay;
-          if (data[i] && data[i][monthNumber] && data[i][monthNumber][d]) {
-            const customerId = parseInt(data[i][monthNumber][d].slice(data[i][monthNumber][d].indexOf('-') + 1));
+          if (data[i] && data[i][month] && data[i][month][d]) {
+            const customerId = parseInt(data[i][month][d].slice(data[i][month][d].indexOf('-') + 1));
 
-            if (data[i][monthNumber][d].includes('enter') && data[i][monthNumber][d].includes('exit')) {
+            if (data[i][month][d].includes('enter') && data[i][month][d].includes('exit')) {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: monthNumber, customerId });
+                    setEntryDetails({ year, month: month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -65,11 +55,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 5) === 'enter') {
+            } else if (data[i][month][d] && data[i][month][d].slice(0, 5) === 'enter') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: monthNumber, customerId });
+                    setEntryDetails({ year, month: month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container-enter"
@@ -77,11 +67,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'exit') {
+            } else if (data[i][month][d] && data[i][month][d].slice(0, 4) === 'exit') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: monthNumber, customerId });
+                    setEntryDetails({ year, month: month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -89,11 +79,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="exit-show"></div>
                 </div>
               );
-            } else if (data[i][monthNumber][d] && data[i][monthNumber][d].slice(0, 4) === 'full') {
+            } else if (data[i][month][d] && data[i][month][d].slice(0, 4) === 'full') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: monthNumber, customerId });
+                    setEntryDetails({ year, month: month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -103,7 +93,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
               );
             }
           }
-          return <td key={i + '/' + d + '/' + monthNumber}>{occupancyDisplay}</td>;
+          return <td key={i + '/' + d + '/' + month}>{occupancyDisplay}</td>;
         })}
       </tr>
     );

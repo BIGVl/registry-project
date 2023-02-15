@@ -97,7 +97,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       return { ...prev, balance: balanceState };
     });
     setConfirmSubmit(false);
-
     await checknSaveRooms(
       formData.rooms,
       formData.entryDate,

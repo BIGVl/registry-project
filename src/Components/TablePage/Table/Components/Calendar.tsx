@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import months from '../../../../assets/months';
 import Month from './Month';
 import '../../../../Pages/Table/TablePage.css';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
@@ -14,43 +13,39 @@ interface PropTypes {
 }
 
 const Calendar = ({ rows, openForm }: PropTypes) => {
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
-
-  let currentYear = new Date().getFullYear();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  console.log(currentDate);
   const location = useContext(LocationContext);
   const userID = useContext(UserIDContext);
-  const [year, setYear] = useState<number>(currentYear);
   const [data, setData] = useState({});
 
   //Check what year is the displaying month in
 
   useEffect(() => {
+    console.log('I get called');
     setData({});
-    if (month < 13) setYear(currentYear - 1);
-    else if (month > 24) setYear(currentYear + 1);
-    else {
-      setYear(currentYear);
-    }
-    const q = query(collection(db, `${location}${userID}${year}`));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
+    const unsubscribe = onSnapshot(
+      doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`),
+      (doc) => {
         setData((prev) => {
           return { ...prev, [doc.id]: doc.data() };
         });
-      });
-    });
+      }
+    );
     return () => unsubscribe();
-  }, [month, userID, openForm, year]);
+  }, [userID, openForm, currentDate.getFullYear(), currentDate.getMonth()]);
 
   //Change the month presented to one back or on ahead based on what arrow it's clicked
   const lastMonth = () => {
-    if (month === 1) return;
-    setMonth(month - 1);
+    setCurrentDate((prev: any) => {
+      return new Date(prev.setMonth(prev.getMonth() - 1));
+    });
   };
 
   const nextMonth = () => {
-    if (month === 36) return;
-    setMonth(month + 1);
+    setCurrentDate((prev: any) => {
+      return new Date(prev.setMonth(prev.getMonth() + 1));
+    });
   };
 
   return (
@@ -61,13 +56,16 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
       <div id="arrow-right">
         <ArrowRight onClick={nextMonth} />
       </div>
-      {Object.keys(months).map((m, i) => {
-        const days = months[m as keyof typeof months];
-        const monthName = m.replace(/[1-9]/g, '');
-        if (i + 1 === month)
-          return <Month year={year} month={month} key={i} rows={rows} days={days} monthName={monthName} data={data} />;
-      })}
-      <div id="year"> {year} </div>
+
+      <Month
+        year={currentDate.getFullYear()}
+        month={currentDate.getMonth()}
+        rows={rows}
+        days={new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()}
+        monthName={currentDate.toLocaleDateString('ro-RO', { month: 'long' })}
+        data={data}
+      />
+      <div id="year"> {currentDate.getFullYear()} </div>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import './App.css';
 import { LocationContext, UserIDContext } from './Contexts';
 import { auth, db } from './firebase';
 import LoginPage from './Pages/Login/LoginPage';
@@ -44,11 +43,14 @@ const App = () => {
   }, [userInfo.uid]);
 
   useEffect(() => {
-    if (userInfo.uid && locations.length === 0) {
-      navigate('/first-location');
-    } else {
-      navigate(`/${locations[0].name}`);
-    }
+    if (userInfo.uid)
+      if (locations.length === 0) {
+        navigate('/first-location');
+      } else if (locations[0]) {
+        navigate(`/${locations[0].name}`);
+      } else {
+        navigate('/');
+      }
   }, [userInfo.uid, locations]);
 
   return (

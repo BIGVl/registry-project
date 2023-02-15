@@ -22,35 +22,36 @@ const deleteDates = async (
     currentMonth++;
   }
 
-  rooms.forEach(async (room) => {
-    const firstYearOfReservationRef = await getDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, room));
-    const secondYearOfReservationRef =
-      dateOfEntry.getFullYear() !== dateOfLeave.getFullYear()
-        ? await getDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, room))
-        : null;
-    const roomReservationsFirstYear = firstYearOfReservationRef.data();
-    const roomReservationsSecondYear = secondYearOfReservationRef !== null ? secondYearOfReservationRef.data() : null;
-    if (roomReservationsFirstYear) {
-      monthsArray.forEach((month) => {
+  rooms.forEach((room) => {
+    monthsArray.forEach(async (month) => {
+      const firstYearOfReservationRef = await getDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`));
+      const secondYearOfReservationRef =
+        dateOfEntry.getFullYear() !== dateOfLeave.getFullYear()
+          ? await getDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, `${month}`))
+          : null;
+      const roomReservationsFirstYear = firstYearOfReservationRef.data();
+      const roomReservationsSecondYear = secondYearOfReservationRef !== null ? secondYearOfReservationRef.data() : null;
+      if (roomReservationsFirstYear) {
         Object.keys(roomReservationsFirstYear[month]).forEach((day) => {
           console.log(day);
           roomReservationsFirstYear[month][day].includes(`${customerId}`) && delete roomReservationsFirstYear[month][day];
         });
-      });
-      console.log(roomReservationsFirstYear);
-    }
-    if (roomReservationsSecondYear) {
-      monthsArray.forEach((month) => {
-        Object.keys(roomReservationsSecondYear[month]).forEach((day) => {
-          console.log(day);
 
-          roomReservationsSecondYear[month][day].includes(`${customerId}`) && delete roomReservationsSecondYear[month][day];
+        console.log(roomReservationsFirstYear);
+      }
+      if (roomReservationsSecondYear) {
+        monthsArray.forEach((month) => {
+          Object.keys(roomReservationsSecondYear[month]).forEach((day) => {
+            console.log(day);
+
+            roomReservationsSecondYear[month][day].includes(`${customerId}`) && delete roomReservationsSecondYear[month][day];
+          });
         });
-      });
-    }
-    await updateDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, room), roomReservationsFirstYear);
-    roomReservationsSecondYear &&
-      (await updateDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, room), roomReservationsSecondYear));
+      }
+      await updateDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`), roomReservationsFirstYear);
+      roomReservationsSecondYear &&
+        (await updateDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, `${month}`), roomReservationsSecondYear));
+    });
   });
 };
 
