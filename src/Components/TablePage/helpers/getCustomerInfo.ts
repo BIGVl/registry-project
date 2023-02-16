@@ -13,6 +13,7 @@ const getCustomerInfo = async (
   setInitialCustomerData?: (value: FormData | DocumentData) => void
 ) => {
   const docRef = doc(db, `${location}${userId}`, `${year}`, `${month}`, `${customerId}`);
+  console.log(`${location}${userId}`, `${year}`, `${month}`, `${customerId}`);
   try {
     const docSnap = await getDoc(docRef);
     const locationRef = await getDoc(doc(db, `locations${userId}`, `${location}`));
@@ -20,6 +21,7 @@ const getCustomerInfo = async (
       //All the properties in data are strings except : advance, balance, discount and total which are numbers
       const data = docSnap.data();
       const locationData = locationRef.data();
+      console.log(data);
       data && setCustomerData(data);
       data && setInitialCustomerData && setInitialCustomerData(data);
       locationData && setLocationData && setLocationData(locationData);

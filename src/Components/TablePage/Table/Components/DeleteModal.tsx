@@ -22,9 +22,8 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
 
   //Get data of the customer
   useEffect(() => {
-    console.log(location, userID, entryDetails);
+    console.log(entryDetails);
     getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId, setCustomerData);
-    console.log(customerData);
   }, []);
 
   const location = useContext(LocationContext);

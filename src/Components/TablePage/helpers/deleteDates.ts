@@ -21,9 +21,9 @@ const deleteDates = async (
     monthsArray.push(currentMonth);
     currentMonth++;
   }
-
   rooms.forEach((room) => {
     monthsArray.forEach(async (month) => {
+      console.log(`${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`);
       const firstYearOfReservationRef = await getDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`));
       const secondYearOfReservationRef =
         dateOfEntry.getFullYear() !== dateOfLeave.getFullYear()
@@ -31,20 +31,21 @@ const deleteDates = async (
           : null;
       const roomReservationsFirstYear = firstYearOfReservationRef.data();
       const roomReservationsSecondYear = secondYearOfReservationRef !== null ? secondYearOfReservationRef.data() : null;
+      console.log(roomReservationsFirstYear);
       if (roomReservationsFirstYear) {
-        Object.keys(roomReservationsFirstYear[month]).forEach((day) => {
+        Object.keys(roomReservationsFirstYear[room]).forEach((day) => {
           console.log(day);
-          roomReservationsFirstYear[month][day].includes(`${customerId}`) && delete roomReservationsFirstYear[month][day];
+          roomReservationsFirstYear[room][day].includes(`${customerId}`) && delete roomReservationsFirstYear[room][day];
         });
 
         console.log(roomReservationsFirstYear);
       }
       if (roomReservationsSecondYear) {
         monthsArray.forEach((month) => {
-          Object.keys(roomReservationsSecondYear[month]).forEach((day) => {
+          Object.keys(roomReservationsSecondYear[room]).forEach((day) => {
             console.log(day);
 
-            roomReservationsSecondYear[month][day].includes(`${customerId}`) && delete roomReservationsSecondYear[month][day];
+            roomReservationsSecondYear[room][day].includes(`${customerId}`) && delete roomReservationsSecondYear[room][day];
           });
         });
       }

@@ -14,7 +14,6 @@ interface PropTypes {
 
 const Calendar = ({ rows, openForm }: PropTypes) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  console.log(currentDate);
   const location = useContext(LocationContext);
   const userID = useContext(UserIDContext);
   const [data, setData] = useState({});
@@ -22,7 +21,6 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
   //Check what year is the displaying month in
 
   useEffect(() => {
-    console.log('I get called');
     setData({});
     const unsubscribe = onSnapshot(
       doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`),
@@ -59,7 +57,7 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
 
       <Month
         year={currentDate.getFullYear()}
-        month={currentDate.getMonth()}
+        month={currentDate.getMonth() + 1}
         rows={rows}
         days={new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()}
         monthName={currentDate.toLocaleDateString('ro-RO', { month: 'long' })}

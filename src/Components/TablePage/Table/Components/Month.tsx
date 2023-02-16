@@ -3,7 +3,6 @@ import { useState } from 'react';
 import '../../../../Pages/Table/TablePage.css';
 import UpdateDetails from './UpdateDetails';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
-import deleteDates from '../../helpers/deleteDates';
 import DeleteModal from './DeleteModal';
 
 interface PropTypes {
@@ -21,8 +20,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
-  const [entryDetails, setEntryDetails] = useState({ year: year, month: month, customerId: 0 });
-
+  const [entryDetails, setEntryDetails] = useState({ year: year, month, customerId: 0 });
   //Fill in the days number in an array so it can be populated on the table
   for (let i = 1; i <= days; i++) {
     daysArray.push(i);
@@ -34,19 +32,21 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   daysArray.forEach((day) => {
     weekdayIndexes.push(new Date(year, month - 1, day).getDay());
   });
-  for (let i = 1; i <= rows; i++) {
+
+  for (let room = 1; room <= rows; room++) {
     cellsArray.push(
-      <tr key={i}>
+      <tr key={room}>
         {daysArray.map((d) => {
           let occupancyDisplay;
-          if (data[i] && data[i][month] && data[i][month][d]) {
-            const customerId = parseInt(data[i][month][d].slice(data[i][month][d].indexOf('-') + 1));
+          if (data[month] && data[month][room] && data[month][room][d]) {
+            data[month][room];
+            const customerId = parseInt(data[month][room][d].slice(data[month][room][d].indexOf('-') + 1));
 
-            if (data[i][month][d].includes('enter') && data[i][month][d].includes('exit')) {
+            if (data[month][room][d].includes('enter') && data[month][room][d].includes('exit')) {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: month, customerId });
+                    setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -55,11 +55,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if (data[i][month][d] && data[i][month][d].slice(0, 5) === 'enter') {
+            } else if (data[month][room][d] && data[month][room][d].slice(0, 5) === 'enter') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: month, customerId });
+                    setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container-enter"
@@ -67,11 +67,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="enter-show"></div>
                 </div>
               );
-            } else if (data[i][month][d] && data[i][month][d].slice(0, 4) === 'exit') {
+            } else if (data[month][room][d] && data[month][room][d].slice(0, 4) === 'exit') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: month, customerId });
+                    setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -79,11 +79,11 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
                   <div id="exit-show"></div>
                 </div>
               );
-            } else if (data[i][month][d] && data[i][month][d].slice(0, 4) === 'full') {
+            } else if (data[month][room][d] && data[month][room][d].slice(0, 4) === 'full') {
               occupancyDisplay = (
                 <div
                   onClick={() => {
-                    setEntryDetails({ year, month: month, customerId });
+                    setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
                   id="show-container"
@@ -93,7 +93,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
               );
             }
           }
-          return <td key={i + '/' + d + '/' + month}>{occupancyDisplay}</td>;
+          return <td key={room + '/' + d + '/' + month}>{occupancyDisplay}</td>;
         })}
       </tr>
     );
