@@ -150,7 +150,7 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
         </div>
       )}
       {openDelete && <DeleteModal entryDetails={entryDetails} setOpenDelete={setOpenDelete} />}
-      {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} />}
+      {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} rooms={rows} />}
     </>
   );
 };

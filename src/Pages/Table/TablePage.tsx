@@ -21,6 +21,7 @@ const TablePage = ({ rooms }: Props) => {
         id="add-reservation"
         onClick={() => {
           openForm ? setOpenForm(false) : setOpenForm(true);
+          window.scrollTo(0, 0);
         }}
       >
         Intrare Noua

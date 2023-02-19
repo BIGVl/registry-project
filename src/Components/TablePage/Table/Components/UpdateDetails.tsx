@@ -1,4 +1,4 @@
-import { connectFirestoreEmulator, DocumentData } from 'firebase/firestore';
+import { DocumentData } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
@@ -17,9 +17,10 @@ interface Props {
     customerId: number;
   };
   setOpenDetails: (value: boolean) => void;
+  rooms: number;
 }
 
-const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
+const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   const [customerData, setCustomerData] = useState<FormData | DocumentData>({
     adults: '',
     entryDate: '',
@@ -53,6 +54,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
       setLocationData,
       setInitialCustomerData
     );
+    console.log(customerData);
   }, []);
 
   //Close the form when the update finishes successfully
@@ -83,6 +85,9 @@ const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
   for (let i = 1; i <= locationData?.rooms; i++) {
     roomsArr.push();
   }
+
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {};
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -126,7 +131,25 @@ const UpdateDetails = ({ entryDetails, setOpenDetails }: Props) => {
           Telefon:
           <input type="tel" name="phone" id="phone" value={customerData?.phone} onChange={handleChange} />
         </label>
-        <div id="rooms">Camere:</div>
+        <div id="rooms">
+          Camere:{' '}
+          {customerData.rooms.map((room: string) => {
+            return (
+              <label key={`room${room}`} htmlFor={`rooms-${room}`}>
+                {room}
+
+                <input
+                  onChange={handleCheck}
+                  type="checkbox"
+                  value={room}
+                  name={`rooms`}
+                  className={`room-${room}`}
+                  defaultChecked
+                />
+              </label>
+            );
+          })}{' '}
+        </div>
         <label>
           Data de intrare:
           <input type="date" name="entryDate" id="entryDate" value={customerData?.entryDate} onChange={handleChange} />

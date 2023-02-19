@@ -154,8 +154,8 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           <input onChange={change} type="number" name="phone" id="phone-cx" />
         </label>
         <div className="rooms-container">
-          <p>Camera : </p>
-          <fieldset id="rooms-l">
+          <p>Camere : </p>
+          <fieldset id="rooms-fieldset">
             {roomsArray.map((room) => {
               return (
                 <label key={`room${room}`} htmlFor={`rooms-${room}`}>
