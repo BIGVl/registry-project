@@ -21,6 +21,7 @@ const deleteDates = async (
     monthsArray.push(currentMonth);
     currentMonth++;
   }
+  console.log(rooms);
   rooms.forEach((room) => {
     monthsArray.forEach(async (month) => {
       console.log(`${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`);

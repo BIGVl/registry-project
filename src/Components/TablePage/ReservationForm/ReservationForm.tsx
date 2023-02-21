@@ -31,7 +31,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   });
   const [customerID, setCustomerID] = useState<number>(0);
 
-  const [balanceState, setBalanceState] = useState<number>(0);
   const [errorMsg, setErrorMsg] = useState<string>('');
   //This state is used for the confirmation pop-up, after the client side validation, so the data will be send to the db
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
@@ -60,11 +59,18 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   }, [sendSucceed]);
 
   //Update the balance remaining every time one of these values change
-  let { balance, total, discount, advance } = formData;
+
   useEffect(() => {
-    balance = total - advance - (total * discount) / 100;
-    setBalanceState(balance);
-  }, [balance, total, discount, advance]);
+    setFormData((prev) => {
+      const { total, advance, discount } = prev;
+
+      return {
+        ...prev,
+
+        balance: Math.ceil(total - advance - (total * discount) / 100)
+      };
+    });
+  }, [formData.total, formData.advance, formData.discount]);
 
   const change = (e: any) => {
     setFormData((prev) => {
@@ -93,9 +99,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
     e.preventDefault();
-    setFormData((prev: FormData) => {
-      return { ...prev, balance: balanceState };
-    });
     setConfirmSubmit(false);
     await checknSaveRooms(
       formData.rooms,
@@ -214,7 +217,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             />{' '}
             %
           </label>
-          <div id="balance">De platit : {balanceState} lei</div>
+          <div id="balance">De platit : {formData.balance} lei</div>
         </fieldset>
 
         <button

@@ -66,7 +66,7 @@ const App = () => {
                 path={location.name}
                 element={
                   <LocationContext.Provider value={location.name}>
-                    <TablePage rooms={location.rooms} />
+                    <TablePage rooms={Number(location.rooms)} />
                   </LocationContext.Provider>
                 }
               />

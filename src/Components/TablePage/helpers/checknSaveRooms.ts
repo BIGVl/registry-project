@@ -55,7 +55,6 @@ const checknSaveRooms = async (
               unavailables[year][month] ? unavailables[year][month].push(date) : (unavailables[year][month] = [date]);
             }
           } else {
-            console.log(availables);
             availables[year][month] ? availables[year][month].push(date) : (availables[year][month] = [date]);
           }
         });
@@ -88,7 +87,6 @@ const checknSaveRooms = async (
         });
       } else {
         setErrorMsg('');
-        console.log(availables);
         Object.keys(availables[year]).map(async (month) => {
           const docRef = doc(db, `${location}${userID}${year}`, month);
           const response = await getDoc(docRef);

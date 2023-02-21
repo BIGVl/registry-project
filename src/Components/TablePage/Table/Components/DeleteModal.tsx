@@ -19,11 +19,16 @@ interface Props {
 const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
   const userID = useContext(UserIDContext);
   const [customerData, setCustomerData] = useState<FormData | DocumentData>();
-
   //Get data of the customer
   useEffect(() => {
-    console.log(entryDetails);
-    getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId, setCustomerData);
+    console.log(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId);
+    const response = Promise.resolve(
+      getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId)
+    );
+    response.then((data) => {
+      setCustomerData(data?.data);
+      console.log(customerData);
+    });
   }, []);
 
   const location = useContext(LocationContext);

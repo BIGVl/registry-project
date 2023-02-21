@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -31,8 +30,7 @@
   padding: 5px 15px;
   font-family: 'Open Sans', sans-serif;
   font-weight: 500;
-  background-color: var(--secondary);
-  color: white;
+  background-color: white;
 
 }
 
@@ -67,7 +65,7 @@
   height: 17rem;
   padding: 1rem;
   overflow-y: scroll;
-  border: solid 3px white;
+  border: solid 1px gray;
   border-radius: 5px;
 }
 

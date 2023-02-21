@@ -21,7 +21,7 @@ interface Props {
 }
 
 const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
-  const [customerData, setCustomerData] = useState<FormData | DocumentData>({
+  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>({
     adults: '',
     entryDate: '',
     leaveDate: '',
@@ -34,27 +34,32 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
-  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>(customerData);
+  const [customerData, setCustomerData] = useState<FormData | DocumentData>(initialCustomerData);
   const [locationData, setLocationData] = useState<DocumentData>();
-  const [balanceState, setBalanceState] = useState<number>(0);
   const [errorMeesage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
   const [sendSucceed, setSendSucceed] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
   const location = useContext(LocationContext);
+  const roomsArr = Array.from({ length: Number(locationData?.rooms) || 0 }, (_, i) => i + 1);
+
   //Get data of the customer
   useEffect(() => {
-    getCustomerInfo(
-      location,
-      userID,
-      entryDetails.year,
-      entryDetails.month,
-      entryDetails.customerId,
-      setCustomerData,
-      setLocationData,
-      setInitialCustomerData
+    console.log(initialCustomerData);
+
+    const response = Promise.resolve(
+      getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId)
     );
-    console.log(customerData);
+    response
+      .then((responseData) => {
+        setInitialCustomerData(responseData?.data ?? customerData);
+        console.log(initialCustomerData);
+        setCustomerData(responseData?.data ?? customerData);
+        setLocationData(responseData?.locationData ?? locationData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   //Close the form when the update finishes successfully
@@ -67,13 +72,15 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   }, [sendSucceed]);
 
   //Update the balance remaining every time one of these values change
-
-  let { balance, total, discount, advance } = customerData;
   useEffect(() => {
-    balance = Math.ceil(total - advance - (total * discount) / 100);
-
-    setBalanceState(balance);
-  }, [balance, total, discount, advance]);
+    setCustomerData((prev) => {
+      const { total, advance, discount } = prev;
+      return {
+        ...prev,
+        balance: Math.ceil(total - advance - (total * discount) / 100)
+      };
+    });
+  }, [customerData.total, customerData.advance, customerData.discount]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomerData((prev) => {
@@ -81,16 +88,29 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     });
   };
 
-  const roomsArr = [];
-  for (let i = 1; i <= locationData?.rooms; i++) {
-    roomsArr.push();
-  }
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setCustomerData((prev: any) => {
+        return { ...prev, [e.target.name]: [...prev[e.target.name], e.target.value] };
+      });
+    } else if (customerData.rooms !== undefined) {
+      customerData.rooms.forEach((room: string, i: number) => {
+        if (room === e.target.value) {
+          const rooms = customerData.rooms;
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {};
+          rooms?.splice(i, 1);
+
+          setCustomerData((prev) => {
+            return { ...prev, [e.target.name]: rooms };
+          });
+        }
+      });
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log(initialCustomerData);
     console.log('Information has changed');
     await deleteDates(
       location,
@@ -114,7 +134,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   };
 
   return (
-    <div className="entry-details">
+    <div className="update-details-form">
       <Cancel
         onClick={() => {
           setOpenDetails(false);
@@ -125,15 +145,15 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       <form action="" noValidate onSubmit={submit}>
         <label>
           Nume:
-          <input type="text" name="name" id="name" value={customerData?.name} onChange={handleChange} />
+          <input type="text" name="name" className="name" value={customerData?.name} onChange={handleChange} />
         </label>
         <label>
           Telefon:
-          <input type="tel" name="phone" id="phone" value={customerData?.phone} onChange={handleChange} />
+          <input type="tel" name="phone" className="phone" value={customerData?.phone} onChange={handleChange} />
         </label>
-        <div id="rooms">
-          Camere:{' '}
-          {customerData.rooms.map((room: string) => {
+        <div className="rooms">
+          Camere:
+          {roomsArr.map((room: number) => {
             return (
               <label key={`room${room}`} htmlFor={`rooms-${room}`}>
                 {room}
@@ -144,43 +164,41 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
                   value={room}
                   name={`rooms`}
                   className={`room-${room}`}
-                  defaultChecked
+                  checked={customerData.rooms.includes(room.toString())}
                 />
               </label>
             );
-          })}{' '}
+          })}
         </div>
         <label>
           Data de intrare:
-          <input type="date" name="entryDate" id="entryDate" value={customerData?.entryDate} onChange={handleChange} />
+          <input type="date" name="entryDate" className="entryDate" value={customerData?.entryDate} onChange={handleChange} />
         </label>
         <label>
           Data de iesire:
-          <input type="date" name="leaveDate" id="leaveDate" value={customerData?.leaveDate} onChange={handleChange} />
+          <input type="date" name="leaveDate" className="leaveDate" value={customerData?.leaveDate} onChange={handleChange} />
         </label>
         <label>
           Adulti:
-          <input type="number" name="adults" id="adults" value={customerData?.adults} onChange={handleChange} />
+          <input type="number" name="adults" className="adults" value={customerData?.adults} onChange={handleChange} />
         </label>
         <label>
           Copii:
-          <input type="number" name="kids" id="kids" value={customerData?.kids} onChange={handleChange} />
+          <input type="number" name="kids" className="kids" value={customerData?.kids} onChange={handleChange} />
         </label>
         <label>
           Total:
-          <input type="number" name="total" id="total" value={customerData?.total} onChange={handleChange} />
+          <input type="number" name="total" className="total" value={customerData?.total} onChange={handleChange} />
         </label>
         <label>
           Avans:
-          <input type="number" name="advance" id="advance" value={customerData?.advance} onChange={handleChange} />
+          <input type="number" name="advance" className="advance" value={customerData?.advance} onChange={handleChange} />
         </label>
         <label>
           Reducere:
-          <input type="number" name="discount" id="discount" value={customerData?.discount} onChange={handleChange} />
+          <input type="number" name="discount" className="discount" value={customerData?.discount} onChange={handleChange} />
         </label>
-        <p id="balance" className="balance">
-          De plata:{balanceState}
-        </p>
+        <p className="balance">De plata:{customerData.balance}</p>
         <button
           type="button"
           className="submit-update-details"
