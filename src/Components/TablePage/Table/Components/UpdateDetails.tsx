@@ -21,7 +21,7 @@ interface Props {
 }
 
 const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
-  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>({
+  const [customerData, setCustomerData] = useState<FormData | DocumentData>({
     adults: '',
     entryDate: '',
     leaveDate: '',
@@ -34,7 +34,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
-  const [customerData, setCustomerData] = useState<FormData | DocumentData>(initialCustomerData);
+  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>(customerData);
   const [locationData, setLocationData] = useState<DocumentData>();
   const [errorMeesage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
@@ -44,22 +44,17 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   const roomsArr = Array.from({ length: Number(locationData?.rooms) || 0 }, (_, i) => i + 1);
 
   //Get data of the customer
-  useEffect(() => {
-    console.log(initialCustomerData);
+  async function getData() {
+    const responseData = await getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId);
+    setInitialCustomerData(responseData?.data ?? initialCustomerData);
+    setCustomerData(responseData?.data ?? customerData);
+    setLocationData(responseData?.locationData ?? locationData);
 
-    const response = Promise.resolve(
-      getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId)
-    );
-    response
-      .then((responseData) => {
-        setInitialCustomerData(responseData?.data ?? customerData);
-        console.log(initialCustomerData);
-        setCustomerData(responseData?.data ?? customerData);
-        setLocationData(responseData?.locationData ?? locationData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return responseData;
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
 
   //Close the form when the update finishes successfully
@@ -106,12 +101,12 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         }
       });
     }
+    console.log(initialCustomerData);
   };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(initialCustomerData);
-    console.log('Information has changed');
+
     await deleteDates(
       location,
       userID,
@@ -145,11 +140,11 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       <form action="" noValidate onSubmit={submit}>
         <label>
           Nume:
-          <input type="text" name="name" className="name" value={customerData?.name} onChange={handleChange} />
+          <input type="text" name="name" className="name" value={customerData.name} onChange={handleChange} />
         </label>
         <label>
           Telefon:
-          <input type="tel" name="phone" className="phone" value={customerData?.phone} onChange={handleChange} />
+          <input type="tel" name="phone" className="phone" value={customerData.phone} onChange={handleChange} />
         </label>
         <div className="rooms">
           Camere:
@@ -172,31 +167,31 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         </div>
         <label>
           Data de intrare:
-          <input type="date" name="entryDate" className="entryDate" value={customerData?.entryDate} onChange={handleChange} />
+          <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={handleChange} />
         </label>
         <label>
           Data de iesire:
-          <input type="date" name="leaveDate" className="leaveDate" value={customerData?.leaveDate} onChange={handleChange} />
+          <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={handleChange} />
         </label>
         <label>
           Adulti:
-          <input type="number" name="adults" className="adults" value={customerData?.adults} onChange={handleChange} />
+          <input type="number" name="adults" className="adults" value={customerData.adults} onChange={handleChange} />
         </label>
         <label>
           Copii:
-          <input type="number" name="kids" className="kids" value={customerData?.kids} onChange={handleChange} />
+          <input type="number" name="kids" className="kids" value={customerData.kids} onChange={handleChange} />
         </label>
         <label>
           Total:
-          <input type="number" name="total" className="total" value={customerData?.total} onChange={handleChange} />
+          <input type="number" name="total" className="total" value={customerData.total} onChange={handleChange} />
         </label>
         <label>
           Avans:
-          <input type="number" name="advance" className="advance" value={customerData?.advance} onChange={handleChange} />
+          <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
         </label>
         <label>
           Reducere:
-          <input type="number" name="discount" className="discount" value={customerData?.discount} onChange={handleChange} />
+          <input type="number" name="discount" className="discount" value={customerData.discount} onChange={handleChange} />
         </label>
         <p className="balance">De plata:{customerData.balance}</p>
         <button
@@ -204,6 +199,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
           className="submit-update-details"
           onClick={() => {
             validateDetails(customerData, setErrorMessage, setConfirmSubmit);
+            console.log(initialCustomerData);
           }}
         >
           Confirma schimbarile

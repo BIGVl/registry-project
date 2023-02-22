@@ -35,7 +35,6 @@ const App = () => {
         });
       });
     });
-    console.log(locations);
     return () => {
       unsubAuth();
       unsubQuerry();
