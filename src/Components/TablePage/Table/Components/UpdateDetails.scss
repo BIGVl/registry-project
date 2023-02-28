@@ -1,0 +1,59 @@
+.update-form-container {
+    background-color: var(--third);
+    border-radius: 5px;
+    padding: 1rem;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    bottom: 0%;
+    z-index: 2;
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    
+
+}
+
+.update-form {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    padding: 1rem;
+    justify-content: center;
+
+    label {
+        display: flex;
+        gap: .4rem;
+    }   
+
+    .rooms-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        font-size: 1.3rem;
+    }
+
+    .rooms {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 1.2rem;
+        row-gap: .8rem;
+        font-size: 1rem;
+        label {justify-content: space-between;}
+        input {
+            width: 1.3rem;
+        }
+    }
+
+
+    .room:checked {
+        filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);
+    }
+
+}
+
+
+

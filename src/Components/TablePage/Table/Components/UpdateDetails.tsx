@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
-import './UpdateDetails.css';
+import './UpdateDetails.scss';
 import saveEntry from '../../helpers/saveEntry';
 import validateDetails from '../../helpers/validateDetails';
 import checknSaveRooms from '../../helpers/checknSaveRooms';
-import { FormData } from '../../../../interfaces';
+import { FormData } from '../../../../globalInterfaces';
 import deleteDates from '../../helpers/deleteDates';
 
 interface Props {
@@ -57,15 +57,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     getData();
   }, []);
 
-  //Close the form when the update finishes successfully
-  useEffect(() => {
-    if (sendSucceed) {
-      saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
-      setOpenDetails(false);
-      setSendSucceed(false);
-    }
-  }, [sendSucceed]);
-
   //Update the balance remaining every time one of these values change
   useEffect(() => {
     setCustomerData((prev) => {
@@ -85,36 +76,42 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
+      console.log(e.target.name, e.target);
       setCustomerData((prev: any) => {
-        return { ...prev, [e.target.name]: [...prev[e.target.name], e.target.value] };
+        console.log(prev, e.target.name);
+        return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
       });
     } else if (customerData.rooms !== undefined) {
-      customerData.rooms.forEach((room: string, i: number) => {
-        if (room === e.target.value) {
+      customerData.rooms.forEach((room: number, i: number) => {
+        if (room === Number(e.target.value)) {
           const rooms = customerData.rooms;
-
           rooms?.splice(i, 1);
-
           setCustomerData((prev) => {
             return { ...prev, [e.target.name]: rooms };
           });
         }
       });
     }
-    console.log(initialCustomerData);
   };
+
+  useEffect(() => {
+    if (sendSucceed) {
+      deleteDates(
+        location,
+        userID,
+        initialCustomerData.entryDate,
+        initialCustomerData.leaveDate,
+        initialCustomerData.rooms,
+        entryDetails.customerId
+      );
+      saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
+      setOpenDetails(false);
+      setSendSucceed(false);
+    }
+  }, [sendSucceed]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    await deleteDates(
-      location,
-      userID,
-      initialCustomerData.entryDate,
-      initialCustomerData.leaveDate,
-      initialCustomerData.rooms,
-      entryDetails.customerId
-    );
 
     await checknSaveRooms(
       customerData.rooms,
@@ -129,77 +126,80 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   };
 
   return (
-    <div className="update-details-form">
+    <div className="update-form-container">
       <Cancel
         onClick={() => {
           setOpenDetails(false);
         }}
       />
       <h1> Detaliile clientului</h1>
-      <p>Apasa pe informatiile pe care vrei sa le schimbi si la final apasa confirma</p>
-      <form action="" noValidate onSubmit={submit}>
+      <p>Apasa pe informatiile pe care vrei sa le schimbi si la final apasa confirma.</p>
+      <form action="" className="update-form" noValidate onSubmit={submit}>
         <label>
-          Nume:
+          Nume
           <input type="text" name="name" className="name" value={customerData.name} onChange={handleChange} />
         </label>
         <label>
-          Telefon:
+          Telefon
           <input type="tel" name="phone" className="phone" value={customerData.phone} onChange={handleChange} />
         </label>
-        <div className="rooms">
-          Camere:
-          {roomsArr.map((room: number) => {
-            return (
-              <label key={`room${room}`} htmlFor={`rooms-${room}`}>
-                {room}
+        <div className="rooms-container">
+          Camere
+          <div className="rooms">
+            {roomsArr.map((room: number) => {
+              return (
+                <label key={`room${room}`} htmlFor={`rooms-${room}`}>
+                  {room}
 
-                <input
-                  onChange={handleCheck}
-                  type="checkbox"
-                  value={room}
-                  name={`rooms`}
-                  className={`room-${room}`}
-                  checked={customerData.rooms.includes(room.toString())}
-                />
-              </label>
-            );
-          })}
+                  <input
+                    onChange={handleCheck}
+                    type="checkbox"
+                    value={room}
+                    name={`rooms`}
+                    className={`room`}
+                    checked={customerData.rooms.includes(room)}
+                  />
+                </label>
+              );
+            })}
+          </div>
         </div>
         <label>
-          Data de intrare:
+          Data de intrare
           <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={handleChange} />
         </label>
         <label>
-          Data de iesire:
+          Data de iesire
           <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={handleChange} />
         </label>
         <label>
-          Adulti:
+          Adulti
           <input type="number" name="adults" className="adults" value={customerData.adults} onChange={handleChange} />
         </label>
         <label>
-          Copii:
+          Copii
           <input type="number" name="kids" className="kids" value={customerData.kids} onChange={handleChange} />
         </label>
         <label>
-          Total:
+          Total
           <input type="number" name="total" className="total" value={customerData.total} onChange={handleChange} />
         </label>
         <label>
-          Avans:
+          Avans
           <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
         </label>
         <label>
-          Reducere:
+          Reducere
           <input type="number" name="discount" className="discount" value={customerData.discount} onChange={handleChange} />
         </label>
-        <p className="balance">De plata:{customerData.balance}</p>
+        <p className="balance">
+          De plata <div className="sum-remaining"> {customerData.balance}</div>
+        </p>
         <button
           type="button"
-          className="submit-update-details"
+          className="submit-update"
           onClick={() => {
             validateDetails(customerData, setErrorMessage, setConfirmSubmit);
-            console.log(initialCustomerData);
           }}
         >
           Confirma schimbarile

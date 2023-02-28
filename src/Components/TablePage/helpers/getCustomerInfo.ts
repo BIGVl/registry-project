@@ -1,6 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
-import { FormData } from '../../../interfaces';
 
 const getCustomerInfo = async (location: string, userId: string, year: number, month: number, customerId: number) => {
   const docRef = doc(db, `${location}${userId}`, `${year}`, `${month}`, `${customerId}`);

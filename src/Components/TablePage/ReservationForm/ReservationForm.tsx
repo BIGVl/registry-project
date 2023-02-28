@@ -6,7 +6,7 @@ import checknSaveRooms from '../helpers/checknSaveRooms';
 import saveEntry from '../helpers/saveEntry';
 import getCxNr from '../helpers/getCxNr';
 import validateDetails from '../helpers/validateDetails';
-import { FormData } from '../../../interfaces';
+import { FormData } from '../../../globalInterfaces';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
@@ -49,24 +49,12 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     getCxNr(userID, location, setCustomerID);
   }, []);
 
-  //Save a document with the customer's information after the dates of the entry have been checked and saved in calendar
-  useEffect(() => {
-    if (sendSucceed === true) {
-      setOpenForm(false);
-      saveEntry(`${location}${userID}`, formData, customerID);
-      setSendSucceed(false);
-    }
-  }, [sendSucceed]);
-
   //Update the balance remaining every time one of these values change
-
   useEffect(() => {
     setFormData((prev) => {
       const { total, advance, discount } = prev;
-
       return {
         ...prev,
-
         balance: Math.ceil(total - advance - (total * discount) / 100)
       };
     });
@@ -81,11 +69,11 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   const handleCheck = (e: any) => {
     if (e.target.checked) {
       setFormData((prev: any) => {
-        return { ...prev, [e.target.name]: [...prev[e.target.name], e.target.value] };
+        return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
       });
-    } else if (formData.rooms !== undefined) {
-      formData.rooms.forEach((room, i) => {
-        if (room === e.target.value) {
+    } else {
+      formData.rooms.forEach((room: number, i: number) => {
+        if (room === Number(e.target.value)) {
           const rooms = formData.rooms;
           rooms?.splice(i, 1);
           setFormData((prev) => {
@@ -95,6 +83,16 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       });
     }
   };
+
+  //If submitting the entries with the dates for each room into the db is successful we then save the customer's details to the db as well
+
+  useEffect(() => {
+    if (sendSucceed === true) {
+      saveEntry(`${location}${userID}`, formData, customerID);
+      setOpenForm(false);
+      setSendSucceed(false);
+    }
+  }, [sendSucceed]);
 
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
@@ -230,7 +228,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           Confirm intrare
         </button>
 
-        {confirmSubmit ? (
+        {confirmSubmit && (
           <div id="confirm-submission-container">
             <div id="confirm-submission">
               Intrarea va fi facuta pe numele {formData.name} . Confirmi ?
@@ -249,8 +247,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
               </div>
             </div>
           </div>
-        ) : (
-          ''
         )}
       </form>
     </div>

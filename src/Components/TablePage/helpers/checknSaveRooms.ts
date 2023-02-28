@@ -2,7 +2,7 @@ import { doc, DocumentData, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 const checknSaveRooms = async (
-  rooms: string[],
+  rooms: number[],
   enterDate: string,
   leaveDate: string,
   location: string,
@@ -11,12 +11,17 @@ const checknSaveRooms = async (
   setSendSucceed: (value: boolean | ((prevState: boolean) => boolean)) => void,
   customerID: number
 ) => {
-  const availables: any = {};
-  const unavailables: any = {};
+  type Years = {
+    [year: string]: { [month: string]: number[] };
+  };
+  const avalableDates: Years = {};
+  const unavalableDates: Years = {};
   const currentDate = new Date(enterDate);
   const dates: any = {};
   const endDate = new Date(leaveDate);
-
+  const roomsToSave = rooms.length;
+  let savedComplete = 0;
+  let hasUnavailableDates: boolean = false;
   //Loop through all days between the enter day and the leave day and store them in an array to later be checked if they are available
   while (currentDate <= endDate) {
     /*This saves the dates  in a format like this dates = {2022:{11:[1,2,3], 12:[1,2,3,4]}}, in order to be later compared 
@@ -36,68 +41,74 @@ const checknSaveRooms = async (
 
     currentDate.setDate(currentDate.getDate() + 1);
   }
-
   //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
-  Object.keys(dates).map((year) => {
-    if (!availables[year]) availables[year] = {};
-    if (!unavailables[year]) unavailables[year] = {};
-    rooms.map(async (room: string) => {
+  for (const room of rooms) {
+    for (const year in dates) {
+      if (!avalableDates[year]) avalableDates[year] = {};
+      if (!unavalableDates[year]) unavalableDates[year] = {};
       for (const month in dates[year]) {
         const response = await getDoc(doc(db, `${location}${userID}${year}`, month));
         const data: DocumentData | undefined = response.data();
 
         dates[year][month].forEach((date: number) => {
-          if (data && data[month] && data[month][date] && !data[month][date].includes(customerID)) {
-            if (
-              data[month][date].includes('full') ||
-              (data[month][date].includes('enter') && data[month][date].includes('exit'))
-            ) {
-              unavailables[year][month] ? unavailables[year][month].push(date) : (unavailables[year][month] = [date]);
+          if (data && data[room] && data[room][date] && !data[room][date].includes(customerID)) {
+            if (data[room][date].includes('full') || (data[room][date].includes('enter') && data[room][date].includes('exit'))) {
+              unavalableDates[year][month] ? unavalableDates[year][month].push(date) : (unavalableDates[year][month] = [date]);
             }
           } else {
-            availables[year][month] ? availables[year][month].push(date) : (availables[year][month] = [date]);
+            avalableDates[year][month] ? avalableDates[year][month].push(date) : (avalableDates[year][month] = [date]);
           }
         });
       }
-
-      //These will be used in order to compare the enter/exit booking dates with the db, we are not directly comparing the dates as the format
-      //requires, for example in formdata september would look like 09 but in db will be 9 so we will parse them fro the proper format
-      const enterYear = parseInt(enterDate.slice(0, 4));
-      const enterMonth = parseInt(enterDate.slice(5, 7));
-      const enterDay = parseInt(enterDate.slice(8, enterDate.length));
-
-      const exitYear = parseInt(leaveDate.slice(0, 4));
-      const exitMonth = parseInt(leaveDate.slice(5, 7));
-      const exitDay = parseInt(leaveDate.slice(8, leaveDate.length));
-
-      //Loop through each month in each year in the unavailables array to check if any dates choosen for the rooms are occupied
-      // and if they are display an error message with the dates
-      const isOccupied = Object.keys(unavailables).find((year) => {
-        return Object.keys(unavailables[year]).length > 0;
-      });
-
-      if (isOccupied) {
-        Object.keys(unavailables[year]).forEach(async (month) => {
+    }
+  }
+  console.log(unavalableDates);
+  // check if any array in unavalableDates has dates
+  for (const year in unavalableDates) {
+    for (const month in unavalableDates[year]) {
+      const dates = unavalableDates[year][month];
+      if (Array.isArray(dates) && dates.length > 0) {
+        hasUnavailableDates = true;
+        break;
+      }
+    }
+    if (hasUnavailableDates) {
+      break;
+    }
+  }
+  //In order to save the dates only after every room was checked to not be occupied on any date
+  //we created this variable and removed one element at a time while looping through the rooms array
+  for (const room of rooms) {
+    for (const year in dates) {
+      if (hasUnavailableDates) {
+        Object.keys(unavalableDates[year]).forEach(async (month) => {
           await getDoc(doc(db, `${location}${userID}${year}`, month));
-          setErrorMsg(
-            `Camera cu numarul ${month} este ocupata in perioada ${unavailables[year][month][0]}/${month}/${[year]} - ${
-              unavailables[year][month][unavailables[year][month].length - 1]
+          return setErrorMsg(
+            `Camera cu numarul ${room} este ocupata in perioada ${unavalableDates[year][month][0]}/${month}/${[year]} - ${
+              unavalableDates[year][month][unavalableDates[year][month].length - 1]
             }/${month}/${year} .`
           );
         });
       } else {
+        console.log('Start saving');
         setErrorMsg('');
-        Object.keys(availables[year]).map(async (month) => {
+        Object.keys(avalableDates[year]).map(async (month) => {
           const docRef = doc(db, `${location}${userID}${year}`, month);
           const response = await getDoc(docRef);
           const data = response.data();
-          availables[year][month].map(async (day: number) => {
-            if (`${enterYear}-${enterMonth}-${enterDay}` === `${year}-${month}-${day}`) {
-              if (data && data[month] && data[month][day] && data[month][day].slice(0, 4) === 'exit') {
+          avalableDates[year][month].map(async (day: number) => {
+            const startDate = new Date(enterDate);
+            startDate.setHours(0, 0, 0, 0);
+            const dateToCompareTo = new Date(Number(year), Number(month) - 1, day);
+            dateToCompareTo.setHours(0, 0, 0, 0);
+            const endingDate = new Date(leaveDate);
+            endingDate.setHours(0, 0, 0, 0);
+            if (startDate.getTime() === dateToCompareTo.getTime()) {
+              if (data && data[room] && data[room][day] && data[room][day].slice(0, 4) === 'exit') {
                 await setDoc(
                   docRef,
                   {
-                    [room]: { [day]: `enter-${customerID}/${data[month][day]}` }
+                    [room]: { [day]: `enter-${customerID}/${data[room][day]}` }
                   },
                   { merge: true }
                 );
@@ -110,12 +121,12 @@ const checknSaveRooms = async (
                   { merge: true }
                 );
               }
-            } else if (`${exitYear}-${exitMonth}-${exitDay}` === `${year}-${month}-${day}`) {
-              if (data && data[month] && data[month][day] && data[month][day].slice(0, 5) === 'enter') {
+            } else if (endingDate.getTime() === dateToCompareTo.getTime()) {
+              if (data && data[room] && data[room][day] && data[room][day].slice(0, 5) === 'enter') {
                 await setDoc(
                   docRef,
                   {
-                    [room]: { [day]: `${data[month][day]}/exit-${customerID}` }
+                    [room]: { [day]: `${data[room][day]}/exit-${customerID}` }
                   },
                   { merge: true }
                 );
@@ -141,11 +152,16 @@ const checknSaveRooms = async (
           await setDoc(doc(db, `${location}${userID}`, 'numar-clienti'), {
             'numar-clienti': customerID
           });
-          setSendSucceed(true);
+          console.log('Inside');
         });
+        savedComplete++;
+        console.log(savedComplete, roomsToSave);
       }
-    });
-  });
+    }
+  }
+  if (savedComplete >= roomsToSave) {
+    setSendSucceed(true);
+  }
 };
 
 export default checknSaveRooms;

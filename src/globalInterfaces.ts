@@ -4,3 +4,17 @@ export interface UserInfo {
   email: string | null;
   photoURL: string | null;
 }
+
+export interface FormData {
+  adults: string;
+  advance: number;
+  entryDate: string;
+  leaveDate: string;
+  name: string;
+  phone: string;
+  discount: number;
+  rooms: number[];
+  total: number;
+  balance: number;
+  kids: string;
+}

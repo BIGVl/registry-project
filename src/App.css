@@ -29,7 +29,3 @@ body {
     min-height: 100vh;
     padding-bottom: 6rem;
 }
-
-button {
-    font-family: var(--font);
-}
