@@ -2,11 +2,12 @@ import './ReservationForm.css';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
-import checknSaveRooms from '../helpers/checknSaveRooms';
+import saveRooms from '../helpers/saveRooms';
 import saveEntry from '../helpers/saveEntry';
 import getCxNr from '../helpers/getCxNr';
 import validateDetails from '../helpers/validateDetails';
 import { FormData } from '../../../globalInterfaces';
+import checkRooms from '../helpers/checkRooms';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
@@ -98,16 +99,19 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   const submit = async (e: any) => {
     e.preventDefault();
     setConfirmSubmit(false);
-    await checknSaveRooms(
+    const areRoomsFree = await checkRooms(
       formData.rooms,
       formData.entryDate,
       formData.leaveDate,
       location,
       userID,
       setErrorMsg,
-      setSendSucceed,
       customerID
     );
+    console.log(areRoomsFree);
+    if (areRoomsFree) {
+      await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userID, setSendSucceed, customerID);
+    }
   };
 
   return (

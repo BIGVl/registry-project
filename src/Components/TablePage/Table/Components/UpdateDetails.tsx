@@ -6,9 +6,10 @@ import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import './UpdateDetails.scss';
 import saveEntry from '../../helpers/saveEntry';
 import validateDetails from '../../helpers/validateDetails';
-import checknSaveRooms from '../../helpers/checknSaveRooms';
+import saveRooms from '../../helpers/saveRooms';
 import { FormData } from '../../../../globalInterfaces';
 import deleteDates from '../../helpers/deleteDates';
+import checkRooms from '../../helpers/checkRooms';
 
 interface Props {
   entryDetails: {
@@ -69,6 +70,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   }, [customerData.total, customerData.advance, customerData.discount]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.type);
     setCustomerData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
@@ -113,13 +115,22 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await checknSaveRooms(
+    const areRoomsFree = await checkRooms(
       customerData.rooms,
       customerData.entryDate,
       customerData.leaveDate,
       location,
       userID,
       setErrorMessage,
+      entryDetails.customerId
+    );
+    console.log(areRoomsFree);
+    await saveRooms(
+      customerData.rooms,
+      customerData.entryDate,
+      customerData.leaveDate,
+      location,
+      userID,
       setSendSucceed,
       entryDetails.customerId
     );
@@ -135,14 +146,16 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       <h1> Detaliile clientului</h1>
       <p>Apasa pe informatiile pe care vrei sa le schimbi si la final apasa confirma.</p>
       <form action="" className="update-form" noValidate onSubmit={submit}>
-        <label>
-          Nume
-          <input type="text" name="name" className="name" value={customerData.name} onChange={handleChange} />
-        </label>
-        <label>
-          Telefon
-          <input type="tel" name="phone" className="phone" value={customerData.phone} onChange={handleChange} />
-        </label>
+        <section className="contact-info">
+          <label>
+            Nume
+            <input type="text" name="name" className="name" value={customerData.name} onChange={handleChange} />
+          </label>
+          <label>
+            Telefon
+            <input type="number" name="phone" className="phone" value={customerData.phone} onChange={handleChange} />
+          </label>
+        </section>
         <div className="rooms-container">
           Camere
           <div className="rooms">
@@ -164,37 +177,43 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
             })}
           </div>
         </div>
-        <label>
-          Data de intrare
-          <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={handleChange} />
-        </label>
-        <label>
-          Data de iesire
-          <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={handleChange} />
-        </label>
-        <label>
-          Adulti
-          <input type="number" name="adults" className="adults" value={customerData.adults} onChange={handleChange} />
-        </label>
-        <label>
-          Copii
-          <input type="number" name="kids" className="kids" value={customerData.kids} onChange={handleChange} />
-        </label>
-        <label>
-          Total
-          <input type="number" name="total" className="total" value={customerData.total} onChange={handleChange} />
-        </label>
-        <label>
-          Avans
-          <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
-        </label>
-        <label>
-          Reducere
-          <input type="number" name="discount" className="discount" value={customerData.discount} onChange={handleChange} />
-        </label>
-        <p className="balance">
-          De plata <div className="sum-remaining"> {customerData.balance}</div>
-        </p>
+        <section className="dates">
+          <label>
+            Data de intrare
+            <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={handleChange} />
+          </label>
+          <label>
+            Data de iesire
+            <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={handleChange} />
+          </label>
+        </section>
+        <section className="persons">
+          <label>
+            Adulti
+            <input type="number" name="adults" className="adults" value={customerData.adults} onChange={handleChange} />
+          </label>
+          <label>
+            Copii
+            <input type="number" name="kids" className="kids" value={customerData.kids} onChange={handleChange} />
+          </label>
+        </section>
+        <section className="money">
+          <label>
+            Total
+            <input type="number" name="total" className="total" value={customerData.total} onChange={handleChange} />
+          </label>
+          <label>
+            Avans
+            <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
+          </label>
+          <label>
+            Reducere
+            <input type="number" name="discount" className="discount" value={customerData.discount} onChange={handleChange} />
+          </label>
+          <div className="balance">
+            De plata <p className="sum-remaining"> {customerData.balance}</p>
+          </div>
+        </section>
         <button
           type="button"
           className="submit-update"
@@ -205,8 +224,8 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
           Confirma schimbarile
         </button>
         {confirmSubmit ? (
-          <div className="confirm-submission-container">
-            <div className="confirm-submission">
+          <div className="confirm-submission-layout">
+            <div className="confirm-submission-container">
               Confirma schimbarile facute pentru intrarea pe numele {customerData.name} .
               <div className="confirm-buttons-container">
                 <button type="submit" className="submit-confirm">
