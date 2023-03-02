@@ -37,7 +37,6 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
     setFormData((prev: any) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    console.log(formData);
   };
 
   return (

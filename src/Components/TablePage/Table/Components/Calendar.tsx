@@ -4,7 +4,7 @@ import '../../../../Pages/Table/TablePage.css';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
-import { collection, doc, onSnapshot, query } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../../firebase';
 
 interface PropTypes {

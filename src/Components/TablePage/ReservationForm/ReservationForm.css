@@ -139,7 +139,7 @@
 }
 
 .error-layout {
-  position: absolute;
+  position: fixed;
   pointer-events: all;
   width: 100%;
   height: 100%;

@@ -84,17 +84,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       });
     }
   };
-
-  //If submitting the entries with the dates for each room into the db is successful we then save the customer's details to the db as well
-
-  useEffect(() => {
-    if (sendSucceed === true) {
-      saveEntry(`${location}${userID}`, formData, customerID);
-      setOpenForm(false);
-      setSendSucceed(false);
-    }
-  }, [sendSucceed]);
-
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
     e.preventDefault();
@@ -108,15 +97,17 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       setErrorMsg,
       customerID
     );
-    console.log(areRoomsFree);
     if (areRoomsFree) {
-      await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userID, setSendSucceed, customerID);
+      await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userID, customerID);
+      await saveEntry(`${location}${userID}`, formData, customerID);
+      setOpenForm(false);
+      setSendSucceed(false);
     }
   };
 
   return (
     <div id="form-container">
-      {errorMsg !== '' ? (
+      {errorMsg && (
         <div className="error-layout">
           <div className="error">
             <Cancel
@@ -127,8 +118,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             {errorMsg}
           </div>
         </div>
-      ) : (
-        ''
       )}
 
       <form id="form-reservation" onSubmit={submit}>
@@ -142,11 +131,11 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         <fieldset id="dates">
           <label htmlFor="entryDate">
             Data intrare :
-            <input onChange={change} type="date" name="entryDate" id="date-enter" />
+            <input onChange={change} lang="ro" type="date" name="entryDate" id="date-enter" />
           </label>
           <label htmlFor="leaveDate">
             Data iesire :
-            <input onChange={change} type="date" name="leaveDate" id="date-leave" />
+            <input onChange={change} lang="ro" type="date" name="leaveDate" id="date-leave" />
           </label>
         </fieldset>
 

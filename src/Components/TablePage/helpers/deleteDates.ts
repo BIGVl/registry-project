@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 //This deletes the entry from the calendar it does not affect the document of the customer
@@ -10,51 +10,38 @@ const deleteDates = async (
   rooms: string[],
   customerId: number
 ) => {
-  const dateOfEntry = new Date(entryDate);
+  let previousMonth = new Date(entryDate);
   const dateOfLeave = new Date(leaveDate);
 
-  const startMonth = dateOfEntry.getMonth() + 1;
-  const endMonth = dateOfLeave.getMonth() + 1;
-  let currentMonth = startMonth;
-  const monthsArray: number[] = [];
-  while (currentMonth <= endMonth) {
-    monthsArray.push(currentMonth);
-    currentMonth++;
+  for (const room of rooms) {
+    const currentDate = new Date(entryDate);
+    let docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
+    let data = docSnap.data();
+    while (currentDate <= dateOfLeave) {
+      if (currentDate.getMonth() !== previousMonth.getMonth()) {
+        await setDoc(doc(db, `${location}${userID}${previousMonth.getFullYear()}`, `${previousMonth.getMonth() + 1}`), data, {
+          merge: true
+        });
+        docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
+        data = docSnap.data();
+        previousMonth.setFullYear(currentDate.getFullYear());
+        previousMonth.setMonth(currentDate.getMonth());
+      }
+      if (data) {
+        const day: string = data[room][currentDate.getDate()];
+        if (day && day.includes(`${customerId}`)) {
+          if (day.includes(`/`)) {
+            day.indexOf(`${customerId}`) < day.indexOf('/')
+              ? (data[room][currentDate.getDate()] = day.slice(0, day.indexOf('/')))
+              : (data[room][currentDate.getDate()] = day.slice(day.indexOf('/') + 1));
+          } else {
+            delete data[room][currentDate.getDate()];
+          }
+        }
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
   }
-  console.log(rooms);
-  rooms.forEach((room) => {
-    monthsArray.forEach(async (month) => {
-      console.log(`${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`);
-      const firstYearOfReservationRef = await getDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`));
-      const secondYearOfReservationRef =
-        dateOfEntry.getFullYear() !== dateOfLeave.getFullYear()
-          ? await getDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, `${month}`))
-          : null;
-      const roomReservationsFirstYear = firstYearOfReservationRef.data();
-      const roomReservationsSecondYear = secondYearOfReservationRef !== null ? secondYearOfReservationRef.data() : null;
-      console.log(roomReservationsFirstYear);
-      if (roomReservationsFirstYear) {
-        Object.keys(roomReservationsFirstYear[room]).forEach((day) => {
-          console.log(day);
-          roomReservationsFirstYear[room][day].includes(`${customerId}`) && delete roomReservationsFirstYear[room][day];
-        });
-
-        console.log(roomReservationsFirstYear);
-      }
-      if (roomReservationsSecondYear) {
-        monthsArray.forEach((month) => {
-          Object.keys(roomReservationsSecondYear[room]).forEach((day) => {
-            console.log(day);
-
-            roomReservationsSecondYear[room][day].includes(`${customerId}`) && delete roomReservationsSecondYear[room][day];
-          });
-        });
-      }
-      await updateDoc(doc(db, `${location}${userID}${dateOfEntry.getFullYear()}`, `${month}`), roomReservationsFirstYear);
-      roomReservationsSecondYear &&
-        (await updateDoc(doc(db, `${location}${userID}${dateOfLeave.getFullYear()}`, `${month}`), roomReservationsSecondYear));
-    });
-  });
 };
 
 export default deleteDates;

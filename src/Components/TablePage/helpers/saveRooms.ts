@@ -7,7 +7,6 @@ const saveRooms = async (
   leaveDate: string,
   location: string,
   userID: string,
-  setSendSucceed: (value: boolean | ((prevState: boolean) => boolean)) => void,
   customerID: number
 ) => {
   type Years = {
@@ -18,8 +17,6 @@ const saveRooms = async (
   const dates: any = {};
   const endDate = new Date(leaveDate);
   const roomsToSave = rooms.length;
-  let savedComplete = 0;
-  let hasUnavailableDates: boolean = false;
   //Loop through all days between the enter day and the leave day and store them in an array to later be checked if they are available
   while (currentDate <= endDate) {
     /*This saves the dates  in a format like this dates = {2022:{11:[1,2,3], 12:[1,2,3,4]}}, in order to be later compared 
@@ -50,7 +47,6 @@ const saveRooms = async (
     }
   }
 
-  console.log(avalableDates);
   const startDate = new Date(enterDate);
   startDate.setHours(0, 0, 0, 0);
   const endingDate = new Date(leaveDate);
@@ -67,7 +63,6 @@ const saveRooms = async (
         for (const day of avalableDates[year][month]) {
           const dateToCompareTo = new Date(Number(year), Number(month) - 1, Number(day));
           dateToCompareTo.setHours(0, 0, 0, 0);
-          console.log(dateToCompareTo.toLocaleDateString(), startDate.toLocaleDateString(), endingDate.toLocaleDateString());
           if (startDate.getTime() === dateToCompareTo.getTime()) {
             if (data && data[room] && data[room][day] && data[room][day].includes('exit')) {
               await setDoc(
@@ -119,9 +114,7 @@ const saveRooms = async (
         });
       }
     }
-    savedComplete++;
   }
-  savedComplete >= roomsToSave && setSendSucceed(true);
 };
 
 export default saveRooms;

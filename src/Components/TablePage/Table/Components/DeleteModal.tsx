@@ -1,11 +1,11 @@
 import { DocumentData } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
-import { FormData } from '../../../../interfaces';
+import { FormData } from '../../../../globalInterfaces';
 import deleteDates from '../../helpers/deleteDates';
 import deleteEntry from '../../helpers/deleteEntry';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
-import './DeleteModal.css';
+import './DeleteModal.scss';
 
 interface Props {
   entryDetails: {
@@ -20,25 +20,24 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
   const userID = useContext(UserIDContext);
   const [customerData, setCustomerData] = useState<FormData | DocumentData>();
   //Get data of the customer
+  async function getData() {
+    const responseData = await getCustomerInfo(location, userID, entryDetails.customerId);
+    setCustomerData(responseData ?? customerData);
+  }
+
   useEffect(() => {
-    console.log(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId);
-    const response = Promise.resolve(
-      getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId)
-    );
-    response.then((data) => {
-      setCustomerData(data?.data);
-      console.log(customerData);
-    });
+    getData();
   }, []);
 
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
 
   const submit = async () => {
-    await deleteEntry(`${location}${userId}`, `${entryDetails.year}`, `${entryDetails.month}`, `${entryDetails.customerId}`);
+    console.log(customerData);
+    await deleteEntry(`${location}${userId}`, `${entryDetails.customerId}`);
     await deleteDates(
       location,
-      `${userId}`,
+      userId,
       customerData?.entryDate,
       customerData?.leaveDate,
       customerData?.rooms,
@@ -50,10 +49,10 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
   return (
     <div className="delete-modal-layout">
       <div className="delete-modal">
-        <button onClick={submit} className="confirm-delete-entry">
+        <button onClick={submit} className="confirm">
           Sterge intrarea
         </button>
-        <button onClick={() => setOpenDelete(false)} className="cancel-delete-entry">
+        <button onClick={() => setOpenDelete(false)} className="cancel">
           Inapoi
         </button>
       </div>

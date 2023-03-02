@@ -21,11 +21,12 @@ const validateDetails = (
     return setErrorMsg('Numele trebuie sa aiba cel putin 4 litere.');
   } else if (formData.phone.length < 9) {
     return setErrorMsg('Numarul trebuie sa aiba cel putin 10 cifre.');
-  } else if (formData.adults === '') {
+  } else if (formData.adults.length <= 0) {
     return setErrorMsg('E nevoie de cel putin un adult pentru rezervare.');
+  } else {
+    setErrorMsg('');
+    setConfirmSubmit(true);
   }
-  setErrorMsg('');
-  setConfirmSubmit(true);
 };
 
 export default validateDetails;

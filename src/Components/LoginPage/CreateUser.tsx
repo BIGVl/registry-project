@@ -29,7 +29,6 @@ const CreateUser = () => {
       const user = userRef.user;
 
       const authRef = getAuth();
-      console.log(authRef.currentUser);
       authRef.currentUser &&
         (await updateProfile(authRef.currentUser, {
           displayName: formData.fullName

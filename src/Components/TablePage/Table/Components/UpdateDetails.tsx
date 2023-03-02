@@ -35,21 +35,19 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
+
   const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>(customerData);
-  const [locationData, setLocationData] = useState<DocumentData>();
-  const [errorMeesage, setErrorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
-  const [sendSucceed, setSendSucceed] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
   const location = useContext(LocationContext);
-  const roomsArr = Array.from({ length: Number(locationData?.rooms) || 0 }, (_, i) => i + 1);
+  const roomsArr = Array.from({ length: Number(rooms) || 0 }, (_, i) => i + 1);
 
   //Get data of the customer
   async function getData() {
-    const responseData = await getCustomerInfo(location, userID, entryDetails.year, entryDetails.month, entryDetails.customerId);
-    setInitialCustomerData(responseData?.data ?? initialCustomerData);
-    setCustomerData(responseData?.data ?? customerData);
-    setLocationData(responseData?.locationData ?? locationData);
+    const responseData = await getCustomerInfo(location, userID, entryDetails.customerId);
+    setInitialCustomerData(responseData ?? initialCustomerData);
+    setCustomerData(responseData ?? customerData);
 
     return responseData;
   }
@@ -70,7 +68,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   }, [customerData.total, customerData.advance, customerData.discount]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.type);
     setCustomerData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
@@ -78,9 +75,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      console.log(e.target.name, e.target);
       setCustomerData((prev: any) => {
-        console.log(prev, e.target.name);
         return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
       });
     } else if (customerData.rooms !== undefined) {
@@ -96,22 +91,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     }
   };
 
-  useEffect(() => {
-    if (sendSucceed) {
-      deleteDates(
-        location,
-        userID,
-        initialCustomerData.entryDate,
-        initialCustomerData.leaveDate,
-        initialCustomerData.rooms,
-        entryDetails.customerId
-      );
-      saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
-      setOpenDetails(false);
-      setSendSucceed(false);
-    }
-  }, [sendSucceed]);
-
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -124,21 +103,33 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       setErrorMessage,
       entryDetails.customerId
     );
-    console.log(areRoomsFree);
-    await saveRooms(
-      customerData.rooms,
-      customerData.entryDate,
-      customerData.leaveDate,
-      location,
-      userID,
-      setSendSucceed,
-      entryDetails.customerId
-    );
+    if (areRoomsFree) {
+      await deleteDates(
+        location,
+        userID,
+        initialCustomerData.entryDate,
+        initialCustomerData.leaveDate,
+        initialCustomerData.rooms,
+        entryDetails.customerId
+      );
+
+      await saveRooms(
+        customerData.rooms,
+        customerData.entryDate,
+        customerData.leaveDate,
+        location,
+        userID,
+        entryDetails.customerId
+      );
+      await saveEntry(`${location}${userID}`, customerData, entryDetails.customerId);
+      setOpenDetails(false);
+    }
   };
 
   return (
     <div className="update-form-container">
       <Cancel
+        className="close-form"
         onClick={() => {
           setOpenDetails(false);
         }}
@@ -146,6 +137,20 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       <h1> Detaliile clientului</h1>
       <p>Apasa pe informatiile pe care vrei sa le schimbi si la final apasa confirma.</p>
       <form action="" className="update-form" noValidate onSubmit={submit}>
+        {errorMessage && (
+          <div className="error-layout">
+            <div className="error">
+              <Cancel
+                onClick={() => {
+                  setErrorMessage('');
+                }}
+              />
+
+              {errorMessage}
+            </div>
+          </div>
+        )}
+
         <section className="contact-info">
           <label>
             Nume
@@ -245,7 +250,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         ) : (
           ''
         )}
-        {errorMeesage && <div>{errorMeesage}</div>}
       </form>
     </div>
   );

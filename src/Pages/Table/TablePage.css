@@ -163,6 +163,7 @@ caption {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    border-radius: 5px;
 }
 
 

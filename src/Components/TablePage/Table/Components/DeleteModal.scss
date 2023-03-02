@@ -1,0 +1,30 @@
+.delete-modal-layout {
+    position: fixed;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, .5);
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .delete-modal {
+        display: flex;
+        gap: 1rem;
+        background-color: var(--main);
+        padding: 3.4rem 3.8rem; 
+        border-radius: 5px;
+        .confirm,
+        .cancel {
+            background-color: var(--action);
+            padding: .6rem 1rem;
+            border-radius: 5px;
+            font-size: .95rem;
+        }    
+    }
+
+}
+
