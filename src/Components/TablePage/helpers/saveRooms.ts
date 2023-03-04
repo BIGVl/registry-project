@@ -12,6 +12,7 @@ const saveRooms = async (
   type Years = {
     [year: string]: { [month: string]: number[] };
   };
+  console.log(rooms);
   const avalableDates: Years = {};
   const currentDate = new Date(enterDate);
   const dates: any = {};

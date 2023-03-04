@@ -22,7 +22,7 @@ interface Props {
 }
 
 const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
-  const [customerData, setCustomerData] = useState<FormData | DocumentData>({
+  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>({
     adults: '',
     entryDate: '',
     leaveDate: '',
@@ -35,8 +35,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
-
-  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>(customerData);
+  const [customerData, setCustomerData] = useState<FormData | DocumentData>(initialCustomerData);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
@@ -84,7 +83,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
           const rooms = customerData.rooms;
           rooms?.splice(i, 1);
           setCustomerData((prev) => {
-            return { ...prev, [e.target.name]: rooms };
+            return { ...prev, [e.target.name]: [...rooms] };
           });
         }
       });
@@ -104,6 +103,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       entryDetails.customerId
     );
     if (areRoomsFree) {
+      console.log(initialCustomerData.rooms);
       await deleteDates(
         location,
         userID,
@@ -112,7 +112,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         initialCustomerData.rooms,
         entryDetails.customerId
       );
-
+      console.log(customerData.rooms);
       await saveRooms(
         customerData.rooms,
         customerData.entryDate,

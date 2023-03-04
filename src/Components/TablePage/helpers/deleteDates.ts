@@ -11,7 +11,7 @@ const deleteDates = async (
   customerId: number
 ) => {
   const dateOfLeave = new Date(leaveDate);
-
+  console.log(rooms);
   for (const room of rooms) {
     const currentDate = new Date(entryDate);
     let previousMonth = new Date(entryDate);
@@ -30,7 +30,9 @@ const deleteDates = async (
       if (data) {
         const day: string = data[room][currentDate.getDate()];
         if (day && day.includes(`${customerId}`)) {
+          console.log(day);
           if (day.includes(`/`)) {
+            console.log(day, day.indexOf(`${customerId}`), day.indexOf('/'));
             day.indexOf(`${customerId}`) < day.indexOf('/')
               ? (data[room][currentDate.getDate()] = day.slice(0, day.indexOf('/')))
               : (data[room][currentDate.getDate()] = day.slice(day.indexOf('/') + 1));
