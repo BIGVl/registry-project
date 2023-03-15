@@ -53,9 +53,9 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
         </fieldset>
         <label htmlFor="location-name">
           Numele proprietatii:
-          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={16} required onChange={change} />
+          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={36} required onChange={change} />
         </label>
-        <label htmlFor="add-rooms">
+        <label htmlFor="add-rooms" className="add-location-rooms">
           Numar de camere:
           <input type="number" name="rooms" className="add-rooms" id="add-rooms" required min={1} max={50} onChange={change} />
         </label>
