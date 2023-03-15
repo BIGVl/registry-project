@@ -1,4 +1,4 @@
-import { doc, DocumentData, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 const saveRooms = async (
@@ -17,7 +17,6 @@ const saveRooms = async (
   const currentDate = new Date(enterDate);
   const dates: any = {};
   const endDate = new Date(leaveDate);
-  const roomsToSave = rooms.length;
   //Loop through all days between the enter day and the leave day and store them in an array to later be checked if they are available
   while (currentDate <= endDate) {
     /*This saves the dates  in a format like this dates = {2022:{11:[1,2,3], 12:[1,2,3,4]}}, in order to be later compared 
@@ -61,61 +60,40 @@ const saveRooms = async (
         const docRef = doc(db, `${location}${userID}${year}`, month);
         const response = await getDoc(docRef);
         const data = response.data();
+        const monthlyDays: { [key: number]: string } = {};
         for (const day of avalableDates[year][month]) {
           const dateToCompareTo = new Date(Number(year), Number(month) - 1, Number(day));
           dateToCompareTo.setHours(0, 0, 0, 0);
           if (startDate.getTime() === dateToCompareTo.getTime()) {
             if (data && data[room] && data[room][day] && data[room][day].includes('exit')) {
-              await setDoc(
-                docRef,
-                {
-                  [room]: { [day]: `enter-${customerID}/${data[room][day]}` }
-                },
-                { merge: true }
-              );
+              monthlyDays[day] = `enter-${customerID}/${data[room][day]}`;
             } else {
-              await setDoc(
-                docRef,
-                {
-                  [room]: { [day]: `enter-${customerID}` }
-                },
-                { merge: true }
-              );
+              monthlyDays[day] = `enter-${customerID}`;
             }
           } else if (endingDate.getTime() === dateToCompareTo.getTime()) {
             if (data && data[room] && data[room][day] && data[room][day].includes('enter')) {
-              await setDoc(
-                docRef,
-                {
-                  [room]: { [day]: `${data[room][day]}/exit-${customerID}` }
-                },
-                { merge: true }
-              );
+              monthlyDays[day] = `${data[room][day]}/exit-${customerID}`;
             } else {
-              await setDoc(
-                docRef,
-                {
-                  [room]: { [day]: `exit-${customerID}` }
-                },
-                { merge: true }
-              );
+              monthlyDays[day] = `exit-${customerID}`;
             }
           } else {
-            await setDoc(
-              docRef,
-              {
-                [room]: { [day]: `full-${customerID}` }
-              },
-              { merge: true }
-            );
+            monthlyDays[day] = `full-${customerID}`;
           }
         }
-        await setDoc(doc(db, `${location}${userID}`, 'numar-clienti'), {
-          'numar-clienti': customerID
-        });
+        await setDoc(
+          docRef,
+          {
+            [room]: monthlyDays
+          },
+
+          { merge: true }
+        );
       }
     }
   }
+  await setDoc(doc(db, `${location}${userID}`, 'numar-clienti'), {
+    'numar-clienti': customerID
+  });
 };
 
 export default saveRooms;

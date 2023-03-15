@@ -216,6 +216,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           id="submit"
           onClick={() => {
             validateDetails(formData, setErrorMsg, setConfirmSubmit);
+            setConfirmSubmit(true);
           }}
         >
           Confirm intrare
