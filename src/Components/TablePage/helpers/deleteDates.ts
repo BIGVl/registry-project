@@ -10,12 +10,14 @@ const deleteDates = async (
   rooms: string[],
   customerId: number
 ) => {
-  const dateOfLeave = new Date(leaveDate);
   for (const room of rooms) {
+    const dateOfLeave = new Date(leaveDate);
     const currentDate = new Date(entryDate);
     let previousMonth = new Date(entryDate);
     let docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
     let data = docSnap.data();
+
+    console.log(data);
     while (currentDate <= dateOfLeave) {
       if (currentDate.getMonth() !== previousMonth.getMonth()) {
         await setDoc(doc(db, `${location}${userID}${previousMonth.getFullYear()}`, `${previousMonth.getMonth() + 1}`), data, {
