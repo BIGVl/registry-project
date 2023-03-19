@@ -20,6 +20,11 @@
     display: flex;
     gap: 1rem;
     overflow-x: scroll;
+    background-color: var(--third);
+    width: 90%;
+    border-radius: 7px 7px 2px 7px;
+    padding: 5px;
+
 }
 
 .nav-locations-container::-webkit-scrollbar {
@@ -30,7 +35,6 @@
 .hamburger-icon {
 
     filter: invert(75%) sepia(37%) saturate(825%) hue-rotate(334deg) brightness(91%) contrast(92%);
-    margin-left: auto;
     z-index: 5;
 
     
@@ -40,7 +44,7 @@
 .nav-location-bubble {
     font-weight: 600;
     letter-spacing: 1px;
-    background-color:var(--third);
+    background-color:var(--action);
     padding: .3rem;
     display: flex;
     justify-content: center;
