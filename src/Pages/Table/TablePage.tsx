@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ReservationForm from '../../Components/TablePage/ReservationForm/ReservationForm';
 import Table from '../../Components/TablePage/Table/Table';
-import './TablePage.css';
+import './TablePage.scss';
 
 interface Props {
   rooms: number;

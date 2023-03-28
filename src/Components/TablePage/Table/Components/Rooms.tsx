@@ -1,4 +1,4 @@
-import '../../../../Pages/Table/TablePage.css';
+import '../../../../Pages/Table/TablePage.scss';
 
 interface PropTypes {
   rows: number;
@@ -10,7 +10,7 @@ const Rooms = ({ rows }: PropTypes) => {
   for (let i = 1; i <= rows; i++) {
     rooms.push(
       <tr key={i}>
-        <th>{i}</th>
+        <th className="room">{i}</th>
       </tr>
     );
   }

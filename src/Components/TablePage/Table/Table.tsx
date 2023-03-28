@@ -1,4 +1,4 @@
-import '../../../Pages/Table/TablePage.css';
+import '../../../Pages/Table/TablePage.scss';
 import Rooms from './Components/Rooms';
 import Calendar from './Components/Calendar';
 
@@ -10,9 +10,7 @@ interface Props {
 const Table = ({ rooms, openForm }: Props) => {
   return (
     <div className="table">
-      <div className="rooms-container">
-        <Rooms rows={rooms} />
-      </div>
+      <Rooms rows={rooms} />
       <Calendar openForm={openForm} rows={rooms} />
     </div>
   );

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import Month from './Month';
-import '../../../../Pages/Table/TablePage.css';
+import '../../../../Pages/Table/TablePage.scss';
 import { ReactComponent as ArrowLeft } from '../../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../../assets/arrow-right.svg';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
@@ -48,22 +48,27 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
 
   return (
     <div className="calendar-container">
-      <div id="arrow-left">
-        <ArrowLeft onClick={lastMonth} />
-      </div>
-      <div id="arrow-right">
-        <ArrowRight onClick={nextMonth} />
-      </div>
+      <div className="table-header">
+        <div id="arrow-left">
+          <ArrowLeft onClick={lastMonth} />
+        </div>
+        <div className="month-name">
+          {currentDate.toLocaleDateString('ro-RO', { month: 'long' }).charAt(0).toUpperCase() +
+            currentDate.toLocaleDateString('ro-RO', { month: 'long' }).slice(1)}
+        </div>
+        <div id="year"> {currentDate.getFullYear()} </div>
 
+        <div id="arrow-right">
+          <ArrowRight onClick={nextMonth} />
+        </div>
+      </div>
       <Month
         year={currentDate.getFullYear()}
         month={currentDate.getMonth() + 1}
         rows={rows}
         days={new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()}
-        monthName={currentDate.toLocaleDateString('ro-RO', { month: 'long' })}
         data={data}
       />
-      <div id="year"> {currentDate.getFullYear()} </div>
     </div>
   );
 };

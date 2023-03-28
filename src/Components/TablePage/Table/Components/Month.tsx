@@ -1,6 +1,6 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import '../../../../Pages/Table/TablePage.css';
+import '../../../../Pages/Table/TablePage.scss';
 import UpdateDetails from './UpdateDetails';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import DeleteModal from './DeleteModal';
@@ -8,13 +8,12 @@ import DeleteModal from './DeleteModal';
 interface PropTypes {
   rows: number;
   days: number;
-  monthName: string;
   month: number;
   year: number;
   data: DocumentData;
 }
 
-const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
+const Month = ({ rows, days, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
   const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
@@ -102,7 +101,6 @@ const Month = ({ rows, days, monthName, month, year, data }: PropTypes) => {
   return (
     <>
       <table id="calendar">
-        <caption>{monthName.charAt(0).toUpperCase() + monthName.slice(1)}</caption>
         <thead>
           <tr>
             {daysArray.map((m, i) => {

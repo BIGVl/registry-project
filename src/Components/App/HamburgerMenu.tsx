@@ -42,18 +42,21 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
       </div>
       <p className="hamburger-user"> {userInfo.name} </p>
       <p className="hamburger-email"> {userInfo.email} </p>
-      {openLocationsList && (
-        <ul className="locations-list">
-          {locations.map((location) => {
-            const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
-            return (
-              <li key={location.name} onClick={openLocation} id={location.name}>
-                {tag}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      {openLocationsList &&
+        (locations.length > 0 ? (
+          <ul className="locations-list">
+            {locations.map((location) => {
+              const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+              return (
+                <li key={location.name} onClick={openLocation} id={location.name}>
+                  {tag}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
+        ))}
       <button
         onClick={(e) => {
           setOpenLocationsList(!openLocationsList);
