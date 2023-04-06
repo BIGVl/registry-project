@@ -11,13 +11,14 @@ import { db } from '../../firebase';
 
 interface Props {
   locations: DocumentData[];
-  setLocations: Dispatch<SetStateAction<[] | DocumentData[]>>;
   user: UserInfo;
 }
 
-const Nav = ({ locations, setLocations, user }: Props) => {
+const Nav = ({ locations, user }: Props) => {
   const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
+
+  const areAllLocationsUnselected = locations.every((location) => location.selected === false);
 
   const removeFromNav = async (e: any) => {
     await updateDoc(doc(db, `locations${user.uid}`, `${e.target.parentNode.id}`), {
@@ -30,23 +31,24 @@ const Nav = ({ locations, setLocations, user }: Props) => {
       {openAddLocationForm ? <AddLocation setOpenAddLocation={setOpenAddLocationForm} /> : ''}
 
       <nav className="main-nav">
-        <div className="nav-locations-container">
-          {locations.map((location: DocumentData) => {
-            if (location.selected) {
-              let tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
-              if (tag.length > 5) tag = tag.slice(0, 5) + '...';
-
-              return (
-                <div className="nav-location-bubble" key={location.name}>
-                  <Link className="nav-location-link" to={`/${location.name}`}>
-                    {tag}
-                  </Link>
-                  <Cancel className="nav-remove-location" id={location.name} onClick={removeFromNav} />
-                </div>
-              );
-            }
-          })}
-        </div>
+        {!areAllLocationsUnselected && (
+          <div className="nav-locations-container">
+            {locations.map((location: DocumentData) => {
+              if (location.selected) {
+                let tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+                if (tag.length > 5) tag = tag.slice(0, 5) + '...';
+                return (
+                  <div className="nav-location-bubble" key={location.name}>
+                    <Link className="nav-location-link" to={`/${location.name}`}>
+                      {tag}
+                    </Link>
+                    <Cancel className="nav-remove-location" id={location.name} onClick={removeFromNav} />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        )}
         <HamburgerIcon className="hamburger-icon" onClick={() => setOpenHamburger(!openHamburger)} />
       </nav>
       {openHamburger && (

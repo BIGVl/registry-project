@@ -14,7 +14,7 @@ const checkRooms = async (
     [year: string]: { [month: string]: number[] };
   };
   setErrorMsg('');
-  const unavalableDates: Years = {};
+  const unavailableDates: Years = {};
   const currentDate = new Date(enterDate);
   const dates: any = {};
   const endDate = new Date(leaveDate);
@@ -41,7 +41,7 @@ const checkRooms = async (
   //Loop through eachs day and save each one in the proper array based if it's found in the db as being occupied or not
   for (const room of rooms) {
     for (const year in dates) {
-      if (!unavalableDates[year]) unavalableDates[year] = {};
+      if (!unavailableDates[year]) unavailableDates[year] = {};
       for (const month in dates[year]) {
         const response = await getDoc(doc(db, `${location}${userID}${year}`, month));
         const data: DocumentData | undefined = response.data();
@@ -49,18 +49,23 @@ const checkRooms = async (
         dates[year][month].forEach((date: number) => {
           if (data && data[room] && data[room][date] && !data[room][date].includes(customerID)) {
             if (data[room][date].includes('full') || (data[room][date].includes('enter') && data[room][date].includes('exit'))) {
-              unavalableDates[year][month] ? unavalableDates[year][month].push(date) : (unavalableDates[year][month] = [date]);
+              unavailableDates[year][month] ? unavailableDates[year][month].push(date) : (unavailableDates[year][month] = [date]);
+            }
+            if (data[room][date].includes('enter') && data[room][date + 1].includes('exit')) {
+              unavailableDates[year][month]
+                ? unavailableDates[year][month].push(date, date + 1)
+                : (unavailableDates[year][month] = [date, date + 1]);
             }
           }
         });
       }
     }
   }
-  // check if any array in unavalableDates has dates
-  for (const year in unavalableDates) {
-    for (const month in unavalableDates[year]) {
-      const dates = unavalableDates[year][month];
-      if (Array.isArray(dates) && dates.length > 0) {
+  // check if any array in unavailableDates has dates
+  for (const year in unavailableDates) {
+    for (const month in unavailableDates[year]) {
+      const unavailable = unavailableDates[year][month];
+      if (Array.isArray(unavailable) && unavailable.length > 0) {
         hasUnavailableDates = true;
         break;
       }
@@ -74,17 +79,18 @@ const checkRooms = async (
   for (const room of rooms) {
     for (const year in dates) {
       if (hasUnavailableDates) {
-        for (const month in unavalableDates[year]) {
+        for (const month in unavailableDates[year]) {
           await getDoc(doc(db, `${location}${userID}${year}`, month));
           return setErrorMsg(
-            `Camera cu numarul ${room} este ocupata in perioada ${unavalableDates[year][month][0]}/${month}/${[year]} - ${
-              unavalableDates[year][month][unavalableDates[year][month].length - 1]
+            `Camera cu numarul ${room} este ocupata in perioada ${unavailableDates[year][month][0]}/${month}/${[year]} - ${
+              unavailableDates[year][month][unavailableDates[year][month].length - 1]
             }/${month}/${year} .`
           );
         }
       }
     }
   }
+  console.log(!hasUnavailableDates);
   return !hasUnavailableDates;
 };
 export default checkRooms;

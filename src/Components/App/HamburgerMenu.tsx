@@ -2,10 +2,11 @@ import { signOut } from 'firebase/auth';
 import { auth, db } from '../../firebase';
 import { UserInfo } from '../../globalInterfaces';
 import { ReactComponent as Close } from '../../assets/arrow-right.svg';
-import './HamburgerMenu.css';
+import './HamburgerMenu.scss';
 import { doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import deleteUrl from '../../assets/delete.png';
 
 interface Props {
   setOpenAddLocationForm: (value: boolean) => void;
@@ -17,7 +18,7 @@ interface Props {
 const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, locations }: Props) => {
   const [openLocationsList, setOpenLocationsList] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  console.log(locations);
   const logOut = async () => {
     try {
       await signOut(auth);
@@ -28,12 +29,15 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
   };
 
   const openLocation = async (e: any) => {
+    console.log(e.target.id);
     await updateDoc(doc(db, `locations${userInfo.uid}`, e.target.id), {
       selected: true
     });
     navigate(`/${e.target.id}`);
     setOpenHamburger(false);
   };
+
+  const deleteLocation = () => {};
 
   return (
     <section className="hamburger-menu">
@@ -49,7 +53,10 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
               const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
               return (
                 <li key={location.name} onClick={openLocation} id={location.name}>
-                  {tag}
+                  <div className="li-content" id={location.name}>
+                    {tag}
+                    <img src={deleteUrl} alt="Delete location" className="delete-location" />
+                  </div>
                 </li>
               );
             })}

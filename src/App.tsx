@@ -73,7 +73,7 @@ const App = () => {
           })}
           '
         </Routes>
-        {userInfo.uid && <Nav user={userInfo} locations={locations} setLocations={setLocations} />}
+        {userInfo.uid && <Nav user={userInfo} locations={locations} />}
       </div>
     </UserIDContext.Provider>
   );
