@@ -46,6 +46,7 @@ const App = () => {
       if (locations.length === 0) {
         navigate('/first-location');
       } else if (locations[0]) {
+        console.log(locations);
         navigate(`/${locations[0].name}`);
       } else {
         navigate('/');

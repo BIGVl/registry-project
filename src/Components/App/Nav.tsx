@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AddLocation from './AddLocation';
 import HamburgerMenu from './HamburgerMenu';
@@ -17,6 +17,7 @@ interface Props {
 const Nav = ({ locations, user }: Props) => {
   const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
+  const [focusedLocation, setFocusedLocation] = useState<string>('');
 
   const areAllLocationsUnselected = locations.every((location) => location.selected === false);
 
@@ -33,12 +34,16 @@ const Nav = ({ locations, user }: Props) => {
       <nav className="main-nav">
         {!areAllLocationsUnselected && (
           <div className="nav-locations-container">
-            {locations.map((location: DocumentData) => {
+            {locations.map((location: DocumentData, i) => {
               if (location.selected) {
                 let tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
                 if (tag.length > 5) tag = tag.slice(0, 5) + '...';
                 return (
-                  <div className="nav-location-bubble" key={location.name}>
+                  <div
+                    className={`nav-location-bubble ${focusedLocation === location.name ? 'focused' : ''} `}
+                    key={location.name}
+                    onClick={() => setFocusedLocation(location.name)}
+                  >
                     <Link className="nav-location-link" to={`/${location.name}`}>
                       {tag}
                     </Link>
