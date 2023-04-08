@@ -74,7 +74,7 @@ const App = () => {
           })}
           '
         </Routes>
-        {userInfo.uid && <Nav user={userInfo} locations={locations} />}
+        {userInfo.uid && locations[0]?.name && <Nav user={userInfo} locations={locations} locationToFocus={locations[0].name} />}
       </div>
     </UserIDContext.Provider>
   );

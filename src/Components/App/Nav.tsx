@@ -12,12 +12,13 @@ import { db } from '../../firebase';
 interface Props {
   locations: DocumentData[];
   user: UserInfo;
+  locationToFocus: string | undefined;
 }
 
-const Nav = ({ locations, user }: Props) => {
+const Nav = ({ locations, user, locationToFocus }: Props) => {
   const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
-  const [focusedLocation, setFocusedLocation] = useState<string>('');
+  const [focusedLocation, setFocusedLocation] = useState<string>(locationToFocus ? locationToFocus : '');
 
   const areAllLocationsUnselected = locations.every((location) => location.selected === false);
 

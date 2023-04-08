@@ -12,7 +12,7 @@
 
 :root {
     --action: #e09e50;
-    --secondary:#2d3e4e;
+    --secondary: #2d3e4e;
     --main: #e8eceb;
     --third: #8cbdb9;
     --font: 'Open Sans', sans-serif;
@@ -21,7 +21,6 @@
 
 body {
     background-color: var(--main);
-
 
 }
 

@@ -2,8 +2,8 @@ import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import '../../../../Pages/Table/TablePage.scss';
 import UpdateDetails from './UpdateDetails';
-import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import DeleteModal from './DeleteModal';
+import DetailsModal from './DetailsModal';
 
 interface PropTypes {
   rows: number;
@@ -119,33 +119,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
         </tbody>
       </table>
       {openUpdateDelete && (
-        <div className="bubble-update-delete">
-          <Cancel
-            onClick={() => {
-              setOpenUpdateDelete(false);
-            }}
-          />
-          <div className="buttons">
-            <button
-              className="open-update"
-              onClick={() => {
-                setOpenDetails(true);
-                setOpenUpdateDelete(false);
-              }}
-            >
-              Detalii
-            </button>
-            <button
-              className="open-delete"
-              onClick={() => {
-                setOpenDelete(true);
-                setOpenUpdateDelete(false);
-              }}
-            >
-              Sterge
-            </button>
-          </div>
-        </div>
+        <DetailsModal setOpenDetails={setOpenDetails} setOpenUpdateDelete={setOpenUpdateDelete} setOpenDelete={setOpenDelete} />
       )}
       {openDelete && <DeleteModal entryDetails={entryDetails} setOpenDelete={setOpenDelete} />}
       {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} rooms={rows} />}
