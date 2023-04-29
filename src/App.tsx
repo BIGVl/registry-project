@@ -15,6 +15,7 @@ const App = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
   const navigate = useNavigate();
 
+  //Subscribing to firebase for authentication changes and for locations
   useEffect(() => {
     const unsubAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -35,27 +36,28 @@ const App = () => {
         });
       });
     });
+
     return () => {
       unsubAuth();
       unsubQuerry();
     };
   }, [userInfo.uid]);
 
+  //Check if there are any locations and if not redirect the user to the first-location screen
   useEffect(() => {
-    if (userInfo.uid)
+    if (userInfo.uid) {
       if (locations.length === 0) {
         navigate('/first-location');
       } else if (locations[0]) {
-        console.log(locations);
+        //TODO Uncomment the navigate after you are done testing loading screen and remove the Route to test
         navigate(`/${locations[0].name}`);
-      } else {
-        navigate('/');
       }
-  }, [userInfo.uid, locations]);
+    }
+  }, [locations]);
 
   return (
     <UserIDContext.Provider value={userInfo.uid}>
-      <div className="App">
+      <main className="App">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/first-location" element={<NoLocation />} />
@@ -74,8 +76,9 @@ const App = () => {
           })}
           '
         </Routes>
-        {userInfo.uid && locations[0]?.name && <Nav user={userInfo} locations={locations} locationToFocus={locations[0].name} />}
-      </div>
+      </main>
+
+      {userInfo.uid && locations[0]?.name && <Nav user={userInfo} locations={locations} locationToFocus={locations[0].name} />}
     </UserIDContext.Provider>
   );
 };

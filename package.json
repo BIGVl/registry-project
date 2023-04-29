@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.2",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.45",
     "@types/react": "^18.0.15",

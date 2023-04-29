@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Open+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
 #table-page {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,12 @@
   align-items: center;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Open+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+.table-title {
+  color: var(--secondary);
+  width: 100vw;
+  font-size: 1.8rem;
+  padding-left: 5rem;
+}
 
 /* Main styles */
 .table {
@@ -56,7 +63,6 @@ td {
 /* Calendar */
 
 .table-header {
-  position: absolute;
   display: flex;
   top: 1%;
   justify-content: space-between;
@@ -82,6 +88,7 @@ td {
 .calendar-container {
   display: flex;
   overflow-x: scroll;
+  flex-direction: column;
 }
 
 .calendar-container::-webkit-scrollbar {
@@ -89,7 +96,7 @@ td {
 }
 
 #calendar {
-  margin-top: 4rem;
+  margin-top: 1.2rem;
   height: 50%;
   overflow-x: hidden;
   font-family: 'Open Sans', sans-serif;
