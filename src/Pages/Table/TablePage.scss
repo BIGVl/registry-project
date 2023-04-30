@@ -182,12 +182,18 @@ td {
 }
 
 #add-reservation {
+  position: fixed;
+  top: 2%;
+  right: 4%;
   background-color: var(--action);
-  border-radius: 7px;
-  font-family: inherit;
-  font-size: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
   margin-top: 1rem;
-  padding: 1rem 3rem;
-  align-self: center;
-  font-weight: 900;
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--main);
 }

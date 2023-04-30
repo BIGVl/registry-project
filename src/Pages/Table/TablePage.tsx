@@ -22,12 +22,13 @@ const TablePage = ({ rooms }: Props) => {
       {openForm === true ? <ReservationForm rooms={rooms} setOpenForm={setOpenForm} /> : ''}
       <button
         id="add-reservation"
+        aria-label="Adauga intrare"
         onClick={() => {
           openForm ? setOpenForm(false) : setOpenForm(true);
           window.scrollTo(0, 0);
         }}
       >
-        Intrare Noua
+        +
       </button>
     </div>
   );

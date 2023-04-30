@@ -61,7 +61,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         <Close className="hamburger-close-svg" onClick={(e) => setOpenHamburger(false)} />
       </div>
       <section className="user-info">
-        <p className="hamburger-user"> {userInfo.name} </p>
+        <p className="hamburger-user"> Salutari, {userInfo.name} ! </p>
         <p className="hamburger-email"> {userInfo.email} </p>
       </section>
       {openLocationsList &&
@@ -88,24 +88,25 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         ) : (
           <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
         ))}
-      <button
-        onClick={(e) => {
-          setOpenLocationsList(!openLocationsList);
-        }}
-        className="open-list-locations"
-      >
-        Lista locatii
-      </button>
+      <section className="locations-section">
+        <button
+          onClick={(e) => {
+            setOpenLocationsList(!openLocationsList);
+          }}
+          className="open-list-locations"
+        >
+          Lista locatii
+        </button>
 
-      <button
-        className="open-addLocation-button"
-        onClick={() => {
-          setOpenAddLocation(!openAddLocation);
-        }}
-      >
-        Adauga locatie noua
-      </button>
-
+        <button
+          className="open-addLocation-button"
+          onClick={() => {
+            setOpenAddLocation(!openAddLocation);
+          }}
+        >
+          Adauga locatie noua
+        </button>
+      </section>
       <button onClick={logOut} className="sign-out">
         Deconecteaza-te
       </button>
