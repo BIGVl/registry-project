@@ -16,7 +16,6 @@ interface Props {
 }
 
 const Nav = ({ locations, user, locationToFocus }: Props) => {
-  const [openAddLocationForm, setOpenAddLocationForm] = useState<boolean>(false);
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const [focusedLocation, setFocusedLocation] = useState<string>(locationToFocus ? locationToFocus : '');
 
@@ -30,8 +29,6 @@ const Nav = ({ locations, user, locationToFocus }: Props) => {
 
   return (
     <>
-      {openAddLocationForm ? <AddLocation setOpenAddLocation={setOpenAddLocationForm} /> : ''}
-
       <nav className="main-nav">
         {!areAllLocationsUnselected && (
           <div className="nav-locations-container">
@@ -57,14 +54,7 @@ const Nav = ({ locations, user, locationToFocus }: Props) => {
         )}
         <HamburgerIcon className="hamburger-icon" onClick={() => setOpenHamburger(!openHamburger)} />
       </nav>
-      {openHamburger && (
-        <HamburgerMenu
-          locations={locations}
-          setOpenHamburger={setOpenHamburger}
-          userInfo={user}
-          setOpenAddLocationForm={setOpenAddLocationForm}
-        />
-      )}
+      {openHamburger && <HamburgerMenu locations={locations} setOpenHamburger={setOpenHamburger} userInfo={user} />}
     </>
   );
 };

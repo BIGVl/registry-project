@@ -47,7 +47,7 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
   };
 
   return (
-    <div className="calendar-container">
+    <>
       <div className="table-header">
         <div id="arrow-left">
           <ArrowLeft onClick={lastMonth} />
@@ -57,19 +57,21 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
             currentDate.toLocaleDateString('ro-RO', { month: 'long' }).slice(1)}
         </div>
         <div id="year"> {currentDate.getFullYear()} </div>
-
         <div id="arrow-right">
           <ArrowRight onClick={nextMonth} />
         </div>
       </div>
-      <Month
-        year={currentDate.getFullYear()}
-        month={currentDate.getMonth() + 1}
-        rows={rows}
-        days={new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()}
-        data={data}
-      />
-    </div>
+
+      <div className="calendar-container">
+        <Month
+          year={currentDate.getFullYear()}
+          month={currentDate.getMonth() + 1}
+          rows={rows}
+          days={new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()}
+          data={data}
+        />
+      </div>
+    </>
   );
 };
 

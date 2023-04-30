@@ -7,15 +7,16 @@ import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import deleteUrl from '../../assets/delete.png';
+import AddLocation from './AddLocation';
 
 interface Props {
-  setOpenAddLocationForm: (value: boolean) => void;
   userInfo: UserInfo;
   setOpenHamburger: (value: boolean) => void;
   locations: DocumentData[];
 }
 
-const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, locations }: Props) => {
+const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
+  const [openAddLocation, setOpenAddLocation] = useState<boolean>(false);
   const [openLocationsList, setOpenLocationsList] = useState<boolean>(false);
   const [locationToDelete, setLocationToDelete] = useState<string>('');
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
     }
   };
 
+  //Sends the user to the location's url
   const openLocation: MouseEventHandler<HTMLLIElement> = async (e) => {
     if (e.target instanceof HTMLLIElement || e.target instanceof HTMLDivElement) {
       await updateDoc(doc(db, `locations${userInfo.uid}`, e.target.id), {
@@ -40,26 +42,28 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
   };
 
   //Delete a location completely from the db
-
   const openDeleteLocation: MouseEventHandler<HTMLImageElement> = (e) => {
     if (e.target instanceof HTMLImageElement) {
       setLocationToDelete(e.target.id);
       console.log(e.target.id);
     }
   };
-
   const deleteLocation = async () => {
     setLocationToDelete('');
+    console.log(locationToDelete);
     await deleteDoc(doc(db, `locations${userInfo.uid}`, locationToDelete));
   };
 
   return (
     <section className="hamburger-menu">
+      {openAddLocation ? <AddLocation setOpenAddLocation={setOpenAddLocation} /> : ''}
       <div className="hamburger-close">
         <Close className="hamburger-close-svg" onClick={(e) => setOpenHamburger(false)} />
       </div>
-      <p className="hamburger-user"> {userInfo.name} </p>
-      <p className="hamburger-email"> {userInfo.email} </p>
+      <section className="user-info">
+        <p className="hamburger-user"> {userInfo.name} </p>
+        <p className="hamburger-email"> {userInfo.email} </p>
+      </section>
       {openLocationsList &&
         (locations.length > 0 ? (
           <ul className="locations-list">
@@ -90,13 +94,13 @@ const HamburgerMenu = ({ setOpenAddLocationForm, userInfo, setOpenHamburger, loc
         }}
         className="open-list-locations"
       >
-        Locatii
+        Lista locatii
       </button>
 
       <button
         className="open-addLocation-button"
         onClick={() => {
-          setOpenAddLocationForm(true);
+          setOpenAddLocation(!openAddLocation);
         }}
       >
         Adauga locatie noua

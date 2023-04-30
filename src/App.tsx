@@ -9,6 +9,7 @@ import { UserInfo } from './globalInterfaces';
 import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore';
 import Nav from './Components/App/Nav';
 import NoLocation from './Pages/NoLocations/NoLocations';
+import LoadingScreen from './Components/LoadingScreen/LoadingScreen';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
@@ -59,6 +60,7 @@ const App = () => {
     <UserIDContext.Provider value={userInfo.uid}>
       <main className="App">
         <Routes>
+          <Route path="/" element={<LoadingScreen />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/first-location" element={<NoLocation />} />
           {locations.map((location) => {
