@@ -181,19 +181,24 @@ td {
   font-family: 'Opens Sans', sans-serif;
 }
 
-#add-reservation {
+.add-reservation {
   position: fixed;
-  top: 2%;
-  right: 4%;
+  bottom: 15%;
+  right: 8%;
   background-color: var(--action);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 3.4rem;
-  height: 3.4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   margin-top: 1rem;
   font-size: 4rem;
   font-weight: 600;
   color: var(--main);
+  img {
+    filter: invert(97%) sepia(7%) saturate(58%) hue-rotate(114deg) brightness(97%) contrast(94%);
+    width: 2.8rem;
+    height: 2.8rem;
+  }
 }
