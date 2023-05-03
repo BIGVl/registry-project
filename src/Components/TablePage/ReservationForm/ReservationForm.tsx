@@ -1,4 +1,4 @@
-import './ReservationForm.css';
+import './ReservationForm.scss';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
@@ -35,8 +35,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   //This state is used for the confirmation pop-up, after the client side validation, so the data will be send to the db
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
-  //This state is used to check if the write of the data was successful and if yes to save data about the entry in a useEffect
-  const [sendSucceed, setSendSucceed] = useState<boolean>(false);
 
   //Used to loop through to create the numbers of rooms that the component will receive
   const roomsArray: number[] = [];
@@ -62,6 +60,8 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   }, [formData.total, formData.advance, formData.discount]);
 
   const change = (e: any) => {
+    if (e.target.id.includes('priceRoom')) {
+    }
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
@@ -101,7 +101,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userID, customerID);
       await saveEntry(`${location}${userID}`, formData, customerID);
       setOpenForm(false);
-      setSendSucceed(false);
     }
   };
 
@@ -172,18 +171,28 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         </fieldset>
 
         <fieldset id="money-field">
-          <label htmlFor="total" id="total-l">
-            Total:{' '}
-            <input
-              type="number"
-              id="total"
-              name="total"
-              onChange={(e) => {
-                change(e);
-              }}
-            />
-            lei
-          </label>
+          <div className="price-per-room">
+            Pret pe camera pe noapte:
+            {formData.rooms
+              .sort((a, b) => (a > b ? 1 : -1))
+              .map((room) => {
+                return (
+                  <label key={room} htmlFor={`priceRoom${room}`} className="price-on-room-label">
+                    camera {room} :
+                    <input
+                      type="number"
+                      id={`priceRoom${room}`}
+                      name="priceRoom"
+                      className="price-on-room"
+                      onChange={(e) => {
+                        change(e);
+                      }}
+                    />
+                    lei
+                  </label>
+                );
+              })}
+          </div>
           <label id="advance-l" htmlFor="advance">
             Avans :
             <input
@@ -205,12 +214,11 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
               type="number"
               name="discount"
               id="reducere"
-            />{' '}
+            />
             %
           </label>
           <div id="balance">De platit : {formData.balance} lei</div>
         </fieldset>
-
         <button
           type="button"
           id="submit"

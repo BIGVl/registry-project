@@ -1,5 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
-  const [initialCustomerData, setInitialCustomerData] = useState<FormData | DocumentData>({
+  const initialCustomerData = useRef<FormData | DocumentData>({
     adults: '',
     entryDate: '',
     leaveDate: '',
@@ -35,7 +35,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     balance: 0,
     kids: ''
   });
-  const [customerData, setCustomerData] = useState<FormData | DocumentData>(initialCustomerData);
+  const [customerData, setCustomerData] = useState<FormData | DocumentData>({ ...initialCustomerData.current });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
@@ -45,9 +45,9 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   //Get data of the customer
   async function getData() {
     const responseData = await getCustomerInfo(location, userID, entryDetails.customerId);
-    setInitialCustomerData(responseData ?? initialCustomerData);
-    setCustomerData(responseData ?? customerData);
-
+    initialCustomerData.current = { ...responseData };
+    console.log(initialCustomerData.current.rooms);
+    setCustomerData({ ...responseData } ?? customerData);
     return responseData;
   }
 
@@ -80,7 +80,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     } else if (customerData.rooms !== undefined) {
       customerData.rooms.forEach((room: number, i: number) => {
         if (room === Number(e.target.value)) {
-          const rooms = customerData.rooms;
+          const rooms = [...customerData.rooms];
           rooms?.splice(i, 1);
           setCustomerData((prev) => {
             return { ...prev, [e.target.name]: [...rooms] };
@@ -88,6 +88,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         }
       });
     }
+    console.log(initialCustomerData.current.rooms);
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -102,17 +103,16 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
       setErrorMessage,
       entryDetails.customerId
     );
+
     if (areRoomsFree) {
-      console.log(initialCustomerData.rooms);
       await deleteDates(
         location,
         userID,
-        initialCustomerData.entryDate,
-        initialCustomerData.leaveDate,
-        initialCustomerData.rooms,
+        initialCustomerData.current.entryDate,
+        initialCustomerData.current.leaveDate,
+        initialCustomerData.current.rooms,
         entryDetails.customerId
       );
-      console.log(customerData.rooms);
       await saveRooms(
         customerData.rooms,
         customerData.entryDate,
@@ -228,7 +228,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         >
           Confirma schimbarile
         </button>
-        {confirmSubmit ? (
+        {confirmSubmit && (
           <div className="confirm-submission-layout">
             <div className="confirm-submission-container">
               Confirma schimbarile facute pentru intrarea pe numele {customerData.name} .
@@ -247,8 +247,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
               </div>
             </div>
           </div>
-        ) : (
-          ''
         )}
       </form>
     </div>

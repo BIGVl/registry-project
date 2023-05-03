@@ -17,7 +17,6 @@ const deleteDates = async (
     let docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
     let data = docSnap.data();
 
-    console.log(data);
     while (currentDate <= dateOfLeave) {
       if (currentDate.getMonth() !== previousMonth.getMonth()) {
         await setDoc(doc(db, `${location}${userID}${previousMonth.getFullYear()}`, `${previousMonth.getMonth() + 1}`), data, {
@@ -42,6 +41,7 @@ const deleteDates = async (
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
+
     await setDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`), data, {
       merge: true
     });

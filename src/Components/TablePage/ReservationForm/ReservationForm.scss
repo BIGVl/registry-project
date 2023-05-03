@@ -3,7 +3,7 @@
   top: 0%;
   z-index: 5;
   width: 100%;
-  background-color:var(--main);
+  background-color: var(--main);
   pointer-events: all;
   display: flex;
   justify-content: center;
@@ -22,7 +22,6 @@
   font-family: inherit;
   overflow-y: scroll;
   position: relative;
-  
 }
 
 #form-reservation input {
@@ -31,10 +30,9 @@
   font-family: 'Open Sans', sans-serif;
   font-weight: 500;
   background-color: white;
-
 }
 
-#form-reservation input[type=checkbox] {
+#form-reservation input[type='checkbox'] {
   width: 1.2rem;
   height: 1.2rem;
 }
@@ -84,7 +82,6 @@
   color: black;
 }
 
-
 #form-reservation label {
   display: flex;
   flex-direction: column;
@@ -93,13 +90,12 @@
   color: black;
 }
 
-
 #adults-childs {
   display: flex;
   gap: 1rem;
 }
 
-#form-reservation #adults-childs label, 
+#form-reservation #adults-childs label,
 #form-reservation #money-field label {
   flex-direction: row;
 }
@@ -111,19 +107,18 @@
   width: 4rem;
 }
 
-#advance, 
+#advance,
 #total {
   width: 6rem;
-  margin: 0px .3rem;
+  margin: 0px 0.3rem;
 }
 
 #cancel {
-  filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);  
+  filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);
   align-self: flex-start;
   left: 5%;
   top: 2%;
   position: absolute;
-  
 }
 
 #submit {
@@ -148,11 +143,10 @@
   justify-content: center;
   align-items: center;
   top: 0;
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .error {
-  
   font-family: inherit;
   background-color: brown;
   max-width: 75%;
@@ -163,25 +157,20 @@
   font-weight: 500;
   gap: 1rem;
   line-height: 2rem;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   border-radius: 25px;
   transform: translateY(-2rem);
 }
 
-
-
 #confirm-submission {
-
   position: absolute;
   z-index: 20;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
-
 #money-field {
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -191,8 +180,20 @@
   margin-top: 2rem;
 }
 
-#balance {
+.price-per-room {
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 
+  .price-on-room {
+    width: 7rem;
+  }
+}
+
+#balance {
   font-size: 1.1rem;
   justify-self: center;
   align-self: center;
@@ -204,13 +205,12 @@
   top: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, .4);
+  background-color: rgba(0, 0, 0, 0.4);
   pointer-events: all;
   z-index: 15;
 }
 
 #confirm-submission {
-
   background-color: rgba(255, 255, 255, 1);
   width: 20rem;
   height: 15rem;
@@ -218,13 +218,12 @@
   font-family: inherit;
   border-radius: 50px;
   padding: 2rem;
-  box-shadow: 2px 2px 20px 1px  rgba(150,150,150, .9);
+  box-shadow: 2px 2px 20px 1px rgba(150, 150, 150, 0.9);
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
   font-size: 1.1rem;
-    
 }
 
 #confirm-buttons-container {
@@ -233,15 +232,13 @@
   width: 100%;
 }
 
-#submit-confirm, 
-#exit-confirm  {
-
-  padding: .8rem;
+#submit-confirm,
+#exit-confirm {
+  padding: 0.8rem;
   background-color: var(--action);
   color: white;
   font-family: inherit;
   font-size: 1.1rem;
   border-radius: 25px;
   cursor: pointer;
-
 }
