@@ -46,7 +46,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   async function getData() {
     const responseData = await getCustomerInfo(location, userID, entryDetails.customerId);
     initialCustomerData.current = { ...responseData };
-    console.log(initialCustomerData.current.rooms);
     setCustomerData({ ...responseData } ?? customerData);
     return responseData;
   }
@@ -88,7 +87,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         }
       });
     }
-    console.log(initialCustomerData.current.rooms);
   };
 
   const submit = async (e: React.FormEvent) => {

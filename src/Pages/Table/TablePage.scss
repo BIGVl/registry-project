@@ -17,7 +17,7 @@
 }
 
 /* Main styles */
-.table {
+.table-container {
   width: 95vw;
   display: grid;
   grid-template:
@@ -45,16 +45,12 @@ th {
   color: white;
 }
 
-#calendar th {
-  width: 3.2rem;
-}
-
 td {
   height: 3rem;
 }
 
 #rooms-header,
-#days {
+#day-th {
   height: 5rem;
 }
 
@@ -105,10 +101,16 @@ td {
   height: 50%;
   overflow-x: hidden;
   font-family: 'Open Sans', sans-serif;
+  table-layout: fixed;
+  width: 450%;
 }
 
-#calendar th {
-  padding: 0.6rem;
+#calendar th .day {
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #show-container,

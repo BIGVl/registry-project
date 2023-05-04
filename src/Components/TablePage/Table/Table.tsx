@@ -9,7 +9,7 @@ interface Props {
 
 const Table = ({ rooms, openForm }: Props) => {
   return (
-    <div className="table">
+    <div className="table-container">
       <Rooms rows={rooms} />
       <Calendar openForm={openForm} rows={rooms} />
     </div>

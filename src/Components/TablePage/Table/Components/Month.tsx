@@ -92,7 +92,11 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
               );
             }
           }
-          return <td key={room + '/' + d + '/' + month}>{occupancyDisplay}</td>;
+          return (
+            <td key={room + '/' + d + '/' + month} className="data-cells">
+              {occupancyDisplay}
+            </td>
+          );
         })}
       </tr>
     );
@@ -105,8 +109,11 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
           <tr>
             {daysArray.map((m, i) => {
               return (
-                <th id="days" key={m}>
-                  {m} {WEEKDAYS[weekdayIndexes[i]].slice(0, 3)}
+                <th id="day-th" key={m}>
+                  <div className="day ">
+                    {' '}
+                    {m} {WEEKDAYS[weekdayIndexes[i]].slice(0, 3)}
+                  </div>
                 </th>
               );
             })}
