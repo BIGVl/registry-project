@@ -2,12 +2,12 @@ import './ReservationForm.scss';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
-import saveRooms from '../helpers/saveRooms';
-import saveEntry from '../helpers/saveEntry';
-import getCxNr from '../helpers/getCxNr';
-import validateDetails from '../helpers/validateDetails';
+import saveRooms from '../../../helpers/saveRooms';
+import saveEntry from '../../../helpers/saveEntry';
+import getCxNr from '../../../helpers/getCxNr';
+import validateDetails from '../../../helpers/validateDetails';
 import { FormData } from '../../../globalInterfaces';
-import checkRooms from '../helpers/checkRooms';
+import checkRooms from '../../../helpers/checkRooms';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;

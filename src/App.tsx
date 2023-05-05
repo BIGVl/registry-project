@@ -10,6 +10,7 @@ import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore'
 import Nav from './Components/App/Nav';
 import NoLocation from './Pages/NoLocations/NoLocations';
 import LoadingScreen from './Components/LoadingScreen/LoadingScreen';
+import CustomersList from './Pages/CustomersList/CustomersList';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
@@ -65,15 +66,18 @@ const App = () => {
           <Route path="/first-location" element={<NoLocation />} />
           {locations.map((location) => {
             return (
-              <Route
-                key={location.name}
-                path={location.name}
-                element={
-                  <LocationContext.Provider value={location.name}>
-                    <TablePage rooms={Number(location.rooms)} />
-                  </LocationContext.Provider>
-                }
-              />
+              <>
+                <Route
+                  key={location.name}
+                  path={location.name}
+                  element={
+                    <LocationContext.Provider value={location.name}>
+                      <TablePage rooms={Number(location.rooms)} />
+                    </LocationContext.Provider>
+                  }
+                />
+                <Route key={location.name} path="customer-list" element={<CustomersList location={location.name} />} />
+              </>
             );
           })}
           '

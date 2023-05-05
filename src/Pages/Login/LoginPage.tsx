@@ -6,7 +6,7 @@ import { UserIDContext } from '../../Contexts';
 import './LoginPage.css';
 
 const LoginPage = () => {
-  const [hasAccount, setHasAccount] = useState<boolean>(false);
+  const [hasAccount, setHasAccount] = useState<boolean>(true);
   const userID = useContext(UserIDContext);
   const navigate = useNavigate();
 

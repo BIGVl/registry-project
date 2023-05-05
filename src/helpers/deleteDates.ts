@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../firebase';
 
 //This deletes the entry from the calendar it does not affect the document of the customer
 const deleteDates = async (

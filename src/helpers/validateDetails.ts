@@ -1,5 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
-import { FormData } from '../../../globalInterfaces';
+import { FormData } from '../globalInterfaces';
 
 //Check if the inputs are available and if yes prompt the user the confirmation pop up
 //It will take formData typed with FormData and check if the requirements are met, then set the error message if they are not else set the state that

@@ -1,5 +1,5 @@
 import { doc, DocumentData, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../firebase';
 
 const checkRooms = async (
   rooms: number[],

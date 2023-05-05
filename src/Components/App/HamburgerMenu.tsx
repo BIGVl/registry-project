@@ -5,7 +5,7 @@ import { ReactComponent as Close } from '../../assets/arrow-right.svg';
 import './HamburgerMenu.scss';
 import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import deleteUrl from '../../assets/delete.png';
 import AddLocation from './AddLocation';
 
@@ -20,7 +20,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   const [openLocationsList, setOpenLocationsList] = useState<boolean>(false);
   const [locationToDelete, setLocationToDelete] = useState<string>('');
   const navigate = useNavigate();
-  console.log(locations);
   const logOut = async () => {
     try {
       await signOut(auth);
@@ -45,12 +44,10 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   const openDeleteLocation: MouseEventHandler<HTMLImageElement> = (e) => {
     if (e.target instanceof HTMLImageElement) {
       setLocationToDelete(e.target.id);
-      console.log(e.target.id);
     }
   };
   const deleteLocation = async () => {
     setLocationToDelete('');
-    console.log(locationToDelete);
     await deleteDoc(doc(db, `locations${userInfo.uid}`, locationToDelete));
   };
 
@@ -88,6 +85,9 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         ) : (
           <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
         ))}
+      <Link to="/customer-list" className="customer-list">
+        Lista Clienti
+      </Link>
       <section className="locations-section">
         <button
           onClick={(e) => {
@@ -97,6 +97,22 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         >
           Lista locatii
         </button>
+        {locationToDelete !== '' && (
+          <div className="delete-location-layout">
+            <div className="delete-location-modal">
+              <div className="message">Esti sigur ca vrei sa stergi locatia {locationToDelete} ?</div>
+              <div className="buttons-container">
+                <button className="confirm-delete" onClick={deleteLocation}>
+                  Confirm
+                </button>
+
+                <button className="back" onClick={() => setLocationToDelete('')}>
+                  Inapoi
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <button
           className="open-addLocation-button"
@@ -110,23 +126,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
       <button onClick={logOut} className="sign-out">
         Deconecteaza-te
       </button>
-      {locationToDelete !== '' && (
-        <div className="delete-location-layout">
-          <div className="delete-location-modal">
-            <div className="message">Esti sigur ca vrei sa stergi locatia {locationToDelete} ?</div>
-
-            <div className="buttons-container">
-              <button className="confirm-delete" onClick={deleteLocation}>
-                Confirm
-              </button>
-
-              <button className="back" onClick={() => setLocationToDelete('')}>
-                Inapoi
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
