@@ -10,6 +10,7 @@ const deleteDates = async (
   rooms: string[],
   customerId: number
 ) => {
+  console.log(rooms);
   for (const room of rooms) {
     const dateOfLeave = new Date(leaveDate);
     const currentDate = new Date(entryDate);
@@ -19,6 +20,7 @@ const deleteDates = async (
 
     while (currentDate <= dateOfLeave) {
       if (currentDate.getMonth() !== previousMonth.getMonth()) {
+        console.log(data);
         await setDoc(doc(db, `${location}${userID}${previousMonth.getFullYear()}`, `${previousMonth.getMonth() + 1}`), data, {
           merge: true
         });
@@ -41,7 +43,7 @@ const deleteDates = async (
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
-
+    console.log(data);
     await setDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`), data, {
       merge: true
     });

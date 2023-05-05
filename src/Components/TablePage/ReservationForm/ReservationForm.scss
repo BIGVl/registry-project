@@ -1,14 +1,18 @@
 #form-container {
-  position: absolute;
+  position: fixed;
   top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
   z-index: 5;
-  width: 100%;
   background-color: var(--main);
   pointer-events: all;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Open Sans', sans-serif;
+  overflow-y: auto;
+  padding-top: 10rem;
 }
 
 #form-reservation {
@@ -21,7 +25,6 @@
   gap: 1.5rem;
   font-family: inherit;
   overflow-y: scroll;
-  position: relative;
 }
 
 #form-reservation input {

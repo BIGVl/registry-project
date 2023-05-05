@@ -87,6 +87,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         }
       });
     }
+    console.log(initialCustomerData.current.rooms);
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -103,6 +104,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     );
 
     if (areRoomsFree) {
+      console.log(initialCustomerData.current.rooms);
       await deleteDates(
         location,
         userID,
