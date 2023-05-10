@@ -18,3 +18,7 @@ export interface FormData {
   balance: number;
   kids: string;
 }
+
+export interface FormDataIded extends FormData {
+  id: string;
+}

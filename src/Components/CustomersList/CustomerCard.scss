@@ -1,0 +1,47 @@
+.customer-card {
+  display: grid;
+  gap: 0.5rem;
+  background-color: rgb(200, 205, 210);
+  padding: 0.7rem;
+  width: 100%;
+  height: 100%;
+  grid-template-areas:
+    'contact contact'
+    'rooms dates';
+
+  .contact-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6em;
+    grid-area: contact;
+  }
+
+  .rooms-open-container {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .rooms {
+    grid-area: rooms;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-expand {
+    padding: 0.4rem;
+    max-height: 2rem;
+    border-radius: 3px;
+    background-color: var(--action);
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .rooms ul {
+    display: flex;
+  }
+
+  .date-container {
+    grid-area: dates;
+    justify-self: end;
+  }
+}

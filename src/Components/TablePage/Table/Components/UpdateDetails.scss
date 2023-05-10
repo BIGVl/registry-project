@@ -1,158 +1,147 @@
 .update-form-container {
-    background:var(--third);
-    border-radius: 5px;
-    padding: 3rem 1rem;
-    position: fixed;
-    top: 0%;
-    left: 0%;
-    right: 0%;
-    bottom: 0%;
-    z-index: 2;
-    pointer-events: all;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    z-index: 5;
-    overflow-y: scroll;
+  background: var(--third);
+  border-radius: 5px;
+  padding: 3rem 1rem;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 5;
+  overflow-y: scroll;
 
-    .close-form {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);
-    }
-
-
+  .close-form {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);
+  }
 }
 
 .update-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  section {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  input {
+    font-size: 1rem;
+    padding: 3px;
+    border-radius: 5px;
+  }
+
+  .contact-info input {
+    width: 20rem;
+  }
+
+  .dates,
+  .persons {
+    flex-direction: row;
+  }
+
+  .persons {
+    width: 100%;
     justify-content: center;
     align-items: center;
-
-    section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
     label {
-        display: flex;
-        flex-direction: column;
-        gap: .4rem;
-
-    }   
-
-
-
+      align-items: center;
+    }
     input {
-        font-size: 1rem;
-        padding: 3px;
-        border-radius: 5px;
+      width: 50%;
     }
+  }
 
-    .contact-info input {
-        width: 20rem;
+  .rooms-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.3rem;
+  }
+
+  .rooms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1.2rem;
+    row-gap: 0.8rem;
+    font-size: 1rem;
+    label {
+      justify-content: space-between;
+      flex-direction: row;
     }
-
-    .dates,
-    .persons {
-        flex-direction: row;
-        
+    input {
+      width: 1.3rem;
     }
+  }
 
-    .persons {
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        label { 
-        align-items: center;
-        }
-        input { width: 50%;}
+  .room:checked {
+    filter: invert(63%) sepia(93%) saturate(272%) hue-rotate(348deg) brightness(87%) contrast(103%);
+  }
+
+  .balance {
+    font-weight: 500;
+    font-size: 1.3rem;
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .submit-update {
+    padding: 1rem 0.4rem;
+    background-color: var(--action);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 1px 1px 15px 2px #999;
+  }
+
+  .confirm-submission-layout {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+  }
+
+  .confirm-submission-container {
+    background-color: var(--main);
+    padding: 0.6rem;
+    border-radius: 4px;
+  }
+
+  .confirm-buttons-container {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+      background-color: var(--action);
+      padding: 0.5rem 0.8rem;
+      border-radius: 5px;
     }
-
-
-    .rooms-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        font-size: 1.3rem;
-    }
-
-    .rooms {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 1.2rem;
-        row-gap: .8rem;
-        font-size: 1rem;
-        label {
-            justify-content: space-between;
-            flex-direction: row;
-        }
-        input {
-            width: 1.3rem;
-        }
-    }
-
-
-    .room:checked {
-        filter: invert(63%) sepia(93%) saturate(272%) hue-rotate(348deg) brightness(87%) contrast(103%);    
+  }
 }
-
-    .balance {
-        font-weight: 500;
-        font-size: 1.3rem;
-        display: flex;
-        gap: .8rem;        
-    }
-
-    .submit-update {
-
-        padding: 1rem .4rem;
-        background-color: var(--action);
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        
-    }
-
-    .confirm-submission-layout {
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        position: fixed;
-        background-color: rgba($color: #000000, $alpha: .7);
-        pointer-events: all;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 3rem;
-    }
-
-    .confirm-submission-container {
-        background-color: var(--main);
-        padding: .6rem;
-        border-radius: 4px;
-        
-    }
-
-    .confirm-buttons-container {
-        margin-top: 3rem;
-        display: flex;
-        justify-content: space-evenly;
-
-        button {
-            background-color: var(--action);
-            padding: .5rem .8rem;
-            border-radius: 5px;
-        }   
-    }
-
-}
-
-

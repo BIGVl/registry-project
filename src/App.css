@@ -24,6 +24,10 @@ body {
 
 }
 
+li {
+    list-style: none;
+}
+
 .App {
     min-height: 100vh;
     padding-bottom: 6rem;

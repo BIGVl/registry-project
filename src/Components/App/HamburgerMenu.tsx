@@ -5,7 +5,7 @@ import { ReactComponent as Close } from '../../assets/arrow-right.svg';
 import './HamburgerMenu.scss';
 import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import deleteUrl from '../../assets/delete.png';
 import AddLocation from './AddLocation';
 
@@ -19,6 +19,12 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   const [openAddLocation, setOpenAddLocation] = useState<boolean>(false);
   const [openLocationsList, setOpenLocationsList] = useState<boolean>(false);
   const [locationToDelete, setLocationToDelete] = useState<string>('');
+  const location = useLocation();
+  console.log(location.pathname);
+  const path =
+    location.pathname.indexOf('/', 1) > 0 ? location.pathname.slice(0, location.pathname.indexOf('/', 1)) : location.pathname;
+  console.log(path);
+
   const navigate = useNavigate();
   const logOut = async () => {
     try {
@@ -85,7 +91,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         ) : (
           <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
         ))}
-      <Link to="/customer-list" className="customer-list">
+      <Link to={`${path}/customer-list`} className="customer-list">
         Lista Clienti
       </Link>
       <section className="locations-section">

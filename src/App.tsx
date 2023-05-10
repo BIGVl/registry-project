@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { LocationContext, UserIDContext } from './Contexts';
 import { auth, db } from './firebase';
 import LoginPage from './Pages/Login/LoginPage';
@@ -15,6 +15,7 @@ import CustomersList from './Pages/CustomersList/CustomersList';
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
+  const location = useLocation();
   const navigate = useNavigate();
 
   //Subscribing to firebase for authentication changes and for locations
@@ -47,12 +48,18 @@ const App = () => {
 
   //Check if there are any locations and if not redirect the user to the first-location screen
   useEffect(() => {
-    if (userInfo.uid) {
+    const indexLocation = locations.find((location) => {
+      return location.selected === true;
+    });
+    console.log(indexLocation);
+    console.log(location.pathname);
+    if (location.pathname === '/' && userInfo.uid) {
       if (locations.length === 0) {
-        navigate('/first-location');
-      } else if (locations[0]) {
-        //TODO Uncomment the navigate after you are done testing loading screen and remove the Route to test
-        navigate(`/${locations[0].name}`);
+        navigate('first-location');
+      } else if (indexLocation !== undefined) {
+        navigate(`${indexLocation.name}`);
+      } else {
+        navigate(`${locations[0].name}`);
       }
     }
   }, [locations]);
@@ -62,25 +69,30 @@ const App = () => {
       <main className="App">
         <Routes>
           <Route path="/" element={<LoadingScreen />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/first-location" element={<NoLocation />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="first-location" element={<NoLocation />} />
           {locations.map((location) => {
             return (
               <>
                 <Route
-                  key={location.name}
                   path={location.name}
                   element={
-                    <LocationContext.Provider value={location.name}>
+                    <LocationContext.Provider key={location.name} value={location.name}>
                       <TablePage rooms={Number(location.rooms)} />
                     </LocationContext.Provider>
                   }
                 />
-                <Route key={location.name} path="customer-list" element={<CustomersList location={location.name} />} />
+                <Route
+                  path={`${location.name}/customer-list`}
+                  element={
+                    <LocationContext.Provider key={location.name} value={location.name}>
+                      <CustomersList />
+                    </LocationContext.Provider>
+                  }
+                />
               </>
             );
           })}
-          '
         </Routes>
       </main>
 
