@@ -10,6 +10,7 @@ import saveRooms from '../../../../helpers/saveRooms';
 import { FormData } from '../../../../globalInterfaces';
 import deleteDates from '../../../../helpers/deleteDates';
 import checkRooms from '../../../../helpers/checkRooms';
+import daysBetweenDates from '../../../../helpers/daysBetweenDates';
 
 interface Props {
   entryDetails: {
@@ -29,6 +30,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     name: '',
     phone: '',
     rooms: [],
+    prices: {},
     total: 0,
     advance: 0,
     discount: 0,
@@ -65,10 +67,36 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     });
   }, [customerData.total, customerData.advance, customerData.discount]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCustomerData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
+  //Besides updating the state, the dates or the price values are changed the total and the due balance will be updated accordingly
+
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
+    const daysBetween = daysBetweenDates(customerData.entryDate, customerData.leaveDate);
+
+    if (e.target.id.includes('priceRoom')) {
+      setCustomerData((prev: FormData) => {
+        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          : 0;
+
+        return { ...prev, prices: newPrices, total: newTotal };
+      });
+    } else if (e.target.type === 'date') {
+      setCustomerData((prev) => {
+        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          : 0;
+
+        return { ...prev, [e.target.name]: e.target.value, total: newTotal };
+      });
+    } else {
+      setCustomerData((prev) => {
+        return { ...prev, [e.target.name]: e.target.value };
+      });
+    }
   };
 
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
@@ -154,11 +182,11 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         <section className="contact-info">
           <label>
             Nume
-            <input type="text" name="name" className="name" value={customerData.name} onChange={handleChange} />
+            <input type="text" name="name" className="name" value={customerData.name} onChange={change} />
           </label>
           <label>
             Telefon
-            <input type="number" name="phone" className="phone" value={customerData.phone} onChange={handleChange} />
+            <input type="number" name="phone" className="phone" value={customerData.phone} onChange={change} />
           </label>
         </section>
         <div className="rooms-container">
@@ -185,31 +213,53 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
         <section className="dates">
           <label>
             Data de intrare
-            <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={handleChange} />
+            <input type="date" name="entryDate" className="entryDate" value={customerData.entryDate} onChange={change} />
           </label>
           <label>
             Data de iesire
-            <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={handleChange} />
+            <input type="date" name="leaveDate" className="leaveDate" value={customerData.leaveDate} onChange={change} />
           </label>
         </section>
         <section className="persons">
           <label>
             Adulti
-            <input type="number" name="adults" className="adults" value={customerData.adults} onChange={handleChange} />
+            <input type="number" name="adults" className="adults" value={customerData.adults} onChange={change} />
           </label>
           <label>
             Copii
-            <input type="number" name="kids" className="kids" value={customerData.kids} onChange={handleChange} />
+            <input type="number" name="kids" className="kids" value={customerData.kids} onChange={change} />
           </label>
         </section>
         <section className="money">
+          <div className="price-per-room">
+            {customerData.rooms
+              .sort((a: number, b: number) => (a > b ? 1 : -1))
+              .map((room: number) => {
+                return (
+                  <label key={room} htmlFor={'priceRoom'} className="price-on-room-label">
+                    camera {room} :
+                    <input
+                      data-id={room}
+                      type="number"
+                      id={'priceRoom'}
+                      name="priceRoom"
+                      className="price-on-room"
+                      onChange={(e) => {
+                        change(e);
+                      }}
+                    />
+                    lei
+                  </label>
+                );
+              })}
+          </div>
           <label>
             Avans
-            <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
+            <input type="number" name="advance" className="advance" value={customerData.advance} onChange={change} />
           </label>
           <label>
             Reducere
-            <input type="number" name="discount" className="discount" value={customerData.discount} onChange={handleChange} />
+            <input type="number" name="discount" className="discount" value={customerData.discount} onChange={change} />
           </label>
           <div className="balance">
             De plata <p className="sum-remaining"> {customerData.balance}</p>
