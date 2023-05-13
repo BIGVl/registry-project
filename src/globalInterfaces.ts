@@ -14,6 +14,7 @@ export interface FormData {
   phone: string;
   discount: number;
   rooms: number[];
+  prices: {};
   total: number;
   balance: number;
   kids: string;

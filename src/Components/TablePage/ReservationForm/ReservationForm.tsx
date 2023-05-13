@@ -1,13 +1,14 @@
 import './ReservationForm.scss';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import saveRooms from '../../../helpers/saveRooms';
 import saveEntry from '../../../helpers/saveEntry';
 import getCxNr from '../../../helpers/getCxNr';
 import validateDetails from '../../../helpers/validateDetails';
-import { FormData } from '../../../globalInterfaces';
 import checkRooms from '../../../helpers/checkRooms';
+import { FormData } from '../../../globalInterfaces';
+import daysBetweenDates from '../../../helpers/daysBetweenDates';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
@@ -24,6 +25,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     name: '',
     phone: '',
     rooms: [],
+    prices: {},
     total: 0,
     advance: 0,
     discount: 0,
@@ -59,15 +61,27 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     });
   }, [formData.total, formData.advance, formData.discount]);
 
-  const change = (e: any) => {
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id.includes('priceRoom')) {
+      const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
+      console.log(daysBetween);
+
+      setFormData((prev: FormData) => {
+        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          : 0;
+        return { ...prev, prices: newPrices, total: newTotal };
+      });
+    } else {
+      setFormData((prev) => {
+        return { ...prev, [e.target.name]: e.target.value };
+      });
     }
-    setFormData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
   };
 
-  const handleCheck = (e: any) => {
+  //Add and remove the rooms in the state
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setFormData((prev: any) => {
         return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
@@ -76,8 +90,8 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       formData.rooms.forEach((room: number, i: number) => {
         if (room === Number(e.target.value)) {
           const rooms = formData.rooms;
-          rooms?.splice(i, 1);
           setFormData((prev) => {
+            rooms?.splice(i, 1);
             return { ...prev, [e.target.name]: rooms };
           });
         }
@@ -177,11 +191,12 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
               .sort((a, b) => (a > b ? 1 : -1))
               .map((room) => {
                 return (
-                  <label key={room} htmlFor={`priceRoom${room}`} className="price-on-room-label">
+                  <label key={room} htmlFor={'priceRoom'} className="price-on-room-label">
                     camera {room} :
                     <input
+                      data-id={room}
                       type="number"
-                      id={`priceRoom${room}`}
+                      id={'priceRoom'}
                       name="priceRoom"
                       className="price-on-room"
                       onChange={(e) => {

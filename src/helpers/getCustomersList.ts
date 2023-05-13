@@ -8,13 +8,13 @@ export default function getCustomersList(
   year: number,
   setState: (value: FormDataIded[]) => void
 ) {
-  console.log(`${location}${user}`);
-
+  const thisMonth = `0${new Date().getMonth() + 1}`;
+  console.log(`${year}-${thisMonth}-01`);
   const data: FormDataIded[] = [];
   const q = query(
     collection(db, `${location}${user}`),
-    where('entryDate', '>=', `${year}-01-01`),
-    where('entryDate', '<=', `${year}-12-31`)
+    where('entryDate', '>=', `${year}-${thisMonth}-01`),
+    where('entryDate', '<=', `${year}-${thisMonth}-31`)
   );
   const unsubscribe = onSnapshot(q, (querySnap) => {
     querySnap.forEach((doc) => {

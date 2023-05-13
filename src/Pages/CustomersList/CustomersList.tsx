@@ -4,7 +4,7 @@ import { LocationContext, UserIDContext } from '../../Contexts';
 import getCustomersList from '../../helpers/getCustomersList';
 import { FormDataIded } from '../../globalInterfaces';
 import CustomerCard from '../../Components/CustomersList/CustomerCard';
-import Search from '../../Components/CustomersList/Search';
+import SearchForm from '../../Components/CustomersList/SearchForm';
 
 export default function CustomersList() {
   const location = useContext(LocationContext);
@@ -19,7 +19,7 @@ export default function CustomersList() {
   return (
     <div className="customer-list-container">
       <h1> Clientii din {location}</h1>
-      <Search />
+      <SearchForm setCustomers={setCustomers} />
       <section className="customers-list">
         <ul className="customer-cards-container">
           {customers.map((cx, i) => {

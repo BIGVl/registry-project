@@ -1,0 +1,31 @@
+.search-container {
+  align-self: center;
+  justify-content: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .search {
+    min-width: 20rem;
+    resize: none;
+    border-radius: 15px;
+    padding: 0.4rem 0.6rem;
+    padding-left: 2.4rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+  }
+
+  .search:focus {
+    outline: none;
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 2.3%;
+    width: 24px;
+    height: 24px;
+    filter: invert(93%) sepia(20%) saturate(0%) hue-rotate(235deg) brightness(89%) contrast(81%);
+  }
+}
