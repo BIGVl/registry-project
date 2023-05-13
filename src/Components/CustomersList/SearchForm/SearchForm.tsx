@@ -1,10 +1,10 @@
 import './SearchForm.scss';
-import searchImg from '../../assets/search.png';
+import searchImg from '../../../assets/search.png';
 import { useContext, useState } from 'react';
-import { LocationContext, UserIDContext } from '../../Contexts';
+import { LocationContext, UserIDContext } from '../../../Contexts';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { FormDataIded } from '../../globalInterfaces';
+import { db } from '../../../firebase';
+import { FormDataIded } from '../../../globalInterfaces';
 
 interface Props {
   setCustomers: (value: FormDataIded[]) => void;

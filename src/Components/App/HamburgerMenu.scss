@@ -16,6 +16,18 @@
   .hamburger-email {
     font-family: inherit;
     padding: 0.5rem;
+    margin-left: -2.4rem;
+  }
+
+  .customer-list {
+    text-decoration: none;
+    color: var(--action);
+    font-weight: 600;
+    border-bottom: 1px solid var(--secondary);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0rem;
   }
 
   .hamburger-close {
@@ -28,12 +40,12 @@
 
   .open-addLocation-button,
   .open-list-locations {
-    background-color: var(--action);
-    color: black;
-    padding: 0.5rem 0rem;
-    width: 100%;
-    border-radius: 3px;
+    color: var(--action);
+    padding: 0.5rem 0.5rem;
     font-family: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--secondary);
   }
 
   .sign-out {
@@ -46,7 +58,6 @@
     font-family: inherit;
   }
 
-  .sign-out::before,
   .sign-out::after {
     content: '';
     display: block;
@@ -61,8 +72,6 @@
     gap: 1.5rem;
     width: 100%;
     padding: 2rem 0;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
   }
 
   .locations-list {

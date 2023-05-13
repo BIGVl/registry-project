@@ -1,5 +1,5 @@
 import './CustomerCard.scss';
-import { FormDataIded } from '../../globalInterfaces';
+import { FormDataIded } from '../../../globalInterfaces';
 import { useState } from 'react';
 
 interface Props {
