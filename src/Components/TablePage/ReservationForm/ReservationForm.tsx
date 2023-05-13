@@ -61,17 +61,25 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     });
   }, [formData.total, formData.advance, formData.discount]);
 
+  //Besides updating the state, the dates or the price values are changed the total and the due balance will be updated accordingly
   const change = (e: ChangeEvent<HTMLInputElement>) => {
+    const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
     if (e.target.id.includes('priceRoom')) {
-      const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
-      console.log(daysBetween);
-
       setFormData((prev: FormData) => {
         const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
         const newTotal = !isNaN(daysBetween)
           ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
           : 0;
         return { ...prev, prices: newPrices, total: newTotal };
+      });
+    } else if (e.target.type === 'date') {
+      setFormData((prev) => {
+        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          : 0;
+
+        return { ...prev, [e.target.name]: e.target.value, total: newTotal };
       });
     } else {
       setFormData((prev) => {

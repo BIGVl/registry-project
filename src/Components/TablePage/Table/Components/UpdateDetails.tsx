@@ -1,5 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../Contexts';
 import getCustomerInfo from '../../../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
@@ -65,13 +65,13 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     });
   }, [customerData.total, customerData.advance, customerData.discount]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCustomerData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setCustomerData((prev: any) => {
         return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
@@ -90,7 +90,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     console.log(initialCustomerData.current.rooms);
   };
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
 
     const areRoomsFree = await checkRooms(
@@ -203,10 +203,6 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
           </label>
         </section>
         <section className="money">
-          <label>
-            Total
-            <input type="number" name="total" className="total" value={customerData.total} onChange={handleChange} />
-          </label>
           <label>
             Avans
             <input type="number" name="advance" className="advance" value={customerData.advance} onChange={handleChange} />
