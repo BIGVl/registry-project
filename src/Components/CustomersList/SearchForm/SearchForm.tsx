@@ -1,10 +1,10 @@
 import './SearchForm.scss';
 import searchImg from '../../../assets/search.png';
-import { useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../../firebase';
 import { FormDataIded } from '../../../globalInterfaces';
+import getCustomersList from '../../../helpers/getCustomersList';
+import searchCxByName from '../../../helpers/searchCxByName';
 
 interface Props {
   setCustomers: (value: FormDataIded[]) => void;
@@ -15,28 +15,17 @@ const SearchForm = ({ setCustomers }: Props) => {
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
 
-  async function searchCxByName() {
-    const docArray: FormDataIded[] = [];
-    const q = query(collection(db, `${location}${userId}`), where('name', '==', searchName));
-    const querySnap = await getDocs(q);
-    setCustomers([]);
-    querySnap.forEach((doc) => {
-      const formData: FormDataIded = doc.data() as FormDataIded;
-      formData.id = doc.id;
-      docArray.push(formData);
-    });
-    setCustomers([...docArray]);
+  async function search(e: FormEvent) {
+    e.preventDefault();
+    if (searchName === '') {
+      getCustomersList(location, userId, 2023, setCustomers);
+    } else {
+      searchCxByName(location, userId, searchName, setCustomers);
+    }
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        searchCxByName();
-      }}
-      action="POST"
-      className="search-container"
-    >
+    <form onSubmit={search} action="POST" className="search-container">
       <input onChange={(e) => setSearchName(e.target.value)} className="search" name="search" id="search" />
       <img className="search-icon" src={searchImg} alt="" />
     </form>
