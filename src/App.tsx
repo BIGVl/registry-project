@@ -51,8 +51,6 @@ const App = () => {
     const indexLocation = locations.find((location) => {
       return location.selected === true;
     });
-    console.log(indexLocation);
-    console.log(location.pathname);
     if (location.pathname === '/' && userInfo.uid) {
       if (locations.length === 0) {
         navigate('first-location');

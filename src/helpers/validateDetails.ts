@@ -9,7 +9,6 @@ const validateDetails = (
   setErrorMsg: (value: string) => void,
   setConfirmSubmit: (value: boolean) => void
 ) => {
-  console.log(formData);
   if (formData.rooms.length < 1) {
     return setErrorMsg('Nu ai selectat nici o camera.');
   } else if (formData.entryDate >= formData.leaveDate) {

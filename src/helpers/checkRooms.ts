@@ -90,7 +90,6 @@ const checkRooms = async (
       }
     }
   }
-  console.log(!hasUnavailableDates);
   return !hasUnavailableDates;
 };
 export default checkRooms;

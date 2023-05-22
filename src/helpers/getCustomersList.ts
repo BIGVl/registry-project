@@ -9,7 +9,6 @@ export default function getCustomersList(
   setState: (value: FormDataIded[]) => void
 ) {
   const thisMonth = `0${new Date().getMonth() + 1}`;
-  console.log(`${year}-${thisMonth}-01`);
   const data: FormDataIded[] = [];
   const q = query(
     collection(db, `${location}${user}`),

@@ -25,7 +25,7 @@ const SearchForm = ({ setCustomers }: Props) => {
   }
 
   return (
-    <form onSubmit={search} action="POST" className="search-container">
+    <form onSubmit={search} action="GET" className="search-container">
       <input onChange={(e) => setSearchName(e.target.value)} className="search" name="search" id="search" />
       <img className="search-icon" src={searchImg} alt="" />
     </form>

@@ -33,7 +33,6 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
   const userId = useContext(UserIDContext);
 
   const submit = async () => {
-    console.log(customerData);
     await deleteEntry(`${location}${userId}`, `${entryDetails.customerId}`);
     await deleteDates(
       location,

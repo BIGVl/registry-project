@@ -20,10 +20,8 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   const [openLocationsList, setOpenLocationsList] = useState<boolean>(false);
   const [locationToDelete, setLocationToDelete] = useState<string>('');
   const location = useLocation();
-  console.log(location.pathname);
   const path =
     location.pathname.indexOf('/', 1) > 0 ? location.pathname.slice(0, location.pathname.indexOf('/', 1)) : location.pathname;
-  console.log(path);
 
   const navigate = useNavigate();
   const logOut = async () => {
@@ -31,7 +29,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
       await signOut(auth);
       setOpenHamburger(false);
     } catch (err) {
-      console.log(err);
     }
   };
 
