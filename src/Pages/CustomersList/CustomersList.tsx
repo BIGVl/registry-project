@@ -3,10 +3,14 @@ import './CustomersList.scss';
 import { LocationContext, UserIDContext } from '../../Contexts';
 import getCustomersList from '../../helpers/getCustomersList';
 import { FormDataIded } from '../../globalInterfaces';
-import CustomerCard from '../../Components/CustomersList/CustomerCard/CustomerCard';
-import SearchForm from '../../Components/CustomersList/SearchForm/SearchForm';
+import CustomerCard from '../../components/CustomersList/CustomerCard/CustomerCard';
+import SearchForm from '../../components/CustomersList/SearchForm/SearchForm';
 
-export default function CustomersList() {
+interface Props {
+  rooms: number;
+}
+
+export default function CustomersList({ rooms }: Props) {
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
   const [customers, setCustomers] = useState<FormDataIded[]>([]);
@@ -24,7 +28,7 @@ export default function CustomersList() {
       <section className="customers-list">
         <ul className="customer-cards-container">
           {customers.map((cx, i) => {
-            return <CustomerCard key={i} data={cx} />;
+            return <CustomerCard key={i} data={cx} rooms={rooms} />;
           })}
         </ul>
       </section>

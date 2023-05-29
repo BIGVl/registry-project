@@ -1,16 +1,16 @@
 import { DocumentData } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 'react';
-import { LocationContext, UserIDContext } from '../../../../Contexts';
-import getCustomerInfo from '../../../../helpers/getCustomerInfo';
+import { LocationContext, UserIDContext } from '../../Contexts';
+import getCustomerInfo from '../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import './UpdateDetails.scss';
-import saveEntry from '../../../../helpers/saveEntry';
-import validateDetails from '../../../../helpers/validateDetails';
-import saveRooms from '../../../../helpers/saveRooms';
-import { FormData } from '../../../../globalInterfaces';
-import deleteDates from '../../../../helpers/deleteDates';
-import checkRooms from '../../../../helpers/checkRooms';
-import daysBetweenDates from '../../../../helpers/daysBetweenDates';
+import saveEntry from '../../helpers/saveEntry';
+import validateDetails from '../../helpers/validateDetails';
+import saveRooms from '../../helpers/saveRooms';
+import { FormData } from '../../globalInterfaces';
+import deleteDates from '../../helpers/deleteDates';
+import checkRooms from '../../helpers/checkRooms';
+import daysBetweenDates from '../../helpers/daysBetweenDates';
 
 interface Props {
   entryDetails: {

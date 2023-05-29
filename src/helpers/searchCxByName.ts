@@ -9,7 +9,6 @@ export default async function searchCxByName(
   setCustomers: (value: FormDataIded[]) => void
 ) {
   const sanitizedSearchName: string = searchName ? searchName.replace(/\s/g, '') : '';
-  console.log(sanitizedSearchName);
   const docArray: FormDataIded[] = [];
   const q = query(collection(db, `${location}${userId}`));
   const querySnap = await getDocs(q);
@@ -19,7 +18,6 @@ export default async function searchCxByName(
     formData.id = doc.id;
     const fieldValue = doc.data().name;
     const sanitizedFieldValue = fieldValue ? fieldValue.replace(/\s/g, '') : '';
-    console.log(sanitizedFieldValue);
     if (sanitizedFieldValue.includes(sanitizedSearchName)) docArray.push(formData);
   });
   setCustomers([...docArray]);

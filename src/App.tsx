@@ -7,9 +7,9 @@ import LoginPage from './Pages/Login/LoginPage';
 import TablePage from './Pages/Table/TablePage';
 import { UserInfo } from './globalInterfaces';
 import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore';
-import Nav from './Components/App/Nav';
+import Nav from './components/App/Nav';
 import NoLocation from './Pages/NoLocations/NoLocations';
-import LoadingScreen from './Components/LoadingScreen/LoadingScreen';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import CustomersList from './Pages/CustomersList/CustomersList';
 
 const App = () => {
@@ -84,7 +84,7 @@ const App = () => {
                   path={`${location.name}/customer-list`}
                   element={
                     <LocationContext.Provider key={location.name} value={location.name}>
-                      <CustomersList />
+                      <CustomersList rooms={Number(location.rooms)} />
                     </LocationContext.Provider>
                   }
                 />

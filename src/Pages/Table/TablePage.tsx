@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import ReservationForm from '../../Components/TablePage/ReservationForm/ReservationForm';
-import Table from '../../Components/TablePage/Table/Table';
+import ReservationForm from '../../components/TablePage/ReservationForm/ReservationForm';
+import Table from '../../components/TablePage/Table/Table';
 import './TablePage.scss';
 import { LocationContext } from '../../Contexts';
 import addImg from '../../assets/add.png';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AddLocation from '../../Components/App/AddLocation';
+import AddLocation from '../../components/App/AddLocation';
 import './NoLocations.css';
 
 const NoLocation = () => {

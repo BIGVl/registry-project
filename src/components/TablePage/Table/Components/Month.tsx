@@ -1,7 +1,7 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import '../../../../Pages/Table/TablePage.scss';
-import UpdateDetails from './UpdateDetails';
+import UpdateDetails from '../../../shared/UpdateDetails';
 import DeleteModal from './DeleteModal';
 import DetailsModal from './DetailsModal';
 

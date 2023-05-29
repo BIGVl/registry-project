@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateUser from '../../Components/LoginPage/CreateUser';
-import Login from '../../Components/LoginPage/Login';
+import CreateUser from '../../components/LoginPage/CreateUser';
+import Login from '../../components/LoginPage/Login';
 import { UserIDContext } from '../../Contexts';
 import './LoginPage.css';
 

@@ -2,13 +2,17 @@ import './CustomerCard.scss';
 import { FormDataIded } from '../../../globalInterfaces';
 import { useState } from 'react';
 import capitalizeName from '../../../helpers/capitalizeName';
+import UpdateDetails from '../../shared/UpdateDetails';
 
 interface Props {
   data: FormDataIded;
+  rooms: number;
 }
 
-const CustomerCard = ({ data }: Props) => {
+const CustomerCard = ({ data, rooms }: Props) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const entryDate: Date = new Date(data.entryDate);
+
   return (
     <>
       {!isExpanded ? (
@@ -42,9 +46,11 @@ const CustomerCard = ({ data }: Props) => {
           </button>
         </li>
       ) : (
-        <div className="card-expanded-container">
-          CARD EXPANDED <button onClick={() => setIsExpanded(!isExpanded)}> BACK</button>{' '}
-        </div>
+        <UpdateDetails
+          entryDetails={{ year: entryDate.getFullYear(), month: entryDate.getMonth() + 1, customerId: Number(data.id) }}
+          setOpenDetails={setIsExpanded}
+          rooms={rooms}
+        />
       )}
     </>
   );
