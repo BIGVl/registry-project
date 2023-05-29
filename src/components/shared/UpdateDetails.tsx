@@ -2,7 +2,7 @@ import { DocumentData } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
-import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
+import { ReactComponent as Cancel } from '../../assets/cancel.svg';
 import './UpdateDetails.scss';
 import saveEntry from '../../helpers/saveEntry';
 import validateDetails from '../../helpers/validateDetails';
