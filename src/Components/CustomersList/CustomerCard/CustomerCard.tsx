@@ -21,15 +21,16 @@ const CustomerCard = ({ data }: Props) => {
               <div className="rooms">
                 Camere:
                 <ul>
-                  {data.rooms.map((room, i) => {
-                    const isLastRoom = i === data.rooms.length - 1;
-                    return (
-                      <li key={room} className="room">
-                        {room}
-                        {!isLastRoom && ','}
-                      </li>
-                    );
-                  })}
+                  {data &&
+                    data.rooms.map((room, i) => {
+                      const isLastRoom = i === data.rooms.length - 1;
+                      return (
+                        <li key={room} className="room">
+                          {room}
+                          {!isLastRoom && ','}
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
             </div>

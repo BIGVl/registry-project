@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../firebase';
 import { FormDataIded } from '../globalInterfaces';
 
@@ -8,14 +8,19 @@ export default async function searchCxByName(
   searchName: string,
   setCustomers: (value: FormDataIded[]) => void
 ) {
+  const sanitizedSearchName: string = searchName ? searchName.replace(/\s/g, '') : '';
+  console.log(sanitizedSearchName);
   const docArray: FormDataIded[] = [];
-  const q = query(collection(db, `${location}${userId}`), where('name', '==', searchName));
+  const q = query(collection(db, `${location}${userId}`));
   const querySnap = await getDocs(q);
   setCustomers([]);
   querySnap.forEach((doc) => {
     const formData: FormDataIded = doc.data() as FormDataIded;
     formData.id = doc.id;
-    docArray.push(formData);
+    const fieldValue = doc.data().name;
+    const sanitizedFieldValue = fieldValue ? fieldValue.replace(/\s/g, '') : '';
+    console.log(sanitizedFieldValue);
+    if (sanitizedFieldValue.includes(sanitizedSearchName)) docArray.push(formData);
   });
   setCustomers([...docArray]);
 }

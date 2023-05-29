@@ -6,7 +6,9 @@ export default async function paginate(location: string, userId: string, lastDoc
 
   const documentSnap = await getDocs(initialBatch);
 
-  documentSnap.docs.map((doc) => {});
+  documentSnap.docs.map((doc) => {
+    console.log(doc);
+  });
 
   const lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
 

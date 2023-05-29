@@ -11,22 +11,32 @@ interface Props {
 }
 
 const SearchForm = ({ setCustomers }: Props) => {
-  const [searchName, setSearchName] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
+  const currentYear = new Date().getFullYear();
 
   async function search(e: FormEvent) {
     e.preventDefault();
-    if (searchName === '') {
-      getCustomersList(location, userId, 2023, setCustomers);
-    } else {
-      searchCxByName(location, userId, searchName, setCustomers);
-    }
+    if (searchValue === '') getCustomersList(location, userId, currentYear, setCustomers);
+    searchCxByName(location, userId, searchValue, setCustomers);
   }
 
   return (
     <form onSubmit={search} action="GET" className="search-container">
-      <input onChange={(e) => setSearchName(e.target.value)} className="search" name="search" id="search" />
+      <input
+        onChange={(e) => {
+          console.log(e.target.value);
+          setSearchValue(e.target.value);
+          if (e.target.value === '') return getCustomersList(location, userId, currentYear, setCustomers);
+          else return searchCxByName(location, userId, e.target.value, setCustomers);
+        }}
+        aria-label="search input"
+        placeholder="Cauta numele clientului"
+        className="search"
+        name="search"
+        id="search"
+      />
       <img className="search-icon" src={searchImg} alt="" />
     </form>
   );

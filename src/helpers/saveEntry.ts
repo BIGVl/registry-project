@@ -5,7 +5,7 @@ const saveEntry = async (locationUserID: string, formData: DocumentData, custome
   if (customerID) {
     const docRef = doc(db, locationUserID, `${customerID}`);
     const data: DocumentData = {
-      name: formData.name,
+      name: formData.name.toLowerCase(),
       entryDate: formData.entryDate,
       leaveDate: formData.leaveDate,
       phone: formData.phone,

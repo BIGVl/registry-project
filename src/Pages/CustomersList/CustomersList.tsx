@@ -12,7 +12,8 @@ export default function CustomersList() {
   const [customers, setCustomers] = useState<FormDataIded[]>([]);
 
   useEffect(() => {
-    const unsubscribe = getCustomersList(location, userId, 2023, setCustomers);
+    const currentYear = new Date().getFullYear();
+    const unsubscribe = getCustomersList(location, userId, currentYear, setCustomers);
     return () => unsubscribe();
   }, []);
 
