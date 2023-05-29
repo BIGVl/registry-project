@@ -1,6 +1,7 @@
 import './CustomerCard.scss';
 import { FormDataIded } from '../../../globalInterfaces';
 import { useState } from 'react';
+import capitalizeName from '../../../helpers/capitalizeName';
 
 interface Props {
   data: FormDataIded;
@@ -14,7 +15,7 @@ const CustomerCard = ({ data }: Props) => {
         <li className="customer-card-li">
           <button className="customer-card" onClick={() => setIsExpanded(!isExpanded)}>
             <div className="contact-details">
-              <h3 className="cx-name"> {data.name} </h3>
+              <h3 className="cx-name"> {capitalizeName(data.name)} </h3>
               <div className="phone"> Tel: {data.phone} </div>
             </div>
             <div className="rooms-open-container">
