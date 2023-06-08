@@ -7,14 +7,16 @@ import LoginPage from './Pages/Login/LoginPage';
 import TablePage from './Pages/Table/TablePage';
 import { UserInfo } from './globalInterfaces';
 import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore';
-import Nav from './components/App/Nav';
 import NoLocation from './Pages/NoLocations/NoLocations';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import CustomersList from './Pages/CustomersList/CustomersList';
+import { ReactComponent as HamburgerIcon } from './assets/menu.svg';
+import HamburgerMenu from './components/App/HamburgerMenu';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
+  const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -65,6 +67,11 @@ const App = () => {
   return (
     <UserIDContext.Provider value={userInfo.uid}>
       <main className="App">
+        {userInfo.uid && locations[0]?.name && (
+          <button onClick={() => setOpenHamburger(!openHamburger)} className="hamburger-button">
+            <HamburgerIcon className="hamburger-icon" />
+          </button>
+        )}
         <Routes>
           <Route path="/" element={<LoadingScreen />} />
           <Route path="login" element={<LoginPage />} />
@@ -92,9 +99,8 @@ const App = () => {
             );
           })}
         </Routes>
+        {openHamburger && <HamburgerMenu userInfo={userInfo} setOpenHamburger={setOpenHamburger} locations={locations} />}
       </main>
-
-      {userInfo.uid && locations[0]?.name && <Nav user={userInfo} locations={locations} locationToFocus={locations[0].name} />}
     </UserIDContext.Provider>
   );
 };

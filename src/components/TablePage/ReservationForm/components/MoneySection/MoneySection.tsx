@@ -11,7 +11,7 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
   return (
     <fieldset className="money-field">
       <div className="price-on-room-container">
-        Pret pe camera pe noapte:
+        Pret pe camera pe noapte
         {rooms
           .sort((a, b) => (a > b ? 1 : -1))
           .map((room) => {

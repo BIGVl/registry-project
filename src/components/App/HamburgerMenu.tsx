@@ -28,8 +28,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
     try {
       await signOut(auth);
       setOpenHamburger(false);
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   //Sends the user to the location's url
