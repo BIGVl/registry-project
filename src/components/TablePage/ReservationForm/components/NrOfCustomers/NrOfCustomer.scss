@@ -1,0 +1,15 @@
+.adults-childs {
+  display: flex;
+  gap: 5rem;
+}
+
+.adults-l,
+.childs-l {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  input {
+    width: 3rem;
+  }
+}

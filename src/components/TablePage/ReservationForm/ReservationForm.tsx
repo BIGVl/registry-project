@@ -9,6 +9,11 @@ import validateDetails from '../../../helpers/validateDetails';
 import checkRooms from '../../../helpers/checkRooms';
 import { FormData } from '../../../globalInterfaces';
 import daysBetweenDates from '../../../helpers/daysBetweenDates';
+import DatesSection from './components/DatesSection/DatesSection';
+import MoneySection from './components/MoneySection/MoneySection';
+import ContactInfo from './components/ContactInfo/ContactInfo';
+import NrOfCustomers from './components/NrOfCustomers/NrOfCustomer';
+import Rooms from './components/Rooms/Rooms';
 
 interface Props {
   setOpenForm: (value: boolean | ((prevState: boolean) => boolean)) => void;
@@ -61,14 +66,14 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     });
   }, [formData.total, formData.advance, formData.discount]);
 
-  //Besides updating the state, the dates or the price values are changed the total and the due balance will be updated accordingly
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
+  //Besides updating the state, when price values are changed the total and the due balance will be updated accordingly
+  const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
     const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
     if (e.target.id.includes('priceRoom')) {
       setFormData((prev: FormData) => {
         const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
         const newTotal = !isNaN(daysBetween)
-          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          ? Object.values(newPrices).reduce((acc: number, current) => acc + Number(current) * daysBetween, 0)
           : 0;
         return { ...prev, prices: newPrices, total: newTotal };
       });
@@ -76,7 +81,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       setFormData((prev) => {
         const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
         const newTotal = !isNaN(daysBetween)
-          ? Object.values(newPrices).reduce((acc: number, curr) => acc + Number(curr) * daysBetween, 0)
+          ? Object.values(newPrices).reduce((acc: number, current) => acc + Number(current) * daysBetween, 0)
           : 0;
 
         return { ...prev, [e.target.name]: e.target.value, total: newTotal };
@@ -148,116 +153,27 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
           }}
           id="cancel"
         />
-
-        <fieldset id="dates">
-          <label htmlFor="entryDate">
-            Data intrare :
-            <input onChange={change} lang="ro" type="date" name="entryDate" id="date-enter" />
-          </label>
-          <label htmlFor="leaveDate">
-            Data iesire :
-            <input onChange={change} lang="ro" type="date" name="leaveDate" id="date-leave" />
-          </label>
-        </fieldset>
-
-        <label htmlFor="name">
-          Numele clientului :
-          <input onChange={change} type="text" name="name" id="name-cx" />
-        </label>
-        <label htmlFor="phone">
-          Numar de telefon :
-          <input onChange={change} type="number" name="phone" id="phone-cx" />
-        </label>
-        <div className="rooms-container">
-          <p>Camere : </p>
-          <fieldset id="rooms-fieldset">
-            {roomsArray.map((room) => {
-              return (
-                <label key={`room${room}`} htmlFor={`rooms-${room}`}>
-                  {room}
-                  <input onChange={handleCheck} type="checkbox" value={room} name={`rooms`} id={`rooms-${room}`} />
-                </label>
-              );
-            })}
-          </fieldset>
-        </div>
-        <fieldset id="adults-childs">
-          <label id="adults-l" htmlFor="adults">
-            Adulti :
-            <input onChange={change} type="number" name="adults" id="adults" />
-          </label>
-          <label id="childs-l" htmlFor="childs">
-            Copii :
-            <input onChange={change} type="number" name="kids" id="childs" />
-          </label>
-        </fieldset>
-
-        <fieldset id="money-field">
-          <div className="price-per-room">
-            Pret pe camera pe noapte:
-            {formData.rooms
-              .sort((a, b) => (a > b ? 1 : -1))
-              .map((room) => {
-                return (
-                  <label key={room} htmlFor={'priceRoom'} className="price-on-room-label">
-                    camera {room} :
-                    <input
-                      data-id={room}
-                      type="number"
-                      id={'priceRoom'}
-                      name="priceRoom"
-                      className="price-on-room"
-                      onChange={(e) => {
-                        change(e);
-                      }}
-                    />
-                    lei
-                  </label>
-                );
-              })}
-          </div>
-          <label id="advance-l" htmlFor="advance">
-            Avans :
-            <input
-              onChange={(e) => {
-                change(e);
-              }}
-              type="number"
-              name="advance"
-              id="advance"
-            />
-            lei
-          </label>
-          <label htmlFor="discount" id="discount-l">
-            Reducere :
-            <input
-              onChange={(e) => {
-                change(e);
-              }}
-              type="number"
-              name="discount"
-              id="reducere"
-            />
-            %
-          </label>
-          <div id="balance">De platit : {formData.balance} lei</div>
-        </fieldset>
+        <DatesSection updateFormData={updateFormData} />
+        <ContactInfo updateFormData={updateFormData} />
+        <Rooms roomsArray={roomsArray} handleCheck={handleCheck} />
+        <NrOfCustomers updateFormData={updateFormData} />
+        <MoneySection rooms={formData.rooms} updateFormData={updateFormData} balance={formData.balance} />
         <button
           type="button"
           id="submit"
+          className="submit"
           onClick={() => {
             validateDetails(formData, setErrorMsg, setConfirmSubmit);
           }}
         >
           Confirm intrare
         </button>
-
         {confirmSubmit && (
           <div id="confirm-submission-container">
             <div id="confirm-submission">
               Intrarea va fi facuta pe numele {formData.name} . Confirmi ?
               <div id="confirm-buttons-container">
-                <button type="submit" id="submit-confirm">
+                <button type="submit" id="submit-confirm" className="submit-confirm">
                   Confirm
                 </button>
                 <button

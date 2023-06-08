@@ -1,0 +1,30 @@
+.rooms-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rooms-title {
+  font-size: 1.3rem;
+}
+
+.rooms-fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 1.5rem;
+  column-gap: 5rem;
+  accent-color: var(--action);
+  width: 15rem;
+  height: 17rem;
+  padding: 1rem;
+  overflow-y: scroll;
+  border: solid 1px gray;
+  border-radius: 5px;
+}
+
+.rooms-label {
+  display: flex;
+  gap: 0.4rem;
+}

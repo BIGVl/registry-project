@@ -7,17 +7,11 @@
   z-index: 5;
   background-color: var(--main);
   pointer-events: all;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-family: 'Open Sans', sans-serif;
   overflow-y: auto;
-  padding-top: 10rem;
 }
 
 #form-reservation {
-  padding: 17% 10%;
-  width: 100%;
   background-color: var(--main);
   display: flex;
   flex-direction: column;
@@ -25,6 +19,7 @@
   gap: 1.5rem;
   font-family: inherit;
   overflow-y: scroll;
+  padding: 1rem;
 }
 
 #form-reservation input {
@@ -40,80 +35,10 @@
   height: 1.2rem;
 }
 
-#name-cx {
-  width: 20rem;
-}
-
-#dates {
-  display: flex;
-  gap: 1rem;
-}
-
-.rooms-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-#rooms-fieldset {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  row-gap: 1.5rem;
-  column-gap: 5rem;
-  accent-color: var(--action);
-  width: 15rem;
-  height: 17rem;
-  padding: 1rem;
-  overflow-y: scroll;
-  border: solid 1px gray;
-  border-radius: 5px;
-}
-
 #form-reservation p {
   font-size: 1.2rem;
   font-weight: 500;
   color: black;
-}
-
-#rooms-fieldset label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  font-size: 1.1rem;
-  color: black;
-}
-
-#form-reservation label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 1.1rem;
-  color: black;
-}
-
-#adults-childs {
-  display: flex;
-  gap: 1rem;
-}
-
-#form-reservation #adults-childs label,
-#form-reservation #money-field label {
-  flex-direction: row;
-}
-
-#adults,
-#childs,
-#advance,
-#reducere {
-  width: 4rem;
-}
-
-#advance,
-#total {
-  width: 6rem;
-  margin: 0px 0.3rem;
 }
 
 #cancel {
@@ -124,7 +49,7 @@
   position: absolute;
 }
 
-#submit {
+.submit {
   padding: 1rem;
   font-family: inherit;
   background-color: var(--action);
@@ -134,6 +59,7 @@
   font-size: 1rem;
   margin-top: 1rem;
   letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
 .error-layout {
@@ -171,36 +97,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-#money-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  font-family: inherit;
-  margin-top: 2rem;
-}
-
-.price-per-room {
-  font-size: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-
-  .price-on-room {
-    width: 7rem;
-  }
-}
-
-#balance {
-  font-size: 1.1rem;
-  justify-self: center;
-  align-self: center;
-  color: black;
 }
 
 #confirm-submission-container {
