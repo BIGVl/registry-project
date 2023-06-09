@@ -104,7 +104,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
 
   return (
     <>
-      <table id="calendar">
+      <table className="calendar">
         <thead>
           <tr>
             {daysArray.map((m, i) => {

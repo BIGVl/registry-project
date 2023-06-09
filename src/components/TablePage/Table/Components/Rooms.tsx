@@ -16,7 +16,7 @@ const Rooms = ({ rows }: PropTypes) => {
   }
 
   return (
-    <table id="rooms">
+    <table className="rooms">
       <colgroup span={31}></colgroup>
       <thead>
         <tr>
