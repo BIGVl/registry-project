@@ -1,19 +1,15 @@
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { FormDataIded } from '../globalInterfaces';
 
-export default function getCustomersList(
-  location: string,
-  user: string,
-  year: number,
-  setState: (value: FormDataIded[]) => void
-) {
-  const thisMonth = `0${new Date().getMonth() + 1}`;
+export default function getAllCustomers(location: string, user: string, year: number, setState: (value: FormDataIded[]) => void) {
   const data: FormDataIded[] = [];
   const q = query(
     collection(db, `${location}${user}`),
-    where('entryDate', '>=', `${year}-${thisMonth}-01`),
-    where('entryDate', '<=', `${year}-${thisMonth}-31`)
+    where('entryDate', '>=', `${year}-01-01`),
+    where('entryDate', '<=', `${year}-12-31`),
+    orderBy('entryDate', 'desc'),
+    limit(30)
   );
   const unsubscribe = onSnapshot(q, (querySnap) => {
     querySnap.forEach((doc) => {

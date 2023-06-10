@@ -22,7 +22,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   const location = useLocation();
   const path =
     location.pathname.indexOf('/', 1) > 0 ? location.pathname.slice(0, location.pathname.indexOf('/', 1)) : location.pathname;
-
+  const property = path.slice(1, path.length);
   const navigate = useNavigate();
   const logOut = async () => {
     try {
@@ -87,9 +87,17 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
         ) : (
           <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
         ))}
-      <Link to={`${path}/customer-list`} className="customer-list">
-        Lista Clienti
-      </Link>
+      <div className="opened-location-container">
+        <div className="opened-location-name">{property}</div>
+        <section className="opened-location-actions">
+          <Link to={`${path}`} className="table-link">
+            Tabel
+          </Link>
+          <Link to={`${path}/customer-list`} className="customer-list">
+            Lista clienti
+          </Link>
+        </section>
+      </div>
       <section className="locations-section">
         <button
           onClick={(e) => {
@@ -97,7 +105,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
           }}
           className="open-list-locations"
         >
-          Lista locatii
+          Schimba locatia
         </button>
         {locationToDelete !== '' && (
           <div className="delete-location-layout">

@@ -1,8 +1,8 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import '../../../../Pages/Table/TablePage.scss';
-import UpdateDetails from '../../../shared/UpdateDetails';
-import DeleteModal from './DeleteModal';
+import '../../Pages/Table/TablePage.scss';
+import UpdateDetails from '../shared/UpdateDetails';
+import DeleteModal from './DeleteModal/DeleteModal';
 import DetailsModal from './DetailsModal';
 
 interface PropTypes {

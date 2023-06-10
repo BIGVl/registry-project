@@ -1,4 +1,4 @@
-function capitalizeName(str: string) {
+export default function capitalizeName(str: string) {
   // Split the string into an array of words
   const words = str.split(' ');
 
@@ -12,4 +12,3 @@ function capitalizeName(str: string) {
 
   return capitalizedString;
 }
-export default capitalizeName;

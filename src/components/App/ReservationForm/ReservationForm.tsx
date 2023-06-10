@@ -1,6 +1,6 @@
 import './ReservationForm.scss';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import saveRooms from '../../../helpers/saveRooms';
 import saveEntry from '../../../helpers/saveEntry';
@@ -56,7 +56,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   }, []);
 
   //Update the balance remaining every time one of these values change
-  useEffect(() => {
+  useMemo(() => {
     setFormData((prev) => {
       const { total, advance, discount } = prev;
       return {

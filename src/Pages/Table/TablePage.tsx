@@ -1,9 +1,10 @@
 import { useContext, useState } from 'react';
-import ReservationForm from '../../components/TablePage/ReservationForm/ReservationForm';
-import Table from '../../components/TablePage/Table/Table';
+import ReservationForm from '../../components/App/ReservationForm/ReservationForm';
 import './TablePage.scss';
 import { LocationContext } from '../../Contexts';
 import addImg from '../../assets/add.png';
+import Rooms from '../../components/TablePage/Rooms';
+import Calendar from '../../components/TablePage/Calendar';
 
 interface Props {
   rooms: number;
@@ -16,10 +17,13 @@ const TablePage = ({ rooms }: Props) => {
   return (
     <div id="table-page">
       <h1 className="table-title">{locationName}</h1>
-      <Table rooms={rooms} openForm={openForm} />
       {/* We pass openForm just to add it in the dependency array of the useEffect in calendar that makes requests for data, in order to avoid constant requests
     and also outdated calendar shown, we add it so everytime a new entry is made the useEffect will be run and data will pe up to date without the costly 
     infinitely query otherwise */}
+      <div className="table-container">
+        <Rooms rows={rooms} />
+        <Calendar openForm={openForm} rows={rooms} />
+      </div>
       {openForm === true ? <ReservationForm rooms={rooms} setOpenForm={setOpenForm} /> : ''}
       <button
         className="add-reservation"

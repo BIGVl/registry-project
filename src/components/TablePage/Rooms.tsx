@@ -1,4 +1,4 @@
-import '../../../../Pages/Table/TablePage.scss';
+import '../../Pages/Table/TablePage.scss';
 
 interface PropTypes {
   rows: number;

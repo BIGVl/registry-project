@@ -1,5 +1,5 @@
 import { DocumentData } from 'firebase/firestore';
-import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../Contexts';
 import getCustomerInfo from '../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../assets/cancel.svg';
@@ -57,7 +57,7 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
   }, []);
 
   //Update the balance remaining every time one of these values change
-  useEffect(() => {
+  useMemo(() => {
     setCustomerData((prev) => {
       const { total, advance, discount } = prev;
       return {

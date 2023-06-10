@@ -3,7 +3,7 @@ import searchImg from '../../../assets/search.png';
 import { FormEvent, useContext, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import { FormDataIded } from '../../../globalInterfaces';
-import getCustomersList from '../../../helpers/getCustomersList';
+import getCustomersList from '../../../helpers/getAllCustomers';
 import searchCxByName from '../../../helpers/searchCxByName';
 
 interface Props {

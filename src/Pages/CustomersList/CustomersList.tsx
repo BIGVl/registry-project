@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import './CustomersList.scss';
 import { LocationContext, UserIDContext } from '../../Contexts';
-import getCustomersList from '../../helpers/getCustomersList';
+import getAllCustomers from '../../helpers/getAllCustomers';
 import { FormDataIded } from '../../globalInterfaces';
 import CustomerCard from '../../components/CustomersList/CustomerCard/CustomerCard';
 import SearchForm from '../../components/CustomersList/SearchForm/SearchForm';
@@ -17,7 +17,7 @@ export default function CustomersList({ rooms }: Props) {
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
-    const unsubscribe = getCustomersList(location, userId, currentYear, setCustomers);
+    const unsubscribe = getAllCustomers(location, userId, currentYear, setCustomers);
     return () => unsubscribe();
   }, []);
 
