@@ -9,6 +9,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import deleteUrl from '../../assets/delete.png';
 import AddLocation from './AddLocation';
 
+//TODO Decomponse the component into multiple components
+
 interface Props {
   userInfo: UserInfo;
   setOpenHamburger: (value: boolean) => void;
@@ -98,41 +100,45 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
           </Link>
         </section>
       </div>
-      <section className="locations-section">
-        <button
-          onClick={(e) => {
-            setOpenLocationsList(!openLocationsList);
-          }}
-          className="open-list-locations"
-        >
-          Schimba locatia
-        </button>
-        {locationToDelete !== '' && (
-          <div className="delete-location-layout">
-            <div className="delete-location-modal">
-              <div className="message">Esti sigur ca vrei sa stergi locatia {locationToDelete} ?</div>
-              <div className="buttons-container">
-                <button className="confirm-delete" onClick={deleteLocation}>
-                  Confirm
-                </button>
+      <div className="locations-container">
+        <div className="locations-title">Locatii</div>
 
-                <button className="back" onClick={() => setLocationToDelete('')}>
-                  Inapoi
-                </button>
+        <section className="locations-section">
+          <button
+            onClick={(e) => {
+              setOpenLocationsList(!openLocationsList);
+            }}
+            className="open-list-locations"
+          >
+            Schimba locatia
+          </button>
+          {locationToDelete !== '' && (
+            <div className="delete-location-layout">
+              <div className="delete-location-modal">
+                <div className="message">Esti sigur ca vrei sa stergi locatia {locationToDelete} ?</div>
+                <div className="buttons-container">
+                  <button className="confirm-delete" onClick={deleteLocation}>
+                    Confirm
+                  </button>
+
+                  <button className="back" onClick={() => setLocationToDelete('')}>
+                    Inapoi
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <button
-          className="open-addLocation-button"
-          onClick={() => {
-            setOpenAddLocation(!openAddLocation);
-          }}
-        >
-          Adauga locatie noua
-        </button>
-      </section>
+          <button
+            className="open-addLocation-button"
+            onClick={() => {
+              setOpenAddLocation(!openAddLocation);
+            }}
+          >
+            Adauga locatie noua
+          </button>
+        </section>
+      </div>
       <button onClick={logOut} className="sign-out">
         Deconecteaza-te
       </button>

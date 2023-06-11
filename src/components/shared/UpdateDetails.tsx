@@ -12,6 +12,8 @@ import deleteDates from '../../helpers/deleteDates';
 import checkRooms from '../../helpers/checkRooms';
 import daysBetweenDates from '../../helpers/daysBetweenDates';
 
+//TODO Decomponse the component into multiple components
+
 interface Props {
   entryDetails: {
     year: number;
