@@ -11,7 +11,7 @@ import NoLocation from './Pages/NoLocations/NoLocations';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import CustomersList from './Pages/CustomersList/CustomersList';
 import { ReactComponent as HamburgerIcon } from './assets/menu.svg';
-import HamburgerMenu from './components/App/HamburgerMenu';
+import HamburgerMenu from './components/App/HamburgerMenu/HamburgerMenu';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);

@@ -12,14 +12,15 @@ import SortModal from './components/SortModal/SortModal';
 
 interface Props {
   setCustomers: (value: FormDataIded[]) => void;
+  searchValue: string;
+  setSearchValue: (value: string) => void;
 }
 
-const SearchForm = ({ setCustomers }: Props) => {
-  const [searchValue, setSearchValue] = useState('');
+const SearchForm = ({ setCustomers, searchValue, setSearchValue }: Props) => {
   const [sort, setSort] = useState<OrderByDirection>('desc');
-  const [filter, setFilter] = useState({ entryDate: '', leaveDate: '' });
+  // const [filter, setFilter] = useState({ entryDate: '', leaveDate: '' });
   const [openSort, setOpenSort] = useState(false);
-  const [openFilter, setOpenFilter] = useState(false);
+  // const [openFilter, setOpenFilter] = useState(false);
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
   const searchArgs = { location, userId, searchValue, setCustomers };

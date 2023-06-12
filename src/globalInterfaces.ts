@@ -1,3 +1,5 @@
+import { DocumentData } from 'firebase/firestore';
+
 export interface UserInfo {
   uid: string;
   name: string | null;
@@ -5,7 +7,7 @@ export interface UserInfo {
   photoURL: string | null;
 }
 
-export interface FormData {
+export interface FormData extends DocumentData {
   adults: string;
   advance: number;
   entryDate: string;

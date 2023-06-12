@@ -27,13 +27,13 @@ const SortModal = ({ setSort, setOpenSort, sort, searchArgs }: Props) => {
   };
 
   return (
-    <div className="sort-modal">
-      <li className="sort-options">
-        Sorteaza
-        <ul className="desc" id="desc" onClick={handleClick}>
+    <div className="sort-modal" aria-label="sort options container">
+      Sorteaza
+      <li className="sort-options" aria-label="sort options">
+        <ul className="desc" id="desc" aria-label="descending" onClick={handleClick}>
           Descrescator
         </ul>
-        <ul className="asc" id="asc" onClick={handleClick}>
+        <ul className="asc" id="asc" aria-label="descending" onClick={handleClick}>
           Crescator
         </ul>
       </li>

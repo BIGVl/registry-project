@@ -1,13 +1,13 @@
 import { signOut } from 'firebase/auth';
-import { auth, db } from '../../firebase';
-import { UserInfo } from '../../globalInterfaces';
-import { ReactComponent as Close } from '../../assets/arrow-right.svg';
+import { auth, db } from '../../../firebase';
+import { UserInfo } from '../../../globalInterfaces';
+import { ReactComponent as Close } from '../../../assets/arrow-right.svg';
 import './HamburgerMenu.scss';
 import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import deleteUrl from '../../assets/delete.png';
-import AddLocation from './AddLocation';
+import deleteUrl from '../../../assets/delete.png';
+import AddLocation from '../AddLocation/AddLocation';
 
 //TODO Decomponse the component into multiple components
 
