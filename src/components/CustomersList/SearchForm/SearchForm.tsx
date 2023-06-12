@@ -1,6 +1,6 @@
 import './SearchForm.scss';
 import searchImg from '../../../assets/search.png';
-import { FormEvent, useContext, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import { FormDataIded } from '../../../globalInterfaces';
 import search from '../../../helpers/search';
@@ -11,7 +11,7 @@ import FilterModal from './components/FilterModal/FilterModal';
 import SortModal from './components/SortModal/SortModal';
 
 interface Props {
-  setCustomers: (value: FormDataIded[]) => void;
+  setCustomers: Dispatch<SetStateAction<FormDataIded[]>>;
   searchValue: string;
   setSearchValue: (value: string) => void;
 }

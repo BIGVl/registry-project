@@ -2,13 +2,13 @@ import { OrderByDirection } from 'firebase/firestore';
 import './SortModal.scss';
 import { FormDataIded } from '../../../../../globalInterfaces';
 import search from '../../../../../helpers/search';
-import { MouseEvent } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
 interface Props {
   sort: OrderByDirection;
-  setSort: (value: OrderByDirection) => void;
+  setSort: Dispatch<SetStateAction<OrderByDirection>>;
   setOpenSort: (value: boolean) => void;
-  searchArgs: { location: string; userId: string; searchValue: string; setCustomers: (value: FormDataIded[]) => void };
+  searchArgs: { location: string; userId: string; searchValue: string; setCustomers: Dispatch<SetStateAction<FormDataIded[]>> };
 }
 
 const SortModal = ({ setSort, setOpenSort, sort, searchArgs }: Props) => {
@@ -17,7 +17,6 @@ const SortModal = ({ setSort, setOpenSort, sort, searchArgs }: Props) => {
   const handleClick = (e: MouseEvent<HTMLUListElement>) => {
     const target = e.target as HTMLUListElement;
     const newSort = target.id as OrderByDirection;
-    //@ts-ignore
     setSort(() => {
       search(location, userId, searchValue, setCustomers, newSort);
       return newSort;

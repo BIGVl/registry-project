@@ -16,7 +16,7 @@ export interface FormData extends DocumentData {
   phone: string;
   discount: number;
   rooms: number[];
-  prices: {};
+  prices: { [key: number]: any };
   total: number;
   balance: number;
   kids: string;

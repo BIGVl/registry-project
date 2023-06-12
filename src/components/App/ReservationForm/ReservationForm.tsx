@@ -68,20 +68,27 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
 
   //Besides updating the state, when price values are changed the total and the due balance will be updated accordingly
   const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
-    const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
+    //Calculate the new total and update the state variable with the new price for each room as well
     if (e.target.id.includes('priceRoom')) {
+      const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
       setFormData((prev: FormData) => {
-        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+        const newPrices = { ...prev.prices, [Number(e.target.getAttribute('data-id'))]: e.target.value };
         const newTotal = !isNaN(daysBetween)
-          ? Object.values(newPrices).reduce((acc: number, current) => acc + Number(current) * daysBetween, 0)
+          ? Object.values(newPrices).reduce((accumulator: number, current) => accumulator + Number(current) * daysBetween, 0)
           : 0;
         return { ...prev, prices: newPrices, total: newTotal };
       });
+      //If the dates are changing update the dates in the state and also calculate the new total
     } else if (e.target.type === 'date') {
       setFormData((prev) => {
-        const newPrices = { ...prev.prices, [e.target.getAttribute('data-id') as string]: e.target.value };
+        const daysBetween =
+          e.target.name === 'entryDate'
+            ? daysBetweenDates(e.target.value, formData.leaveDate)
+            : daysBetweenDates(formData.entryDate, e.target.value);
+
+        const newPrices = { ...prev.prices };
         const newTotal = !isNaN(daysBetween)
-          ? Object.values(newPrices).reduce((acc: number, current) => acc + Number(current) * daysBetween, 0)
+          ? Object.values(newPrices).reduce((accumulator: number, current) => accumulator + Number(current) * daysBetween, 0)
           : 0;
 
         return { ...prev, [e.target.name]: e.target.value, total: newTotal };
@@ -96,7 +103,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   //Add and remove the rooms in the state
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setFormData((prev: any) => {
+      setFormData((prev) => {
         return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
       });
     } else {
@@ -104,10 +111,20 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         if (room === Number(e.target.value)) {
           const rooms = formData.rooms;
           setFormData((prev) => {
+            const newPrices = prev.prices;
+            delete newPrices[room];
             rooms?.splice(i, 1);
-            return { ...prev, [e.target.name]: rooms };
+            return { ...prev, [e.target.name]: rooms, prices: newPrices };
           });
+          console.log(formData.prices);
         }
+      });
+      const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
+      setFormData((prev) => {
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(prev.prices).reduce((accumulator: number, current) => accumulator + Number(current) * daysBetween, 0)
+          : 0;
+        return { ...prev, total: newTotal };
       });
     }
   };
