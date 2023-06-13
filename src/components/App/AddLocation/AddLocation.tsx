@@ -13,10 +13,11 @@ type FormData = {
 
 interface Props {
   setOpenAddLocation: (value: boolean) => void;
+  setOpenHamburger: (value: boolean) => void;
 }
 
 //This adds a new Location to manage in the db
-export default function AddLocation({ setOpenAddLocation }: Props) {
+export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Props) {
   const [formData, setFormData] = useState<FormData>({ locationName: '', rooms: '' });
   const userID = useContext(UserIDContext);
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function AddLocation({ setOpenAddLocation }: Props) {
     });
     navigate(`/${formData.locationName}`);
     setOpenAddLocation(false);
+    setOpenHamburger(false);
   };
 
   const change = (e: any) => {

@@ -33,7 +33,6 @@ export default async function search(
 
   setCustomers([]);
   querySnap.forEach((doc) => {
-    console.log(doc.data());
     const formData: FormDataIded = doc.data() as FormDataIded;
     formData.id = doc.id;
     const fieldValue = doc.data().name;

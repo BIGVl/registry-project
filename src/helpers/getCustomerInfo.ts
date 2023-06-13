@@ -9,9 +9,7 @@ const getCustomerInfo = async (location: string, userId: string, customerId: num
       const data = docSnap.data();
       return data;
     }
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) {}
 };
 
 export default getCustomerInfo;

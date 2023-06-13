@@ -1,16 +1,16 @@
 import { DocumentData } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { LocationContext, UserIDContext } from '../../Contexts';
-import getCustomerInfo from '../../helpers/getCustomerInfo';
-import { ReactComponent as Cancel } from '../../assets/cancel.svg';
+import { LocationContext, UserIDContext } from '../../../Contexts';
+import getCustomerInfo from '../../../helpers/getCustomerInfo';
+import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import './UpdateDetails.scss';
-import saveEntry from '../../helpers/saveEntry';
-import validateDetails from '../../helpers/validateDetails';
-import saveRooms from '../../helpers/saveRooms';
-import { FormData } from '../../globalInterfaces';
-import deleteDates from '../../helpers/deleteDates';
-import checkRooms from '../../helpers/checkRooms';
-import daysBetweenDates from '../../helpers/daysBetweenDates';
+import saveEntry from '../../../helpers/saveEntry';
+import validateDetails from '../../../helpers/validateDetails';
+import saveRooms from '../../../helpers/saveRooms';
+import { FormData } from '../../../globalInterfaces';
+import deleteDates from '../../../helpers/deleteDates';
+import checkRooms from '../../../helpers/checkRooms';
+import daysBetweenDates from '../../../helpers/daysBetweenDates';
 
 //TODO Decomponse the component into multiple components
 
@@ -101,20 +101,30 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
     }
   };
 
+  //Add and remove the rooms in the state and also recalculate the total when the rooms are removed
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setCustomerData((prev: any) => {
+      setCustomerData((prev) => {
         return { ...prev, [e.target.name]: [...prev[e.target.name], Number(e.target.value)] };
       });
-    } else if (customerData.rooms !== undefined) {
+    } else {
       customerData.rooms.forEach((room: number, i: number) => {
         if (room === Number(e.target.value)) {
-          const rooms = [...customerData.rooms];
-          rooms?.splice(i, 1);
+          const rooms = customerData.rooms;
           setCustomerData((prev) => {
-            return { ...prev, [e.target.name]: [...rooms] };
+            const newPrices = prev.prices;
+            delete newPrices[room];
+            rooms?.splice(i, 1);
+            return { ...prev, [e.target.name]: rooms, prices: newPrices };
           });
         }
+      });
+      const daysBetween = daysBetweenDates(customerData.entryDate, customerData.leaveDate);
+      setCustomerData((prev) => {
+        const newTotal = !isNaN(daysBetween)
+          ? Object.values(prev.prices).reduce((accumulator: number, current) => accumulator + Number(current) * daysBetween, 0)
+          : 0;
+        return { ...prev, total: newTotal };
       });
     }
   };
@@ -235,10 +245,13 @@ const UpdateDetails = ({ entryDetails, setOpenDetails, rooms }: Props) => {
             {customerData.rooms
               .sort((a: number, b: number) => (a > b ? 1 : -1))
               .map((room: number) => {
+                const price = customerData.prices ? customerData.prices[room] : 0;
+
                 return (
                   <label key={room} htmlFor={'priceRoom'} className="price-on-room-label">
                     camera {room} :
                     <input
+                      value={price}
                       data-id={room}
                       type="number"
                       id={'priceRoom'}

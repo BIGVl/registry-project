@@ -15,7 +15,8 @@ const saveEntry = async (locationUserID: string, formData: DocumentData, custome
       total: formData.total,
       advance: formData.advance,
       discount: formData.discount,
-      balance: formData.balance
+      balance: formData.balance,
+      prices: formData.prices
     };
     await setDoc(docRef, data, { merge: true });
   }

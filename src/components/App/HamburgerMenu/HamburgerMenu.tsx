@@ -26,12 +26,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
     location.pathname.indexOf('/', 1) > 0 ? location.pathname.slice(0, location.pathname.indexOf('/', 1)) : location.pathname;
   const property = path.slice(1, path.length);
   const navigate = useNavigate();
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-      setOpenHamburger(false);
-    } catch (err) {}
-  };
 
   //Sends the user to the location's url
   const openLocation: MouseEventHandler<HTMLLIElement> = async (e) => {
@@ -55,9 +49,16 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
     await deleteDoc(doc(db, `locations${userInfo.uid}`, locationToDelete));
   };
 
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+
+      setOpenHamburger(false);
+    } catch (err) {}
+  };
+
   return (
     <section className="hamburger-menu">
-      {openAddLocation ? <AddLocation setOpenAddLocation={setOpenAddLocation} /> : ''}
       <div className="hamburger-close">
         <Close className="hamburger-close-svg" onClick={(e) => setOpenHamburger(false)} />
       </div>
@@ -92,10 +93,10 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
       <div className="opened-location-container">
         <div className="opened-location-name">{property}</div>
         <section className="opened-location-actions">
-          <Link to={`${path}`} className="table-link">
+          <Link to={`${path}`} onClick={() => setOpenHamburger(false)} className="table-link">
             Tabel
           </Link>
-          <Link to={`${path}/customer-list`} className="customer-list">
+          <Link to={`${path}/customer-list`} onClick={() => setOpenHamburger(false)} className="customer-list">
             Lista clienti
           </Link>
         </section>
@@ -142,6 +143,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
       <button onClick={logOut} className="sign-out">
         Deconecteaza-te
       </button>
+      {openAddLocation && <AddLocation setOpenAddLocation={setOpenAddLocation} setOpenHamburger={setOpenHamburger} />}
     </section>
   );
 };

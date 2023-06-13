@@ -100,7 +100,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     }
   };
 
-  //Add and remove the rooms in the state
+  //Add and remove the rooms in the state and also recalculate the total when the rooms are removed
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setFormData((prev) => {
@@ -116,7 +116,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
             rooms?.splice(i, 1);
             return { ...prev, [e.target.name]: rooms, prices: newPrices };
           });
-          console.log(formData.prices);
         }
       });
       const daysBetween = daysBetweenDates(formData.entryDate, formData.leaveDate);
