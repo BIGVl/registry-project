@@ -4,20 +4,8 @@ import { db } from '../firebase';
 const saveEntry = async (locationUserID: string, formData: DocumentData, customerID: number) => {
   if (customerID) {
     const docRef = doc(db, locationUserID, `${customerID}`);
-    const data: DocumentData = {
-      name: formData.name.toLowerCase(),
-      entryDate: formData.entryDate,
-      leaveDate: formData.leaveDate,
-      phone: formData.phone,
-      rooms: formData.rooms,
-      adults: formData.adults,
-      kids: formData.kids,
-      total: formData.total,
-      advance: formData.advance,
-      discount: formData.discount,
-      balance: formData.balance,
-      prices: formData.prices
-    };
+    const data: DocumentData = formData;
+    data.name = data.name.toLowerCase();
     await setDoc(docRef, data, { merge: true });
   }
 };

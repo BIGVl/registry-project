@@ -13,7 +13,7 @@ type FormData = {
 
 interface Props {
   setOpenAddLocation: (value: boolean) => void;
-  setOpenHamburger: (value: boolean) => void;
+  setOpenHamburger?: (value: boolean) => void;
 }
 
 //This adds a new Location to manage in the db
@@ -32,7 +32,7 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
     });
     navigate(`/${formData.locationName}`);
     setOpenAddLocation(false);
-    setOpenHamburger(false);
+    setOpenHamburger && setOpenHamburger(false);
   };
 
   const change = (e: any) => {
