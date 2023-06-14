@@ -17,6 +17,7 @@ const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,6 +42,7 @@ const App = () => {
         });
       });
     });
+    setIsLoading(false);
 
     return () => {
       unsubAuth();
@@ -50,19 +52,15 @@ const App = () => {
 
   //Check if there are any locations and if not redirect the user to the first-location screen
   useEffect(() => {
-    const indexLocation = locations.find((location) => {
-      return location.selected === true;
-    });
-    if (location.pathname === '/' && userInfo.uid) {
-      if (locations.length === 0) {
-        navigate('first-location');
-      } else if (indexLocation !== undefined) {
-        navigate(`${indexLocation.name}`);
-      } else {
-        navigate(`${locations[0].name}`);
-      }
+    const path = locations.find((loc) => loc.name === location.pathname.slice(1, location.pathname.length));
+    if (userInfo.uid && !isLoading && locations[0]) {
+      path ? navigate(path) : navigate(`${locations[0].name}`);
     }
-  }, [locations]);
+  }, [locations, userInfo.uid, isLoading]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <UserIDContext.Provider value={userInfo.uid}>
@@ -73,7 +71,6 @@ const App = () => {
           </button>
         )}
         <Routes>
-          <Route path="/" element={<LoadingScreen />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="first-location" element={<NoLocation />} />
           {locations.map((location) => {

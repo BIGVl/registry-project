@@ -27,8 +27,7 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
 
     await setDoc(doc(db, `locations${userID}`, formData.locationName), {
       name: formData.locationName,
-      rooms: formData.rooms,
-      selected: true
+      rooms: formData.rooms
     });
     navigate(`/${formData.locationName}`);
     setOpenAddLocation(false);
