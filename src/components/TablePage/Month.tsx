@@ -111,8 +111,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
               return (
                 <th id="day-th" key={m}>
                   <div className="day ">
-                    {' '}
-                    {m} {WEEKDAYS[weekdayIndexes[i]].slice(0, 3)}
+                    <div> {m} </div> <div> {WEEKDAYS[weekdayIndexes[i]].slice(0, 3)} </div>
                   </div>
                 </th>
               );

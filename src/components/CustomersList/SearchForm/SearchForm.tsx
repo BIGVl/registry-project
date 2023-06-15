@@ -30,7 +30,7 @@ const SearchForm = ({ setCustomers, searchValue, setSearchValue }: Props) => {
       <input
         onChange={(e) => {
           setSearchValue(e.target.value);
-          return search(location, userId, searchValue, setCustomers, sort);
+          search(location, userId, searchValue, setCustomers, sort);
         }}
         aria-label="search input"
         placeholder="Cauta numele clientului"

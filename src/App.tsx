@@ -52,9 +52,10 @@ const App = () => {
 
   //Check if there are any locations and if not redirect the user to the first-location screen
   useEffect(() => {
-    const path = locations.find((loc) => loc.name === location.pathname.slice(1, location.pathname.length));
-    if (userInfo.uid && !isLoading && locations[0]) {
-      path ? navigate(path) : navigate(`${locations[0].name}`);
+    const path = locations.length > 0 ? locations.find((loc) => location.pathname.includes(loc?.name)) : true;
+    if (userInfo.uid && !isLoading && !path) {
+      console.log('I do navigate');
+      navigate(`${locations[0].name}`);
     }
   }, [locations, userInfo.uid, isLoading]);
 
