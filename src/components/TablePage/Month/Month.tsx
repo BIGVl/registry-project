@@ -1,9 +1,9 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import '../../Pages/Table/TablePage.scss';
-import UpdateDetails from '../shared/UpdateDetails/UpdateDetails';
-import DeleteModal from './DeleteModal/DeleteModal';
-import DetailsModal from './DetailsModal';
+import './Month.scss';
+import UpdateDetails from '../../shared/UpdateDetails/UpdateDetails';
+import DeleteModal from '../DeleteModal/DeleteModal';
+import DetailsModal from '../DetailsModal/DetailsModal';
 
 interface PropTypes {
   rows: number;
@@ -20,7 +20,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [entryDetails, setEntryDetails] = useState({ year: year, month, customerId: 0 });
-  //Fill in the days number in an array so it can be populated on the table
+  //Fill in the days number in an array so it can be <p></p>opulated on the table
   for (let i = 1; i <= days; i++) {
     daysArray.push(i);
   }
@@ -48,10 +48,10 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
                     setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
-                  id="show-container"
+                  className="show-container"
                 >
-                  <div id="exit-show"> </div>
-                  <div id="enter-show"></div>
+                  <div className="exit-show"> </div>
+                  <div className="enter-show"></div>
                 </div>
               );
             } else if (data[month][room][d] && data[month][room][d].slice(0, 5) === 'enter') {
@@ -61,9 +61,9 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
                     setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
-                  id="show-container-enter"
+                  className="show-container-enter"
                 >
-                  <div id="enter-show"></div>
+                  <div className="enter-show"></div>
                 </div>
               );
             } else if (data[month][room][d] && data[month][room][d].slice(0, 4) === 'exit') {
@@ -73,9 +73,9 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
                     setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
-                  id="show-container"
+                  className="show-container"
                 >
-                  <div id="exit-show"></div>
+                  <div className="exit-show"></div>
                 </div>
               );
             } else if (data[month][room][d] && data[month][room][d].slice(0, 4) === 'full') {
@@ -85,9 +85,9 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
                     setEntryDetails({ year, month, customerId });
                     setOpenUpdateDelete(!openUpdateDelete);
                   }}
-                  id="show-container"
+                  className="show-container"
                 >
-                  <div id="full-show"> {customerId} </div>
+                  <div className="full-show"> {customerId} </div>
                 </div>
               );
             }
@@ -104,12 +104,12 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
 
   return (
     <>
-      <table className="calendar">
+      <table className="month">
         <thead>
           <tr>
             {daysArray.map((m, i) => {
               return (
-                <th id="day-th" key={m}>
+                <th className="day-th" key={m}>
                   <div className="day ">
                     <div> {m} </div> <div> {WEEKDAYS[weekdayIndexes[i]].slice(0, 3)} </div>
                   </div>

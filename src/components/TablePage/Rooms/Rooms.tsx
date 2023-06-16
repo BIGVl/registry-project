@@ -1,4 +1,4 @@
-import '../../Pages/Table/TablePage.scss';
+import './Rooms.scss';
 
 interface PropTypes {
   rows: number;
@@ -20,7 +20,7 @@ const Rooms = ({ rows }: PropTypes) => {
       <colgroup span={31}></colgroup>
       <thead>
         <tr>
-          <th id="rooms-header">Camere</th>
+          <th className="rooms-header">Camere</th>
         </tr>
       </thead>
       <tbody>

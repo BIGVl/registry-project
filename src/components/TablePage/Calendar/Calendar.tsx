@@ -1,11 +1,11 @@
+import './Calendar.scss';
 import { useContext, useEffect, useState } from 'react';
-import Month from './Month';
-import '../../Pages/Table/TablePage.scss';
-import { ReactComponent as ArrowLeft } from '../../assets/arrow-left.svg';
-import { ReactComponent as ArrowRight } from '../../assets/arrow-right.svg';
-import { LocationContext, UserIDContext } from '../../Contexts';
+import Month from '../Month/Month';
+import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
+import { ReactComponent as ArrowRight } from '../../../assets/arrow-right.svg';
+import { LocationContext, UserIDContext } from '../../../Contexts';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../../firebase';
 
 interface PropTypes {
   rows: number;
@@ -49,15 +49,15 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
   return (
     <>
       <div className="table-header">
-        <div id="arrow-left">
+        <div className="arrow-left">
           <ArrowLeft onClick={lastMonth} />
         </div>
         <div className="month-name">
           {currentDate.toLocaleDateString('ro-RO', { month: 'long' }).charAt(0).toUpperCase() +
             currentDate.toLocaleDateString('ro-RO', { month: 'long' }).slice(1)}
         </div>
-        <div id="year"> {currentDate.getFullYear()} </div>
-        <div id="arrow-right">
+        <div className="year"> {currentDate.getFullYear()} </div>
+        <div className="arrow-right">
           <ArrowRight onClick={nextMonth} />
         </div>
       </div>

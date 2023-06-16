@@ -1,0 +1,35 @@
+//Calendar header
+.table-header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  width: 90vw;
+  justify-self: center;
+
+  .month-name {
+    font-size: 1.8rem;
+    color: var(--secondary);
+  }
+
+  .year {
+    color: var(--secondary);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .arrow-left,
+  .arrow-right {
+    filter: invert(75%) sepia(37%) saturate(825%) hue-rotate(334deg) brightness(91%) contrast(92%);
+  }
+}
+
+//Calendar
+.calendar-container {
+  display: flex;
+  overflow-x: scroll;
+  flex-direction: column;
+}
+
+.calendar-container::-webkit-scrollbar {
+  display: none;
+}
