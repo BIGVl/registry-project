@@ -1,20 +1,27 @@
 .month {
-  height: 50%;
   overflow-x: hidden;
   font-family: 'Open Sans', sans-serif;
   table-layout: fixed;
   border-collapse: collapse;
-
+  width: 80%;
+  min-width: 80rem;
+  border: 1px solid black;
   td {
-    border: 1px solid var(--secondary);
+    border: 1px solid black;
+  }
+  th {
+    outline: 1px solid black;
+    padding: 0.4rem;
   }
 
-  .day-th {
-    height: 2.5rem;
+  .fixed {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 3rem;
   }
 
   th .day {
-    padding: 0.4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -62,7 +62,7 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
         </div>
       </div>
 
-      <div className="calendar-container">
+      <div className="month-container">
         <Month
           year={currentDate.getFullYear()}
           month={currentDate.getMonth() + 1}

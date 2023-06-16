@@ -35,6 +35,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
   for (let room = 1; room <= rows; room++) {
     cellsArray.push(
       <tr key={room}>
+        <th className="fixed">{room}</th>
         {daysArray.map((d) => {
           let occupancyDisplay;
           if (data[month] && data[month][room] && data[month][room][d]) {
@@ -107,6 +108,7 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
       <table className="month">
         <thead>
           <tr>
+            <th className="fixed"> Cam. </th>
             {daysArray.map((m, i) => {
               return (
                 <th className="day-th" key={m}>

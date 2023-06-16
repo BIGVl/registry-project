@@ -3,8 +3,10 @@
   grid-area: header;
   display: flex;
   justify-content: space-between;
-  width: 90vw;
   justify-self: center;
+  width: 20rem;
+  max-width: 80vw;
+  align-self: center;
 
   .month-name {
     font-size: 1.8rem;
@@ -24,12 +26,16 @@
 }
 
 //Calendar
-.calendar-container {
+.month-container {
   display: flex;
   overflow-x: scroll;
   flex-direction: column;
+  margin-left: 5px;
 }
 
-.calendar-container::-webkit-scrollbar {
+.month-container::-webkit-scrollbar {
   display: none;
+}
+
+@media screen {
 }
