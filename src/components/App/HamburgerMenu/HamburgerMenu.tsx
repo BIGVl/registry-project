@@ -111,7 +111,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
             }}
             className="open-list-locations"
           >
-            Schimba locatia
+            Lista locatii
           </button>
           {locationToDelete !== '' && (
             <div className="delete-location-layout">
