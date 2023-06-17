@@ -12,7 +12,7 @@ interface Props {
 
 const Nav = ({ setOpenHamburger, openHamburger, openForm, setOpenForm }: Props) => {
   return (
-    <nav>
+    <div className="add-reservation-hamburger">
       <button
         className="add-reservation"
         aria-label="Adauga intrare"
@@ -27,7 +27,7 @@ const Nav = ({ setOpenHamburger, openHamburger, openForm, setOpenForm }: Props) 
       <button onClick={() => setOpenHamburger(!openHamburger)} className="hamburger-button">
         <HamburgerIcon className="hamburger-icon" />
       </button>
-    </nav>
+    </div>
   );
 };
 

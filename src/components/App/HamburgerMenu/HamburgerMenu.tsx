@@ -7,13 +7,13 @@ import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import deleteUrl from '../../../assets/delete.png';
-import AddLocation from '../AddLocation/AddLocation';
+import AddLocation from './AddLocation/AddLocation';
 
 //TODO Decomponse the component into multiple components
 
 interface Props {
-  userInfo: UserInfo;
   setOpenHamburger: (value: boolean) => void;
+  userInfo: UserInfo;
   locations: DocumentData[];
 }
 
@@ -50,11 +50,8 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   };
 
   const logOut = async () => {
-    try {
-      await signOut(auth);
-
-      setOpenHamburger(false);
-    } catch (err) {}
+    await signOut(auth);
+    setOpenHamburger(false);
   };
 
   return (

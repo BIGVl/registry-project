@@ -1,9 +1,9 @@
 import { doc, setDoc } from 'firebase/firestore';
 import { FormEvent, useContext, useState } from 'react';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 import './AddLocation.css';
-import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
-import { UserIDContext } from '../../../Contexts';
+import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
+import { UserIDContext } from '../../../../Contexts';
 import { useNavigate } from 'react-router-dom';
 
 type FormData = {
