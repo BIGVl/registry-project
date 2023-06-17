@@ -1,6 +1,6 @@
 nav {
   position: absolute;
-  right: 0.5rem;
+  right: 25%;
   top: 10px;
   display: flex;
   gap: 1.5rem;
@@ -29,5 +29,11 @@ nav {
 
   .hamburger-icon {
     filter: invert(79%) sepia(14%) saturate(1897%) hue-rotate(335deg) brightness(88%) contrast(98%);
+  }
+}
+
+@media (max-width: 720px) {
+  nav {
+    right: 5%;
   }
 }

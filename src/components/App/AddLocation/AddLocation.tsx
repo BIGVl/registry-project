@@ -54,7 +54,7 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
         </fieldset>
         <label htmlFor="location-name">
           Numele proprietatii:
-          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={36} required onChange={change} />
+          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={15} required onChange={change} />
         </label>
         <label htmlFor="add-rooms" className="add-location-rooms">
           Numar de camere:

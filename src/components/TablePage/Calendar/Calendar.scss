@@ -1,12 +1,11 @@
 //Calendar header
-.table-header {
-  grid-area: header;
+.calendar-header {
   display: flex;
   justify-content: space-between;
   justify-self: center;
   width: 20rem;
   max-width: 80vw;
-  align-self: center;
+  margin-left: 5vw;
 
   .month-name {
     font-size: 1.8rem;
@@ -25,17 +24,13 @@
   }
 }
 
-//Calendar
-.month-container {
+//Table container
+.table-container {
   display: flex;
   overflow-x: scroll;
   flex-direction: column;
-  margin-left: 5px;
 }
 
-.month-container::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
   display: none;
-}
-
-@media screen {
 }

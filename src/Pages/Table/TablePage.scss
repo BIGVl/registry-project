@@ -3,20 +3,28 @@
 .table-page {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
-  .table-title {
+  .table-header {
     color: var(--secondary);
     width: 100vw;
     font-size: 2.5rem;
-    padding-left: 3rem;
+    padding-left: 3vw;
     margin-bottom: 1rem;
-    border-bottom: 1px solid var(--secondary);
+    background: linear-gradient(to left, var(--secondary), var(--third));
+    height: 3.8rem;
+    display: flex;
+    align-items: center;
+
+    h1 {
+      font-size: 2rem;
+    }
   }
 
-  .table-container {
+  .calendar-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding-left: 5vw;
   }
 
   tr:nth-child(2n + 0) {

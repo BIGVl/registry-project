@@ -1,11 +1,10 @@
-.month {
-  overflow-x: hidden;
+.table {
   font-family: 'Open Sans', sans-serif;
   table-layout: fixed;
   border-collapse: collapse;
   width: 80%;
   min-width: 80rem;
-  border: 1px solid black;
+  border-radius: 5px;
   td {
     border: 1px solid black;
   }

@@ -105,7 +105,7 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
 
   return (
     <>
-      <table className="month">
+      <table className="table">
         <thead>
           <tr>
             <th className="fixed"> Cam. </th>

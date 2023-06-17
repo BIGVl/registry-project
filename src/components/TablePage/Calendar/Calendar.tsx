@@ -47,7 +47,7 @@ const Calendar = ({ rows }: PropTypes) => {
 
   return (
     <>
-      <div className="table-header">
+      <div className="calendar-header">
         <div className="arrow-left">
           <ArrowLeft onClick={lastMonth} />
         </div>
@@ -61,7 +61,7 @@ const Calendar = ({ rows }: PropTypes) => {
         </div>
       </div>
 
-      <div className="month-container">
+      <div className="table-container">
         <Table
           year={currentDate.getFullYear()}
           month={currentDate.getMonth() + 1}
