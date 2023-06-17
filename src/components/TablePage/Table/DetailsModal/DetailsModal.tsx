@@ -1,5 +1,5 @@
 import './DetailsModal.scss';
-import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
+import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 
 interface Props {
   setOpenDetails: (value: boolean) => void;

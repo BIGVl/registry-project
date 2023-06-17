@@ -10,13 +10,15 @@ import { collection, DocumentData, onSnapshot, query } from 'firebase/firestore'
 import NoLocation from './Pages/NoLocations/NoLocations';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import CustomersList from './Pages/CustomersList/CustomersList';
-import { ReactComponent as HamburgerIcon } from './assets/menu.svg';
 import HamburgerMenu from './components/App/HamburgerMenu/HamburgerMenu';
+import Nav from './components/App/Nav/Nav';
+import ReservationForm from './components/App/ReservationForm/ReservationForm';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
   const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
+  const [openForm, setOpenForm] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -67,9 +69,7 @@ const App = () => {
     <UserIDContext.Provider value={userInfo.uid}>
       <main className="App">
         {userInfo.uid && locations[0]?.name && (
-          <button onClick={() => setOpenHamburger(!openHamburger)} className="hamburger-button">
-            <HamburgerIcon className="hamburger-icon" />
-          </button>
+          <Nav setOpenHamburger={setOpenHamburger} openHamburger={openHamburger} openForm={openForm} setOpenForm={setOpenForm} />
         )}
         <Routes>
           <Route path="login" element={<LoginPage />} />
@@ -82,6 +82,7 @@ const App = () => {
                   element={
                     <LocationContext.Provider key={location.name} value={location.name}>
                       <TablePage rooms={Number(location.rooms)} />
+                      {openForm === true ? <ReservationForm rooms={location.rooms} setOpenForm={setOpenForm} /> : ''}
                     </LocationContext.Provider>
                   }
                 />

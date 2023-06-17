@@ -1,9 +1,9 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
-import './Month.scss';
+import './Table.scss';
 import UpdateDetails from '../../shared/UpdateDetails/UpdateDetails';
-import DeleteModal from '../DeleteModal/DeleteModal';
-import DetailsModal from '../DetailsModal/DetailsModal';
+import DeleteModal from './DeleteModal/DeleteModal';
+import DetailsModal from './DetailsModal/DetailsModal';
 
 interface PropTypes {
   rows: number;
@@ -13,7 +13,7 @@ interface PropTypes {
   data: DocumentData;
 }
 
-const Month = ({ rows, days, month, year, data }: PropTypes) => {
+const Table = ({ rows, days, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
   const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
@@ -135,4 +135,4 @@ const Month = ({ rows, days, month, year, data }: PropTypes) => {
   );
 };
 
-export default Month;
+export default Table;

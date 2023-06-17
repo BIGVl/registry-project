@@ -1,6 +1,6 @@
 import './Calendar.scss';
 import { useContext, useEffect, useState } from 'react';
-import Month from '../Month/Month';
+import Table from '../Table/Table';
 import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../assets/arrow-right.svg';
 import { LocationContext, UserIDContext } from '../../../Contexts';
@@ -9,10 +9,9 @@ import { db } from '../../../firebase';
 
 interface PropTypes {
   rows: number;
-  openForm: boolean;
 }
 
-const Calendar = ({ rows, openForm }: PropTypes) => {
+const Calendar = ({ rows }: PropTypes) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const location = useContext(LocationContext);
   const userID = useContext(UserIDContext);
@@ -31,7 +30,7 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
       }
     );
     return () => unsubscribe();
-  }, [userID, openForm, currentDate.getFullYear(), currentDate.getMonth()]);
+  }, [userID, currentDate.getFullYear(), currentDate.getMonth()]);
 
   //Change the month presented to one back or on ahead based on what arrow it's clicked
   const lastMonth = () => {
@@ -63,7 +62,7 @@ const Calendar = ({ rows, openForm }: PropTypes) => {
       </div>
 
       <div className="month-container">
-        <Month
+        <Table
           year={currentDate.getFullYear()}
           month={currentDate.getMonth() + 1}
           rows={rows}
