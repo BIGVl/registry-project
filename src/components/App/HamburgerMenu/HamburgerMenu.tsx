@@ -1,7 +1,6 @@
 import { signOut } from 'firebase/auth';
 import { auth, db } from '../../../firebase';
 import { UserInfo } from '../../../globalInterfaces';
-import { ReactComponent as Close } from '../../../assets/arrow-right.svg';
 import './HamburgerMenu.scss';
 import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';
 import { MouseEventHandler, useState } from 'react';
@@ -56,13 +55,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
 
   return (
     <section className="hamburger-menu">
-      <div className="hamburger-close">
-        <Close className="hamburger-close-svg" onClick={(e) => setOpenHamburger(false)} />
-      </div>
-      <section className="user-info">
-        <p className="hamburger-user"> Salutari, {userInfo.name} ! </p>
-        <p className="hamburger-email"> {userInfo.email} </p>
-      </section>
       {openLocationsList &&
         (locations.length > 0 ? (
           <ul className="locations-list">
