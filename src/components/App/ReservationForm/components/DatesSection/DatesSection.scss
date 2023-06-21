@@ -1,6 +1,14 @@
 .dates {
-  padding-top: 4rem;
+  padding-top: 5rem;
   display: flex;
   flex-direction: row;
   gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+  }
 }

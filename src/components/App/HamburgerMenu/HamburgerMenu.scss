@@ -18,7 +18,7 @@
   &::before {
     content: '';
     position: absolute;
-    top: -10px;
+    top: -8px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
@@ -88,10 +88,8 @@
   }
 
   .locations-list {
-    position: fixed;
-    top: 50%;
-    left: 25%;
-    transform: translate(-40%);
+    position: absolute;
+    transform: translate(-110%);
     background-color: white;
     padding: 1rem;
     display: flex;
@@ -101,7 +99,16 @@
     border: 5px solid var(--secondary);
     font-weight: 500;
     min-width: 12rem;
-    z-index: 10;
+
+    &::after {
+      position: absolute;
+      content: '';
+      border-left: 10px solid var(--secondary);
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      right: -12px;
+      top: 10%;
+    }
 
     li {
       list-style: none;
@@ -182,6 +189,16 @@
         .back {
           background-color: var(--secondary);
         }
+      }
+    }
+  }
+
+  @media (max-width: 420px) {
+    .locations-list {
+      transform: translate(-50%);
+
+      &::after {
+        content: none;
       }
     }
   }

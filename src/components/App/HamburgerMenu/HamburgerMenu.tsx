@@ -55,30 +55,6 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
 
   return (
     <section className="hamburger-menu">
-      {openLocationsList &&
-        (locations.length > 0 ? (
-          <ul className="locations-list">
-            {locations.map((location) => {
-              const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
-              return (
-                <li key={location.name} onClick={openLocation} id={location.name}>
-                  <div className="li-content" id={location.name}>
-                    {tag}
-                    <img
-                      src={deleteUrl}
-                      alt="Delete location"
-                      className="delete-location-img"
-                      id={location.name}
-                      onClick={openDeleteLocation}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
-        ))}
       <div className="opened-location-container">
         <div className="opened-location-name">{property}</div>
         <section className="opened-location-actions">
@@ -102,6 +78,33 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
           >
             Lista locatii
           </button>
+          {openLocationsList &&
+            (locations.length > 0 ? (
+              <ul className="locations-list">
+                {locations.map((location) => {
+                  const tag = location.name.charAt(0).toUpperCase() + location.name.slice(1);
+
+                  return (
+                    <li key={location.name} onClick={openLocation} id={location.name}>
+                      <div className="li-content" id={location.name}>
+                        {tag}
+
+                        <img
+                          src={deleteUrl}
+                          alt="Delete location"
+                          className="delete-location-img"
+                          id={location.name}
+                          onClick={openDeleteLocation}
+                        />
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <div className="no-locations-message"> Nu exista nici o locatie in baza de date. </div>
+            ))}
+
           {locationToDelete !== '' && (
             <div className="delete-location-layout">
               <div className="delete-location-modal">

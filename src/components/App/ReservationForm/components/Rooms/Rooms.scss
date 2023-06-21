@@ -20,6 +20,7 @@
   height: 17rem;
   padding: 1rem;
   overflow-y: scroll;
+  overscroll-behavior: none;
   border: solid 1px gray;
   border-radius: 5px;
 }

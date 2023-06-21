@@ -1,7 +1,7 @@
 import { doc, setDoc } from 'firebase/firestore';
 import { FormEvent, useContext, useState } from 'react';
 import { db } from '../../../../firebase';
-import './AddLocation.css';
+import './AddLocation.scss';
 import { ReactComponent as Cancel } from '../../../../assets/cancel.svg';
 import { UserIDContext } from '../../../../Contexts';
 import { useNavigate } from 'react-router-dom';
@@ -54,7 +54,16 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
         </fieldset>
         <label htmlFor="location-name">
           Numele proprietatii:
-          <input type="text" name="locationName" id="locationName" minLength={3} maxLength={15} required onChange={change} />
+          <input
+            type="text"
+            name="locationName"
+            className="locationName"
+            id="locationName"
+            minLength={3}
+            maxLength={15}
+            required
+            onChange={change}
+          />
         </label>
         <label htmlFor="add-rooms" className="add-location-rooms">
           Numar de camere:

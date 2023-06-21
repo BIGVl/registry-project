@@ -1,4 +1,4 @@
-import './Calendar.scss';
+import './TableContainer.scss';
 import { useContext, useEffect, useState } from 'react';
 import Table from '../Table/Table';
 import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
@@ -11,7 +11,7 @@ interface PropTypes {
   rows: number;
 }
 
-const Calendar = ({ rows }: PropTypes) => {
+const TableContainer = ({ rows }: PropTypes) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const location = useContext(LocationContext);
   const userID = useContext(UserIDContext);
@@ -74,4 +74,4 @@ const Calendar = ({ rows }: PropTypes) => {
   );
 };
 
-export default Calendar;
+export default TableContainer;

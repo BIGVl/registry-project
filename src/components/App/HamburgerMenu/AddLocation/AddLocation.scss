@@ -1,0 +1,61 @@
+.add-location-layout {
+  position: fixed;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--main);
+  padding: 2rem;
+  font-family: var(--font);
+  width: 90%;
+  border-radius: 7px;
+  border: 5px solid var(--action);
+  box-shadow: 1px 1px 100px 1px black;
+  max-width: 500px;
+
+  .add-location-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .close-add-location {
+    filter: invert(85%) sepia(53%) saturate(3405%) hue-rotate(320deg) brightness(93%) contrast(87%);
+  }
+
+  .add-fieldset {
+    font-size: 1.2rem;
+  }
+
+  .add-location-form label {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .add-rooms {
+    width: 4rem;
+  }
+
+  .add-location-form input {
+    font-family: inherit;
+    font-size: 1rem;
+    border-radius: 3px;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .add-location {
+    font-family: inherit;
+    background-color: var(--action);
+    padding: 0.6rem 0.9rem;
+    align-self: center;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+
+  label {
+    max-width: 80%;
+  }
+}

@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react';
-import ReservationForm from '../../components/App/ReservationForm/ReservationForm';
+import { useContext } from 'react';
 import './TablePage.scss';
 import { LocationContext } from '../../Contexts';
-import Calendar from '../../components/TablePage/Calendar/Calendar';
+import TableContainer from '../../components/TablePage/TableContainer/TableContainer';
 
 interface Props {
   rooms: number;
@@ -22,7 +21,7 @@ const TablePage = ({ rooms }: Props) => {
     infinitely query otherwise */}
       </div>
       <div className="calendar-container">
-        <Calendar rows={rooms} />
+        <TableContainer rows={rooms} />
       </div>
     </div>
   );

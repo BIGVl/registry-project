@@ -1,5 +1,5 @@
 import './ReservationForm.scss';
-import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
+import { ReactComponent as Cancel } from '../../../assets/arrow-left.svg';
 import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import saveRooms from '../../../helpers/saveRooms';
@@ -148,7 +148,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   };
 
   return (
-    <div id="form-container">
+    <div className="form-container">
       {errorMsg && (
         <div className="error-layout">
           <div className="error">
@@ -162,13 +162,15 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         </div>
       )}
 
-      <form id="form-reservation" onSubmit={submit}>
-        <Cancel
-          onClick={() => {
-            setOpenForm(false);
-          }}
-          id="cancel"
-        />
+      <form className="form-reservation" onSubmit={submit}>
+        <div className="cancel-container">
+          <Cancel
+            onClick={() => {
+              setOpenForm(false);
+            }}
+            className="cancel"
+          />
+        </div>
         <DatesSection updateFormData={updateFormData} />
         <ContactInfo updateFormData={updateFormData} />
         <Rooms roomsArray={roomsArray} handleCheck={handleCheck} />
