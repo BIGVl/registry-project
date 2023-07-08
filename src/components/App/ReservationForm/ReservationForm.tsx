@@ -1,6 +1,6 @@
 import './ReservationForm.scss';
 import { ReactComponent as Cancel } from '../../../assets/arrow-left.svg';
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import saveRooms from '../../../helpers/saveRooms';
 import saveEntry from '../../../helpers/saveEntry';
@@ -38,10 +38,10 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
     kids: ''
   });
   const [customerID, setCustomerID] = useState<number>(0);
-
   const [errorMsg, setErrorMsg] = useState<string>('');
   //This state is used for the confirmation pop-up, after the client side validation, so the data will be send to the db
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
+  const newBalance = Math.ceil(formData.total - formData.advance - (formData.total * formData.discount) / 100);
 
   //Used to loop through to create the numbers of rooms that the component will receive
   const roomsArray: number[] = [];
@@ -54,17 +54,6 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   useEffect(() => {
     getCxNr(userID, location, setCustomerID);
   }, []);
-
-  //Update the balance remaining every time one of these values change
-  useMemo(() => {
-    setFormData((prev) => {
-      const { total, advance, discount } = prev;
-      return {
-        ...prev,
-        balance: Math.ceil(total - advance - (total * discount) / 100)
-      };
-    });
-  }, [formData.total, formData.advance, formData.discount]);
 
   //Besides updating the state, when price values are changed the total and the due balance will be updated accordingly
   const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,12 +69,12 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       });
       //If the dates are changing update the dates in the state and also calculate the new total
     } else if (e.target.type === 'date') {
-      setFormData((prev) => {
-        const daysBetween =
-          e.target.name === 'entryDate'
-            ? daysBetweenDates(e.target.value, formData.leaveDate)
-            : daysBetweenDates(formData.entryDate, e.target.value);
+      const daysBetween =
+        e.target.name === 'entryDate'
+          ? daysBetweenDates(e.target.value, formData.leaveDate)
+          : daysBetweenDates(formData.entryDate, e.target.value);
 
+      setFormData((prev) => {
         const newPrices = { ...prev.prices };
         const newTotal = !isNaN(daysBetween)
           ? Object.values(newPrices).reduce((accumulator: number, current) => accumulator + Number(current) * daysBetween, 0)
@@ -129,6 +118,9 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   };
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
+    setFormData((prev) => {
+      return { ...prev, balance: newBalance };
+    });
     e.preventDefault();
     setConfirmSubmit(false);
     const areRoomsFree = await checkRooms(
@@ -175,7 +167,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
         <ContactInfo updateFormData={updateFormData} />
         <Rooms roomsArray={roomsArray} handleCheck={handleCheck} />
         <NrOfCustomers updateFormData={updateFormData} />
-        <MoneySection rooms={formData.rooms} updateFormData={updateFormData} balance={formData.balance} />
+        <MoneySection rooms={formData.rooms} updateFormData={updateFormData} balance={newBalance} />
         <button
           type="button"
           id="submit"

@@ -16,7 +16,7 @@ import ReservationForm from './components/App/ReservationForm/ReservationForm';
 
 const App = () => {
   const [locations, setLocations] = useState<DocumentData[] | []>([]);
-  const [userInfo, setUserInfo] = useState<UserInfo>({ uid: '', name: '', email: '', photoURL: '' });
+  const [userInfo, setUserInfo] = useState<UserInfo | null>({ uid: '', name: '', email: '', photoURL: '' });
   const [openHamburger, setOpenHamburger] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -30,47 +30,62 @@ const App = () => {
           return { ...prev, uid: user.uid, name: user.displayName, email: user.email, photoURL: user.photoURL };
         });
       } else {
-        setUserInfo({ uid: '', name: '', email: '', photoURL: '' });
+        setLocations([]);
+        setUserInfo(null);
         navigate('`/login`');
       }
     });
-    const unsubQuerry = onSnapshot(query(collection(db, `locations${userInfo.uid}`)), (querySnap) => {
+
+    const unsubSnap = onSnapshot(query(collection(db, `locations${userInfo?.uid}`)), (querySnap) => {
       setLocations([]);
+      console.log(locations);
+      console.log('The useEffect gets called');
 
       querySnap.forEach((doc) => {
         setLocations((prev): DocumentData[] => {
           return [...prev, doc.data()];
         });
+
         locations[0] && navigate(`${locations[0].name}`);
+
         console.log(locations);
       });
     });
+
     const timerId = setTimeout(() => {
       setIsLoading(false);
     }, 800);
 
     return () => {
       unsubAuth();
-      unsubQuerry();
+      unsubSnap();
       clearTimeout(timerId);
     };
-  }, [userInfo.uid]);
+  }, [userInfo?.uid]);
 
   if (isLoading) {
     return <LoadingScreen />;
   }
-
   return (
-    <UserIDContext.Provider value={userInfo.uid}>
+    <UserIDContext.Provider value={userInfo ? userInfo.uid : null}>
       <main className="App">
         <Routes>
           <Route
             path="/"
-            element={locations[0] && locations[0].name ? <Navigate to={`/${locations[0].name}`} /> : <NoLocation />}
+            element={
+              userInfo !== null ? (
+                locations[0] && locations[0].name ? (
+                  <Navigate to={`/${locations[0].name}`} replace />
+                ) : (
+                  <NoLocation />
+                )
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
           />
           <Route path="login" element={<LoginPage />} />
           {locations.map((location) => {
-            console.log(locations);
             return (
               <>
                 <Route
@@ -105,7 +120,20 @@ const App = () => {
               </>
             );
           })}
-          <Route path="*" element={<Navigate to={locations[0] ? `/${locations[0].name}` : ''} replace />} />
+          <Route
+            path="*"
+            element={
+              userInfo !== null ? (
+                locations[0] && locations[0].name ? (
+                  <Navigate to={`/${locations[0].name}`} replace />
+                ) : (
+                  <NoLocation />
+                )
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
         </Routes>
         {openHamburger && <HamburgerMenu userInfo={userInfo} setOpenHamburger={setOpenHamburger} locations={locations} />}
       </main>
