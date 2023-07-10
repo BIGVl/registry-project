@@ -23,14 +23,15 @@ const SearchForm = ({ setCustomers, searchValue, setSearchValue }: Props) => {
   // const [openFilter, setOpenFilter] = useState(false);
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
-  const searchArgs = { location, userId, searchValue, setCustomers };
+  const userIdString = userId || '';
+  const searchArgs = { location, userId: userIdString, searchValue, setCustomers };
 
   return (
     <form action="GET" className="search-container">
       <input
         onChange={(e) => {
           setSearchValue(e.target.value);
-          search(location, userId, searchValue, setCustomers, sort);
+          search(location, userIdString, searchValue, setCustomers, sort);
         }}
         aria-label="search input"
         placeholder="Cauta numele clientului"

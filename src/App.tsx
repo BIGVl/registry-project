@@ -38,9 +38,6 @@ const App = () => {
 
     const unsubSnap = onSnapshot(query(collection(db, `locations${userInfo?.uid}`)), (querySnap) => {
       setLocations([]);
-      console.log(locations);
-      console.log('The useEffect gets called');
-
       querySnap.forEach((doc) => {
         setLocations((prev): DocumentData[] => {
           return [...prev, doc.data()];

@@ -1,5 +1,6 @@
 import './ReservationForm.scss';
-import { ReactComponent as Cancel } from '../../../assets/arrow-left.svg';
+import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
+import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import saveRooms from '../../../helpers/saveRooms';
@@ -118,6 +119,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
   };
   //Check if the rooms are available on choosen dates and return an error if they are occupied or store the new entrance if they are not
   const submit = async (e: any) => {
+    const userIdString = userID || '';
     setFormData((prev) => {
       return { ...prev, balance: newBalance };
     });
@@ -128,12 +130,12 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
       formData.entryDate,
       formData.leaveDate,
       location,
-      userID,
+      userIdString,
       setErrorMsg,
       customerID
     );
     if (areRoomsFree) {
-      await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userID, customerID);
+      await saveRooms(formData.rooms, formData.entryDate, formData.leaveDate, location, userIdString, customerID);
       await saveEntry(`${location}${userID}`, formData, customerID);
       setOpenForm(false);
     }
@@ -156,7 +158,7 @@ const ReservationForm = ({ setOpenForm, rooms }: Props) => {
 
       <form className="form-reservation" onSubmit={submit}>
         <div className="cancel-container">
-          <Cancel
+          <ArrowLeft
             onClick={() => {
               setOpenForm(false);
             }}

@@ -203,3 +203,13 @@
     }
   }
 }
+
+@media (max-width: 720px) {
+  .hamburger-menu {
+    right: 2%;
+
+    &::before {
+      left: 17vh;
+    }
+  }
+}

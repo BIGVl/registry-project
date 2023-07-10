@@ -1,0 +1,28 @@
+.update-rooms-container {
+  grid-area: rooms;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.3rem;
+
+  .rooms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1.2rem;
+    row-gap: 0.8rem;
+    font-size: 1rem;
+
+    label {
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    input {
+      width: 1.3rem;
+    }
+  }
+
+  .room:checked {
+    filter: invert(63%) sepia(93%) saturate(272%) hue-rotate(348deg) brightness(87%) contrast(103%);
+  }
+}

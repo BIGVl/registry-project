@@ -1,35 +1,34 @@
-.update-form-container {
-  background: var(--third);
-  border-radius: 5px;
-  padding: 3rem 1rem;
-  position: fixed;
+.update-form-layout {
+  position: absolute;
   top: 0%;
   left: 0%;
   right: 0%;
   bottom: 0%;
-  z-index: 2;
-  pointer-events: all;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  z-index: 5;
-  overflow-y: scroll;
-
-  .close-form {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    filter: invert(68%) sepia(41%) saturate(599%) hue-rotate(350deg) brightness(92%) contrast(91%);
-  }
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(#000000, 0.3);
 }
 
 .update-form {
-  display: flex;
-  flex-direction: column;
+  max-height: 100%;
+  display: grid;
+  grid-template-areas:
+    'close .'
+    'contact contact'
+    'rooms dates'
+    'persons money'
+    '. money'
+    'submit submit';
   gap: 2rem;
   padding: 1rem;
-  justify-content: center;
-  align-items: center;
+  background-color: var(--third);
+  overflow: scroll;
+
+  .close-update-form {
+    grid-area: close;
+  }
 
   section {
     display: flex;
@@ -50,78 +49,8 @@
     border-radius: 5px;
   }
 
-  .contact-info input {
-    width: 20rem;
-  }
-
-  .dates,
-  .persons {
-    flex-direction: row;
-  }
-
-  .persons {
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    label {
-      align-items: center;
-    }
-    input {
-      width: 50%;
-    }
-  }
-
-  .rooms-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    font-size: 1.3rem;
-  }
-
-  .rooms {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 1.2rem;
-    row-gap: 0.8rem;
-    font-size: 1rem;
-    label {
-      justify-content: space-between;
-      flex-direction: row;
-    }
-    input {
-      width: 1.3rem;
-    }
-  }
-
-  .room:checked {
-    filter: invert(63%) sepia(93%) saturate(272%) hue-rotate(348deg) brightness(87%) contrast(103%);
-  }
-
-  .price-per-room {
-    font-size: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-
-    .price-on-room-label {
-      flex-direction: row;
-      margin-left: -4.5rem;
-    }
-    .price-on-room {
-      width: 7rem;
-    }
-  }
-
-  .balance {
-    font-weight: 500;
-    font-size: 1.3rem;
-    display: flex;
-    gap: 0.8rem;
-  }
-
   .submit-update {
+    grid-area: submit;
     padding: 1rem 0.4rem;
     background-color: var(--action);
     border-radius: 8px;

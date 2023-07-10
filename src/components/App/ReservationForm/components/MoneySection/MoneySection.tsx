@@ -16,7 +16,7 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
           .sort((a, b) => (a > b ? 1 : -1))
           .map((room) => {
             return (
-              <label key={room} htmlFor={'priceRoom'} className="price-on-room-label">
+              <label key={room} className="price-on-room-label">
                 camera {room}
                 <input
                   data-id={room}
@@ -33,7 +33,7 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
             );
           })}
       </div>
-      <label className="advance-label" htmlFor="advance">
+      <label className="advance-label">
         Avans
         <input
           onChange={(e) => {
@@ -46,7 +46,7 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
         />
         lei
       </label>
-      <label htmlFor="discount" className="discount-label">
+      <label className="discount-label">
         Reducere
         <input
           onChange={(e) => {

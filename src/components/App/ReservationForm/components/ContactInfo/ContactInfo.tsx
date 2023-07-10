@@ -8,11 +8,11 @@ interface Props {
 const ContactInfo = ({ updateFormData }: Props) => {
   return (
     <fieldset className="contanct-info">
-      <label htmlFor="name" className="name-label">
+      <label className="name-label">
         Numele clientului
         <input onChange={updateFormData} type="text" name="name" id="name-cx" />
       </label>
-      <label htmlFor="phone" className="phone-label">
+      <label className="phone-label">
         Numar de telefon
         <input onChange={updateFormData} type="number" name="phone" id="phone-cx" />
       </label>

@@ -1,0 +1,13 @@
+.update-persons {
+  grid-area: persons;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  label {
+    align-items: center;
+  }
+
+  input {
+    width: 50%;
+  }
+}

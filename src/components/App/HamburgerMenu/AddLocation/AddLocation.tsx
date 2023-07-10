@@ -52,7 +52,7 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
         <fieldset className="add-fieldset">
           Adauga o proprietate noua sau schimba numarul de camere al unei proprietati deja existente
         </fieldset>
-        <label htmlFor="location-name">
+        <label>
           Numele proprietatii:
           <input
             type="text"
@@ -65,7 +65,7 @@ export default function AddLocation({ setOpenAddLocation, setOpenHamburger }: Pr
             onChange={change}
           />
         </label>
-        <label htmlFor="add-rooms" className="add-location-rooms">
+        <label className="add-location-rooms">
           Numar de camere:
           <input type="number" name="rooms" className="add-rooms" id="add-rooms" required min={1} max={50} onChange={change} />
         </label>
