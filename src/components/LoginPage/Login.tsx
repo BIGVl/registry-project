@@ -45,11 +45,11 @@ const Login = () => {
 
   return (
     <form action="" className="login-form" noValidate onSubmit={signIn}>
-      <label htmlFor="email">
+      <label>
         Email
         <input type="email" name="email" id="email" onChange={update} />
       </label>
-      <label htmlFor="password">
+      <label>
         Password
         <input type="password" name="password" id="password" onChange={update} />
       </label>

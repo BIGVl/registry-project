@@ -8,11 +8,11 @@ interface Props {
 const NrOfCustomers = ({ updateFormData }: Props) => {
   return (
     <fieldset className="adults-childs">
-      <label id="adults-l" className="adults-l" htmlFor="adults">
+      <label id="adults-l" className="adults-l">
         Adulti
         <input onChange={updateFormData} type="number" name="adults" id="adults" />
       </label>
-      <label id="childs-l" className="childs-l" htmlFor="childs">
+      <label id="childs-l" className="childs-l">
         Copii
         <input onChange={updateFormData} type="number" name="kids" id="childs" />
       </label>

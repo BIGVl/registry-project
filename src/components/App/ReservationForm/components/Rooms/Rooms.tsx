@@ -14,7 +14,7 @@ const Rooms = ({ roomsArray, handleCheck }: Props) => {
       <fieldset className="rooms-fieldset">
         {roomsArray.map((room) => {
           return (
-            <label key={`room${room}`} htmlFor={`rooms-${room}`} className="rooms-label">
+            <label key={`room${room}`} className="rooms-label">
               {room}
 
               <input onChange={handleCheck} type="checkbox" value={room} name={`rooms`} id={`rooms-${room}`} />

@@ -12,7 +12,7 @@ import AddLocation from './AddLocation/AddLocation';
 
 interface Props {
   setOpenHamburger: (value: boolean) => void;
-  userInfo: UserInfo;
+  userInfo: UserInfo | null;
   locations: DocumentData[];
 }
 
@@ -29,7 +29,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   //Sends the user to the location's url
   const openLocation: MouseEventHandler<HTMLLIElement> = async (e) => {
     if (e.target instanceof HTMLLIElement || e.target instanceof HTMLDivElement) {
-      await updateDoc(doc(db, `locations${userInfo.uid}`, e.target.id), {
+      await updateDoc(doc(db, `locations${userInfo?.uid}`, e.target.id), {
         selected: true
       });
       navigate(`/${e.target.id}`);
@@ -45,7 +45,7 @@ const HamburgerMenu = ({ userInfo, setOpenHamburger, locations }: Props) => {
   };
   const deleteLocation = async () => {
     setLocationToDelete('');
-    await deleteDoc(doc(db, `locations${userInfo.uid}`, locationToDelete));
+    await deleteDoc(doc(db, `locations${userInfo?.uid}`, locationToDelete));
   };
 
   const logOut = async () => {

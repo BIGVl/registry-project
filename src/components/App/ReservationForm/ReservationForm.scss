@@ -23,11 +23,7 @@
     overflow-y: scroll;
     overscroll-behavior: none;
     padding: 1rem 3rem;
-    max-height: 99%;
-    border-radius: 5px;
-
-    &::-webkit-scrollbar {
-    }
+    max-height: 100%;
 
     input {
       border-radius: 8px;

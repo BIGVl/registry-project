@@ -14,12 +14,13 @@ interface Props {
 export default function CustomersList({ rooms }: Props) {
   const location = useContext(LocationContext);
   const userId = useContext(UserIDContext);
+  const userIdString = userId || '';
   const [customers, setCustomers] = useState<FormDataIded[]>([]);
   const [lastDoc, setLastDoc] = useState<Query<DocumentData> | undefined>(undefined);
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    search(location, userId, '', setCustomers, 'desc');
+    search(location, userIdString, '', setCustomers, 'desc');
 
     window.addEventListener('scroll', scroll);
 
@@ -30,7 +31,7 @@ export default function CustomersList({ rooms }: Props) {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      const { next } = await search(location, userId, searchValue, setCustomers, 'desc', lastDoc);
+      const { next } = await search(location, userIdString, searchValue, setCustomers, 'desc', lastDoc);
       setLastDoc(next);
       setCustomers((prev) => {
         return [...prev];
