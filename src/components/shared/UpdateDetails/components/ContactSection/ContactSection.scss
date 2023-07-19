@@ -1,7 +1,17 @@
 .update-contact-section {
   grid-area: contact;
-
   input {
     width: 20rem;
+  }
+}
+
+.display-contact {
+  grid-area: contact;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+
+  .name {
+    font-size: 1.6rem;
   }
 }

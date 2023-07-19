@@ -3,6 +3,7 @@ import { ChangeEvent } from 'react';
 import { FormData } from '../../../../../globalInterfaces';
 import daysBetweenDates from '../../../../../helpers/daysBetweenDates';
 import './Rooms.scss';
+import { EditSection } from '../../UpdateDetails';
 
 interface Props {
   rooms: number;
@@ -10,10 +11,13 @@ interface Props {
   setCustomerData: (value: FormData | DocumentData) => void;
   entryDate: string;
   leaveDate: string;
+  editSection: EditSection;
+  setEditSection: (value: EditSection) => void;
 }
 
-export default function ({ rooms, customersRooms, setCustomerData, entryDate, leaveDate }: Props) {
+export default function ({ rooms, customersRooms, setCustomerData, entryDate, leaveDate, editSection, setEditSection }: Props) {
   const roomsArr = Array.from({ length: Number(rooms) || 0 }, (_, i) => i + 1);
+  const editMode = editSection === 'room';
 
   //Add and remove the rooms in the state and also recalculate the total when the rooms are removed
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +47,7 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     }
   };
 
-  return (
+  return editMode ? (
     <div className="update-rooms-container">
       Camere
       <div className="rooms">
@@ -65,5 +69,7 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
         })}
       </div>
     </div>
+  ) : (
+    <button className="change-rooms-button">Schimba camerele</button>
   );
 }

@@ -28,6 +28,8 @@ interface Props {
   rooms: number;
 }
 
+export type EditSection = 'contact' | 'customer' | 'date' | 'money' | 'room' | '';
+
 export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: Props) {
   const initialCustomerData = useRef<FormData | DocumentData>({
     adults: '',
@@ -46,7 +48,8 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   const [customerData, setCustomerData] = useState<FormData | DocumentData>({ ...initialCustomerData.current });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState<string>('');
+  //This state is used for the section on which the user has clicked in order to change from read-only content into inputs
+  const [editSection, setEditSection] = useState<EditSection>('');
   const userID = useContext(UserIDContext);
   const userIdString = userID || '';
   const location = useContext(LocationContext);
@@ -162,16 +165,36 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
 
       <form action="" className="update-form" noValidate onSubmit={submit}>
         <Back className="close-update-form" onClick={() => setOpenDetails(false)} />
-        <ContactSection name={customerData.name} phone={customerData.phone} onChange={change} />
+        <ContactSection
+          name={customerData.name}
+          phone={customerData.phone}
+          onChange={change}
+          editSection={editSection}
+          setEditSection={setEditSection}
+        />
         <Rooms
           rooms={rooms}
           customersRooms={customerData.rooms}
           setCustomerData={setCustomerData}
           entryDate={customerData.entryDate}
           leaveDate={customerData.leaveDate}
+          editSection={editSection}
+          setEditSection={setEditSection}
         />
-        <DatesSection entryDate={customerData.entryDate} leaveDate={customerData.leaveDate} onChange={change} />
-        <CustomersSection adults={customerData.adults} kids={customerData.kids} onChange={change} />
+        <DatesSection
+          entryDate={customerData.entryDate}
+          leaveDate={customerData.leaveDate}
+          onChange={change}
+          editSection={editSection}
+          setEditSection={setEditSection}
+        />
+        <CustomersSection
+          adults={customerData.adults}
+          kids={customerData.kids}
+          onChange={change}
+          editSection={editSection}
+          setEditSection={setEditSection}
+        />
         <MoneySection
           rooms={customerData.rooms}
           prices={customerData.prices}
@@ -179,6 +202,8 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
           discount={customerData.discount}
           balance={customerData.balance}
           onChange={change}
+          editSection={editSection}
+          setEditSection={setEditSection}
         />
         <button
           type="button"

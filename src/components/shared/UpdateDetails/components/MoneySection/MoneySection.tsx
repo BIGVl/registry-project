@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react';
 import './MoneySection.scss';
+import { EditSection } from '../../UpdateDetails';
 
 interface Props {
   rooms: number[];
@@ -8,10 +9,23 @@ interface Props {
   discount: number;
   balance: number;
   onChange: (value: ChangeEvent<HTMLInputElement>) => void;
+  editSection: EditSection;
+  setEditSection: (value: EditSection) => void;
 }
 
-export default function MoneySection({ rooms, prices, advance, discount, balance, onChange }: Props) {
-  return (
+export default function MoneySection({
+  rooms,
+  prices,
+  advance,
+  discount,
+  balance,
+  onChange,
+  editSection,
+  setEditSection
+}: Props) {
+  const editMode = editSection === 'money';
+
+  return editMode ? (
     <section className="update-money">
       <div className="price-per-room">
         {rooms
@@ -50,5 +64,20 @@ export default function MoneySection({ rooms, prices, advance, discount, balance
         De plata <p className="sum-remaining"> {balance}</p>
       </div>
     </section>
+  ) : (
+    <div className="display-money">
+      <div className="price-per-room">
+        {Object.keys(prices).map((room) => {
+          return (
+            <div className={room}>
+              {room} {prices[Number(room)]} lei
+            </div>
+          );
+        })}
+      </div>
+      <div className="advance">Avans {advance} lei</div>
+      <div className="discount">Discount {discount} lei</div>
+      <div className="balance">De plata {balance} lei</div>
+    </div>
   );
 }
