@@ -18,10 +18,12 @@ interface Props {
 
 const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
   const userID = useContext(UserIDContext);
+  const location = useContext(LocationContext);
+  const userIdString = userID ?? '';
   const [customerData, setCustomerData] = useState<FormData | DocumentData>();
   //Get data of the customer
   async function getData() {
-    const responseData = await getCustomerInfo(location, userID, entryDetails.customerId);
+    const responseData = await getCustomerInfo(location, userIdString, entryDetails.customerId);
     setCustomerData(responseData ?? customerData);
   }
 
@@ -29,14 +31,11 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
     getData();
   }, []);
 
-  const location = useContext(LocationContext);
-  const userId = useContext(UserIDContext);
-
   const submit = async () => {
-    await deleteEntry(`${location}${userId}`, `${entryDetails.customerId}`);
+    await deleteEntry(`${location}${userID}`, `${entryDetails.customerId}`);
     await deleteDates(
       location,
-      userId,
+      userIdString,
       customerData?.entryDate,
       customerData?.leaveDate,
       customerData?.rooms,

@@ -1,9 +1,10 @@
 import { DocumentData } from 'firebase/firestore';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 import { FormData } from '../../../../../globalInterfaces';
 import daysBetweenDates from '../../../../../helpers/daysBetweenDates';
 import './Rooms.scss';
 import { EditSection } from '../../UpdateDetails';
+import ExitEditModeButton from '../ExitEditModeButton/ExitEditModeButton';
 
 interface Props {
   rooms: number;
@@ -28,11 +29,14 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     } else {
       customersRooms.forEach((room: number, i: number) => {
         if (room === Number(e.target.value)) {
+          console.log(room, e.target.value);
           const rooms = customersRooms;
+          rooms?.splice(i, 1);
+          console.log(rooms);
+          console.log(customersRooms);
           setCustomerData((prev: FormData | DocumentData) => {
             const newPrices = prev.prices;
             delete newPrices[room];
-            rooms?.splice(i, 1);
             return { ...prev, [e.target.name]: rooms, prices: newPrices };
           });
         }
@@ -47,6 +51,10 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     }
   };
 
+  function enterEditMode(e: MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    setEditSection('room');
+  }
   return editMode ? (
     <div className="update-rooms-container">
       Camere
@@ -68,8 +76,11 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
           );
         })}
       </div>
+      <ExitEditModeButton setEditSection={setEditSection} />
     </div>
   ) : (
-    <button className="change-rooms-button">Schimba camerele</button>
+    <button onClick={enterEditMode} className="change-rooms-button">
+      Schimba camerele
+    </button>
   );
 }

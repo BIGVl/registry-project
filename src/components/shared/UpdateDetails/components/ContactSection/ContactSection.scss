@@ -1,3 +1,4 @@
+// Edit mode
 .update-contact-section {
   grid-area: contact;
   input {
@@ -5,13 +6,19 @@
   }
 }
 
+//Display-only mode
 .display-contact {
   grid-area: contact;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  gap: 1rem;
 
   .name {
     font-size: 1.6rem;
+  }
+
+  .phone {
+    padding-top: 0.5rem;
   }
 }

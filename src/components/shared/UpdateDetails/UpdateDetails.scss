@@ -28,6 +28,7 @@
 
   .close-update-form {
     grid-area: close;
+    margin-bottom: -1.5rem;
   }
 
   label {
@@ -82,5 +83,9 @@
       padding: 0.5rem 0.8rem;
       border-radius: 5px;
     }
+  }
+
+  .error-layout {
+    position: absolute;
   }
 }
