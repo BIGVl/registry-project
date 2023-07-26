@@ -26,3 +26,35 @@
     filter: invert(75%) sepia(14%) saturate(574%) hue-rotate(126deg) brightness(94%) contrast(89%);
   }
 }
+
+.display-rooms-wrapper {
+  background-color: transparent;
+
+  .display-rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    max-width: 10rem;
+    .rooms-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      .room {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(180deg, var(--secondary), var(--third));
+        width: 2rem;
+        height: 2rem;
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 5px;
+      }
+    }
+  }
+}

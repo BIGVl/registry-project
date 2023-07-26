@@ -19,7 +19,6 @@ interface Props {
 export default function ({ rooms, customersRooms, setCustomerData, entryDate, leaveDate, editSection, setEditSection }: Props) {
   const roomsArr = Array.from({ length: Number(rooms) || 0 }, (_, i) => i + 1);
   const editMode = editSection === 'room';
-
   //Add and remove the rooms in the state and also recalculate the total when the rooms are removed
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -63,7 +62,6 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
           return (
             <label key={`room${room}`}>
               {room}
-
               <input
                 onChange={handleCheck}
                 type="checkbox"
@@ -79,8 +77,15 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
       <ExitEditModeButton setEditSection={setEditSection} />
     </div>
   ) : (
-    <button onClick={enterEditMode} className="change-rooms-button">
-      Schimba camerele
+    <button onClick={enterEditMode} className="display-rooms-wrapper">
+      <div className="display-rooms">
+        Camere
+        <div className="rooms-container">
+          {customersRooms.map((room: number) => {
+            return <div className="room">{room}</div>;
+          })}
+        </div>
+      </div>
     </button>
   );
 }

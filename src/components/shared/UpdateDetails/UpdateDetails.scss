@@ -9,6 +9,8 @@
   align-items: center;
   padding: 1rem;
   background-color: rgba(#000000, 0.3);
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
 .update-form {
@@ -25,7 +27,6 @@
   padding: 1rem;
   background-color: var(--main);
   border-radius: 5px;
-
   .close-update-form {
     grid-area: close;
     margin-bottom: -1.5rem;
@@ -88,4 +89,8 @@
   .error-layout {
     position: absolute;
   }
+}
+
+.update-form-layout.animated {
+  opacity: 1;
 }

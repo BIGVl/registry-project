@@ -50,6 +50,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
   //This state is used for the section on which the user has clicked in order to change from read-only content into inputs
   const [editSection, setEditSection] = useState<EditSection>('');
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
   const userIdString = userID || '';
   const location = useContext(LocationContext);
@@ -64,6 +65,8 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
 
   useEffect(() => {
     getData();
+    setIsMounted(true);
+    return () => setIsMounted(false);
   }, []);
 
   //Update the balance remaining every time one of these values change
@@ -148,7 +151,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   };
 
   return (
-    <div className="update-form-layout" onClick={closeModal}>
+    <div className={`update-form-layout ${isMounted ? 'mounted' : 'unmounted'}`} onClick={closeModal}>
       {errorMessage && (
         <div className="error-layout">
           <div className="error">
@@ -163,7 +166,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
         </div>
       )}
 
-      <form action="" className="update-form" noValidate onSubmit={submit}>
+      <form action="" className={`update-form`} noValidate onSubmit={submit}>
         <Back className="close-update-form" onClick={() => setOpenDetails(false)} />
         <ContactSection
           name={customerData.name}
