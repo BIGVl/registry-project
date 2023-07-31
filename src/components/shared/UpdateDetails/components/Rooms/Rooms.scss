@@ -31,6 +31,7 @@
   background-color: transparent;
 
   .display-rooms {
+    grid-area: rooms;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -47,10 +48,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(180deg, var(--secondary), var(--third));
+        border-image: linear-gradient(180deg, var(--secondary), var(--third)) 10/ 2px;
+        border-radius: 10px;
         width: 2rem;
         height: 2rem;
-        color: white;
+        color: var(--secondary);
         font-weight: 600;
         font-size: 1rem;
         border-radius: 5px;

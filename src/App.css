@@ -8,6 +8,7 @@
     padding: 0;
     margin: 0;
     font-family: var(--font);
+    letter-spacing: .8px;
 }
 
 
@@ -22,7 +23,7 @@
     --font: 'Open Sans', sans-serif;
     --darker-action: #b06e20;
     --brighter-main: #f8fcfb;
-
+    --grayish: #abb
 }
 
 

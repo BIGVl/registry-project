@@ -7,10 +7,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
   background-color: rgba(#000000, 0.3);
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.4s ease;
+
+  &.mounted {
+    opacity: 1;
+    .update-form {
+      transform: scale(1);
+    }
+  }
+
+  &.unmounted {
+    opacity: 0;
+
+    .update-form {
+      transform: scale(0.1);
+    }
+  }
 }
 
 .update-form {
@@ -27,6 +41,8 @@
   padding: 1rem;
   background-color: var(--main);
   border-radius: 5px;
+  transform: scale(0.1);
+  transition: transform 0.4s ease;
   .close-update-form {
     grid-area: close;
     margin-bottom: -1.5rem;
@@ -42,16 +58,6 @@
     font-size: 1rem;
     padding: 3px;
     border-radius: 5px;
-  }
-
-  .submit-update {
-    grid-area: submit;
-    padding: 1rem 0.4rem;
-    background-color: var(--action);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    box-shadow: 1px 1px 15px 2px #999;
   }
 
   .confirm-submission-layout {
@@ -89,8 +95,4 @@
   .error-layout {
     position: absolute;
   }
-}
-
-.update-form-layout.animated {
-  opacity: 1;
 }

@@ -20,16 +20,20 @@ export default function ContactSection({ name, phone, onChange, editSection, set
 
   return editMode ? (
     <section className="update-contact-section">
-      <label>
-        Nume
-        <input type="text" name="name" className="name" value={name} onChange={onChange} />
-      </label>
+      <div className="name-phone">
+        <label>
+          Nume
+          <input type="text" name="name" className="name" value={name} onChange={onChange} />
+        </label>
 
-      <label>
-        Telefon
-        <input type="number" name="phone" className="phone" value={phone} onChange={onChange} />
-      </label>
-      <ExitEditModeButton setEditSection={setEditSection} />
+        <label>
+          Telefon
+          <input type="number" name="phone" className="phone" value={phone} onChange={onChange} />
+        </label>
+      </div>
+      <div className="close">
+        <ExitEditModeButton setEditSection={setEditSection} />
+      </div>
     </section>
   ) : (
     <div className="display-contact" onClick={() => setEditSection('contact')}>

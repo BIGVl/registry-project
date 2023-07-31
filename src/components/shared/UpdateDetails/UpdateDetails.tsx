@@ -4,6 +4,7 @@ import { LocationContext, UserIDContext } from '../../../Contexts';
 import getCustomerInfo from '../../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { ReactComponent as Back } from '../../../assets/arrow-left.svg';
+
 import './UpdateDetails.scss';
 import saveEntry from '../../../helpers/saveEntry';
 import validateDetails from '../../../helpers/validateDetails';
@@ -12,11 +13,13 @@ import { FormData } from '../../../globalInterfaces';
 import deleteDates from '../../../helpers/deleteDates';
 import checkRooms from '../../../helpers/checkRooms';
 import daysBetweenDates from '../../../helpers/daysBetweenDates';
+//Children components
 import ContactSection from './components/ContactSection/ContactSection';
 import Rooms from './components/Rooms/Rooms';
 import DatesSection from './components/DatesSection/DatesSection';
 import CustomersSection from './components/CustomersSection/CustomersSection';
 import MoneySection from './components/MoneySection/MoneySection';
+import SubmitButton from './components/SubmitButton/SubmitButton';
 
 interface Props {
   entryDetails: {
@@ -48,7 +51,8 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   const [customerData, setCustomerData] = useState<FormData | DocumentData>({ ...initialCustomerData.current });
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [confirmSubmit, setConfirmSubmit] = useState<boolean>(false);
-  //This state is used for the section on which the user has clicked in order to change from read-only content into inputs
+  //This state is used for the section on which the user has clicked in order
+  //to change from read-only content into inputs
   const [editSection, setEditSection] = useState<EditSection>('');
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const userID = useContext(UserIDContext);
@@ -80,7 +84,8 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
     });
   }, [customerData.total, customerData.advance, customerData.discount]);
 
-  //Besides updating the state, the dates or the price values are changed the total and the due balance will be updated accordingly
+  //Besides updating the state, the dates or the price,
+  //values are changed the total and the due balance will be updated accordingly
   const change = (e: ChangeEvent<HTMLInputElement>) => {
     const daysBetween = daysBetweenDates(customerData.entryDate, customerData.leaveDate);
 
@@ -113,7 +118,12 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
 
   const closeModal = (e: MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
-    target.classList.contains('update-form-layout') && setOpenDetails(false);
+    if (target.classList.contains('update-form-layout') || target.classList.contains('close-update-form')) {
+      setIsMounted(false);
+      setTimeout(() => {
+        setOpenDetails(false);
+      }, 400);
+    }
   };
 
   const submit = async (e: FormEvent) => {
@@ -167,7 +177,15 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
       )}
 
       <form action="" className={`update-form`} noValidate onSubmit={submit}>
-        <Back className="close-update-form" onClick={() => setOpenDetails(false)} />
+        <Back
+          className="close-update-form"
+          onClick={() => {
+            setIsMounted(false);
+            setTimeout(() => {
+              setOpenDetails(false);
+            }, 400);
+          }}
+        />
         <ContactSection
           name={customerData.name}
           phone={customerData.phone}
@@ -208,15 +226,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
           editSection={editSection}
           setEditSection={setEditSection}
         />
-        <button
-          type="button"
-          className="submit-update"
-          onClick={() => {
-            validateDetails(customerData, setErrorMessage, setConfirmSubmit);
-          }}
-        >
-          Confirma schimbarile
-        </button>
+        <SubmitButton customerData={customerData} setErrorMessage={setErrorMessage} setConfirmSubmit={setConfirmSubmit} />
         {confirmSubmit && (
           <div className="confirm-submission-layout">
             <div className="confirm-submission-container">

@@ -2,8 +2,6 @@ import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import './Table.scss';
 import UpdateDetails from '../../shared/UpdateDetails/UpdateDetails';
-import DeleteModal from './DeleteModal/DeleteModal';
-import DetailsModal from './DetailsModal/DetailsModal';
 
 interface PropTypes {
   rows: number;
@@ -16,8 +14,6 @@ interface PropTypes {
 const Table = ({ rows, days, month, year, data }: PropTypes) => {
   const daysArray: any[] = [];
   const cellsArray: any[] = [];
-  const [openUpdateDelete, setOpenUpdateDelete] = useState<boolean>(false);
-  const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [entryDetails, setEntryDetails] = useState({ year: year, month, customerId: 0 });
   //Fill in the days number in an array so it can be <p></p>opulated on the table
@@ -47,7 +43,7 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month, customerId });
-                    setOpenUpdateDelete(!openUpdateDelete);
+                    setOpenDetails(true);
                   }}
                   className="show-container"
                 >
@@ -60,7 +56,7 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month, customerId });
-                    setOpenUpdateDelete(!openUpdateDelete);
+                    setOpenDetails(true);
                   }}
                   className="show-container-enter"
                 >
@@ -72,7 +68,7 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month, customerId });
-                    setOpenUpdateDelete(!openUpdateDelete);
+                    setOpenDetails(true);
                   }}
                   className="show-container"
                 >
@@ -84,7 +80,7 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
                 <div
                   onClick={() => {
                     setEntryDetails({ year, month, customerId });
-                    setOpenUpdateDelete(!openUpdateDelete);
+                    setOpenDetails(true);
                   }}
                   className="show-container"
                 >
@@ -126,10 +122,6 @@ const Table = ({ rows, days, month, year, data }: PropTypes) => {
           })}
         </tbody>
       </table>
-      {openUpdateDelete && (
-        <DetailsModal setOpenDetails={setOpenDetails} setOpenUpdateDelete={setOpenUpdateDelete} setOpenDelete={setOpenDelete} />
-      )}
-      {openDelete && <DeleteModal entryDetails={entryDetails} setOpenDelete={setOpenDelete} />}
       {openDetails && <UpdateDetails entryDetails={entryDetails} setOpenDetails={setOpenDetails} rooms={rows} />}
     </>
   );

@@ -1,8 +1,15 @@
 // Edit mode
 .update-contact-section {
   grid-area: contact;
-  input {
-    width: 20rem;
+
+  .name-phone {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .close {
+    margin-top: 1rem;
+    float: right;
   }
 }
 
