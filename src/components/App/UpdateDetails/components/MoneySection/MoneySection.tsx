@@ -69,7 +69,7 @@ export default function MoneySection({
       <div className="price-per-room">
         {Object.keys(prices).map((room) => {
           return (
-            <div className={room}>
+            <div className={room} key={room}>
               {room} {prices[Number(room)]} lei
             </div>
           );

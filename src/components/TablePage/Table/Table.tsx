@@ -1,7 +1,7 @@
 import { DocumentData } from 'firebase/firestore';
 import { useState } from 'react';
 import './Table.scss';
-import UpdateDetails from '../../shared/UpdateDetails/UpdateDetails';
+import UpdateDetails from '../../App/UpdateDetails/UpdateDetails';
 
 interface PropTypes {
   rows: number;

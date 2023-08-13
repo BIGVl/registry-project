@@ -1,5 +1,5 @@
-import { ChangeEvent } from 'react';
 import './ContactSection.scss';
+import { ChangeEvent } from 'react';
 import { EditSection } from '../../UpdateDetails';
 import ExitEditModeButton from '../ExitEditModeButton/ExitEditModeButton';
 
@@ -36,9 +36,9 @@ export default function ContactSection({ name, phone, onChange, editSection, set
       </div>
     </section>
   ) : (
-    <div className="display-contact" onClick={() => setEditSection('contact')}>
+    <button className="display-contact" onClick={() => setEditSection('contact')}>
       <div className="name"> {upperName} </div>
       <div className="phone"> Telefon {phone} </div>
-    </div>
+    </button>
   );
 }

@@ -14,4 +14,7 @@
 
 .display-persons {
   grid-area: persons;
+  align-self: center;
+  display: flex;
+  gap: 4rem;
 }

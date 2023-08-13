@@ -1,0 +1,37 @@
+//Edit mode
+.update-dates {
+  grid-area: dates;
+  align-self: center;
+
+  .dates-input-section {
+    display: flex;
+    gap: 1rem;
+    input {
+      font-size: 0.85rem;
+    }
+  }
+
+  .close {
+    margin-top: 10px;
+  }
+}
+
+//Display mode only
+.display-dates {
+  font-size: 1rem;
+  grid-area: dates;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+  background-color: transparent;
+
+  .entry-date,
+  .leave-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .date {
+    }
+  }
+}

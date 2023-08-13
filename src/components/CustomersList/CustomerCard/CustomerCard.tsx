@@ -2,7 +2,7 @@ import './CustomerCard.scss';
 import { FormDataIded } from '../../../globalInterfaces';
 import { useState } from 'react';
 import capitalizeName from '../../../helpers/capitalizeName';
-import UpdateDetails from '../../shared/UpdateDetails/UpdateDetails';
+import UpdateDetails from '../../App/UpdateDetails/UpdateDetails';
 
 interface Props {
   data: FormDataIded;

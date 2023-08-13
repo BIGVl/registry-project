@@ -74,17 +74,21 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
           );
         })}
       </div>
-      <ExitEditModeButton setEditSection={setEditSection} />
+      <div className="close">
+        <ExitEditModeButton setEditSection={setEditSection} />
+      </div>
     </div>
   ) : (
-    <button onClick={enterEditMode} className="display-rooms-wrapper">
-      <div className="display-rooms">
-        Camere
-        <div className="rooms-container">
-          {customersRooms.map((room: number) => {
-            return <div className="room">{room}</div>;
-          })}
-        </div>
+    <button onClick={enterEditMode} className="display-rooms">
+      Camere
+      <div className="rooms-container">
+        {customersRooms.map((room: number) => {
+          return (
+            <div key={room} className="room">
+              {room}
+            </div>
+          );
+        })}
       </div>
     </button>
   );

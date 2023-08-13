@@ -1,5 +1,5 @@
 .update-form-layout {
-  position: absolute;
+  position: fixed;
   top: 0%;
   left: 0%;
   right: 0%;
@@ -10,6 +10,7 @@
   background-color: rgba(#000000, 0.3);
   opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: all;
 
   &.mounted {
     opacity: 1;
@@ -28,7 +29,8 @@
 }
 
 .update-form {
-  max-height: 100%;
+  max-height: 90%;
+  max-width: 90%;
   display: grid;
   grid-template-areas:
     'close close'
@@ -43,9 +45,24 @@
   border-radius: 5px;
   transform: scale(0.1);
   transition: transform 0.4s ease;
+
+  @media (max-width: 650px) {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+
   .close-update-form {
     grid-area: close;
-    margin-bottom: -1.5rem;
+  }
+
+  @media (max-height: 730px) {
+    padding-top: 3rem;
+
+    .close-update-form {
+      position: absolute;
+      top: 6px;
+    }
   }
 
   label {
