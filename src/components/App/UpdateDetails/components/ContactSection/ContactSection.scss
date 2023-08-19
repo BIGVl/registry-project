@@ -1,0 +1,36 @@
+// Edit mode
+.update-contact-section {
+  grid-area: contact;
+
+  .name-phone {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  input {
+    width: 18rem;
+  }
+
+  .close {
+    margin-top: 1rem;
+  }
+}
+
+//Display-only mode
+.display-contact {
+  background-color: transparent;
+  grid-area: contact;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: 1.5rem;
+
+  .name {
+    font-size: 1.6rem;
+  }
+
+  .phone {
+    padding-top: 0.5rem;
+  }
+}

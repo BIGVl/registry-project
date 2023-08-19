@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { LocationContext, UserIDContext } from './Contexts';
 import { auth, db } from './firebase';
@@ -82,9 +82,9 @@ const App = () => {
             }
           />
           <Route path="login" element={<LoginPage />} />
-          {locations.map((location) => {
+          {locations.map((location, i) => {
             return (
-              <>
+              <Fragment key={i}>
                 <Route
                   path={`/${location.name}`}
                   element={
@@ -114,7 +114,7 @@ const App = () => {
                     </LocationContext.Provider>
                   }
                 />
-              </>
+              </Fragment>
             );
           })}
           <Route

@@ -1,8 +1,10 @@
 import { DocumentData } from 'firebase/firestore';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 import { FormData } from '../../../../../globalInterfaces';
 import daysBetweenDates from '../../../../../helpers/daysBetweenDates';
 import './Rooms.scss';
+import { EditSection } from '../../UpdateDetails';
+import ExitEditModeButton from '../ExitEditModeButton/ExitEditModeButton';
 
 interface Props {
   rooms: number;
@@ -10,11 +12,13 @@ interface Props {
   setCustomerData: (value: FormData | DocumentData) => void;
   entryDate: string;
   leaveDate: string;
+  editSection: EditSection;
+  setEditSection: (value: EditSection) => void;
 }
 
-export default function ({ rooms, customersRooms, setCustomerData, entryDate, leaveDate }: Props) {
+export default function ({ rooms, customersRooms, setCustomerData, entryDate, leaveDate, editSection, setEditSection }: Props) {
   const roomsArr = Array.from({ length: Number(rooms) || 0 }, (_, i) => i + 1);
-
+  const editMode = editSection === 'room';
   //Add and remove the rooms in the state and also recalculate the total when the rooms are removed
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -24,11 +28,14 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     } else {
       customersRooms.forEach((room: number, i: number) => {
         if (room === Number(e.target.value)) {
+          console.log(room, e.target.value);
           const rooms = customersRooms;
+          rooms?.splice(i, 1);
+          console.log(rooms);
+          console.log(customersRooms);
           setCustomerData((prev: FormData | DocumentData) => {
             const newPrices = prev.prices;
             delete newPrices[room];
-            rooms?.splice(i, 1);
             return { ...prev, [e.target.name]: rooms, prices: newPrices };
           });
         }
@@ -43,7 +50,11 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     }
   };
 
-  return (
+  function enterEditMode(e: MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    setEditSection('room');
+  }
+  return editMode ? (
     <div className="update-rooms-container">
       Camere
       <div className="rooms">
@@ -51,7 +62,6 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
           return (
             <label key={`room${room}`}>
               {room}
-
               <input
                 onChange={handleCheck}
                 type="checkbox"
@@ -64,6 +74,22 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
           );
         })}
       </div>
+      <div className="close">
+        <ExitEditModeButton setEditSection={setEditSection} />
+      </div>
     </div>
+  ) : (
+    <button onClick={enterEditMode} className="display-rooms">
+      Camere
+      <div className="rooms-container">
+        {customersRooms.map((room: number) => {
+          return (
+            <div key={room} className="room">
+              {room}
+            </div>
+          );
+        })}
+      </div>
+    </button>
   );
 }
