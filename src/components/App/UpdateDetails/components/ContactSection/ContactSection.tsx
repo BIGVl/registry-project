@@ -23,7 +23,7 @@ export default function ContactSection({ name, phone, onChange, editSection, set
       <div className="name-phone">
         <label>
           Nume
-          <input type="text" name="name" className="name" value={name} onChange={onChange} />
+          <input type="text" name="name" className="name" value={upperName} onChange={onChange} />
         </label>
 
         <label>

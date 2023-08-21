@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import './CustomersSection.scss';
 import { EditSection } from '../../UpdateDetails';
+import ExitEditModeButton from '../ExitEditModeButton/ExitEditModeButton';
 
 interface Props {
   adults: string;
@@ -23,11 +24,14 @@ export default function CustomersSection({ adults, kids, onChange, editSection, 
         Copii
         <input type="number" name="kids" className="kids" value={kids} onChange={onChange} />
       </label>
+      <div className="close">
+        <ExitEditModeButton setEditSection={setEditSection} />
+      </div>
     </section>
   ) : (
-    <div className="display-persons">
+    <div className="display-persons" onClick={() => setEditSection('customer')}>
       <div className="adults"> {adults} adulti</div>
-      <div className="kids"> {kids} copii </div>
+      <div className="kids"> {kids ? kids : '0'} copii </div>
     </div>
   );
 }

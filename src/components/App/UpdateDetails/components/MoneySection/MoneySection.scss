@@ -1,20 +1,29 @@
+//Edite mode styles
 .update-money {
   grid-area: money;
 
   .price-per-room {
-    font-size: 1.2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
 
     .price-on-room-label {
-      flex-direction: row;
-      margin-left: -4.5rem;
-    }
-    .price-on-room {
-      width: 7rem;
+      margin-bottom: -20px;
+
+      .price-on-room {
+        width: 7rem;
+      }
+
+      .lei {
+        align-self: flex-end;
+        transform: translateY(-140%);
+        padding-right: 5px;
+        padding-left: 5px;
+        background-color: white;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
     }
   }
 
@@ -23,5 +32,34 @@
     font-size: 1.3rem;
     display: flex;
     gap: 0.8rem;
+  }
+}
+
+//Display only styles
+.display-money {
+  grid-area: money;
+  background-color: transparent;
+  font-size: 1rem;
+
+  .price-per-room {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    .price-of-room {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+      .room {
+        border-image: linear-gradient(180deg, var(--secondary), var(--third)) 1 / 2px;
+        padding: 5px 10px;
+        color: var(--secondary);
+        font-weight: 600;
+      }
+      .price {
+        align-self: flex-end;
+      }
+    }
+  }
+  .advance {
   }
 }

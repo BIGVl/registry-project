@@ -4,10 +4,8 @@ import { LocationContext, UserIDContext } from '../../../Contexts';
 import getCustomerInfo from '../../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import { ReactComponent as Back } from '../../../assets/arrow-left.svg';
-
 import './UpdateDetails.scss';
 import saveEntry from '../../../helpers/saveEntry';
-import validateDetails from '../../../helpers/validateDetails';
 import saveRooms from '../../../helpers/saveRooms';
 import { FormData } from '../../../globalInterfaces';
 import deleteDates from '../../../helpers/deleteDates';
@@ -77,6 +75,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   useMemo(() => {
     setCustomerData((prev) => {
       const { total, advance, discount } = prev;
+      console.log(total, advance, discount);
       return {
         ...prev,
         balance: Math.ceil(total - advance - (total * discount) / 100)
@@ -193,15 +192,14 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
           editSection={editSection}
           setEditSection={setEditSection}
         />
-        <Rooms
-          rooms={rooms}
-          customersRooms={customerData.rooms}
-          setCustomerData={setCustomerData}
-          entryDate={customerData.entryDate}
-          leaveDate={customerData.leaveDate}
+        <CustomersSection
+          adults={customerData.adults}
+          kids={customerData.kids}
+          onChange={change}
           editSection={editSection}
           setEditSection={setEditSection}
         />
+
         <DatesSection
           entryDate={customerData.entryDate}
           leaveDate={customerData.leaveDate}
@@ -209,10 +207,12 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
           editSection={editSection}
           setEditSection={setEditSection}
         />
-        <CustomersSection
-          adults={customerData.adults}
-          kids={customerData.kids}
-          onChange={change}
+        <Rooms
+          rooms={rooms}
+          customersRooms={customerData.rooms}
+          setCustomerData={setCustomerData}
+          entryDate={customerData.entryDate}
+          leaveDate={customerData.leaveDate}
           editSection={editSection}
           setEditSection={setEditSection}
         />

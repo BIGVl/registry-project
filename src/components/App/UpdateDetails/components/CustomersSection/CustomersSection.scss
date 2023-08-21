@@ -1,17 +1,16 @@
+//Read styles
 .update-persons {
   grid-area: persons;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  label {
-    align-items: center;
-  }
-
+  gap: 0.7rem;
   input {
     width: 50%;
   }
 }
 
+//Display only styles
 .display-persons {
   grid-area: persons;
   align-self: center;
