@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import './MoneySection.scss';
 import { EditSection } from '../../UpdateDetails';
+import ExitEditModeButton from '../ExitEditModeButton/ExitEditModeButton';
 
 interface Props {
   rooms: number[];
@@ -47,7 +48,7 @@ export default function MoneySection({
                     onChange(e);
                   }}
                 />
-                lei
+                <div className="lei"> lei </div>
               </label>
             );
           })}
@@ -63,14 +64,17 @@ export default function MoneySection({
       <div className="balance">
         De plata <p className="sum-remaining"> {balance}</p>
       </div>
+      <div className="close">
+        <ExitEditModeButton setEditSection={setEditSection} />
+      </div>
     </section>
   ) : (
-    <div className="display-money">
+    <button className="display-money" onClick={() => setEditSection('money')}>
       <div className="price-per-room">
         {Object.keys(prices).map((room) => {
           return (
-            <div className={room} key={room}>
-              {room} {prices[Number(room)]} lei
+            <div id={room} className="price-of-room" key={room}>
+              <div className="room"> {room} </div> <div className="price"> {prices[Number(room)]} lei </div>
             </div>
           );
         })}
@@ -78,6 +82,6 @@ export default function MoneySection({
       <div className="advance">Avans {advance} lei</div>
       <div className="discount">Discount {discount} lei</div>
       <div className="balance">De plata {balance} lei</div>
-    </div>
+    </button>
   );
 }

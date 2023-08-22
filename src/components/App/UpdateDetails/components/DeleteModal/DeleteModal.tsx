@@ -1,10 +1,10 @@
 import { DocumentData } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
-import { LocationContext, UserIDContext } from '../../../../Contexts';
-import { FormData } from '../../../../globalInterfaces';
-import deleteDates from '../../../../helpers/deleteDates';
-import deleteEntry from '../../../../helpers/deleteEntry';
-import getCustomerInfo from '../../../../helpers/getCustomerInfo';
+import { LocationContext, UserIDContext } from '../../../../../Contexts';
+import { FormData } from '../../../../../globalInterfaces';
+import deleteDates from '../../../../../helpers/deleteDates';
+import deleteEntry from '../../../../../helpers/deleteEntry';
+import getCustomerInfo from '../../../../../helpers/getCustomerInfo';
 import './DeleteModal.scss';
 
 interface Props {

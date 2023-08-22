@@ -1,3 +1,4 @@
+//Edite mode
 .update-rooms-container {
   grid-area: rooms;
   display: flex;
@@ -33,6 +34,7 @@
   }
 }
 
+//Display only mode
 .display-rooms {
   align-self: center;
   display: flex;
@@ -54,13 +56,11 @@
       justify-content: center;
       align-items: center;
       border-image: linear-gradient(180deg, var(--secondary), var(--third)) 10/ 2px;
-      border-radius: 10px;
       width: 2rem;
       height: 2rem;
       color: var(--secondary);
       font-weight: 600;
       font-size: 1rem;
-      border-radius: 5px;
     }
   }
 }
