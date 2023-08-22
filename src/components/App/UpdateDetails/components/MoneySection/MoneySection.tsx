@@ -70,11 +70,14 @@ export default function MoneySection({
     </section>
   ) : (
     <button className="display-money" onClick={() => setEditSection('money')}>
-      <div className="price-per-room">
-        {Object.keys(prices).map((room) => {
+      <div className="prices-container">
+        {rooms.map((room) => {
+          console.log(room);
+          const price = prices[room] ? prices[room] : 0;
+          console.log(price);
           return (
-            <div id={room} className="price-of-room" key={room}>
-              <div className="room"> {room} </div> <div className="price"> {prices[Number(room)]} lei </div>
+            <div id={room.toString()} className="price-of-room" key={room}>
+              <div className="room"> {room} </div> <div className="price"> {price} lei </div>
             </div>
           );
         })}
