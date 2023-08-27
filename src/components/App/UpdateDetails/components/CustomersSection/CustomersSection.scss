@@ -2,12 +2,11 @@
   grid-area: persons;
   justify-self: center;
   align-self: center;
-  max-height: 3rem;
+  max-height: 4rem;
 
   //Read styles
   .update-persons {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     gap: 0.7rem;
     input {
@@ -21,5 +20,9 @@
     align-self: center;
     display: flex;
     gap: 4rem;
+  }
+
+  .close {
+    padding-top: 1.5rem;
   }
 }
