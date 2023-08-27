@@ -3,6 +3,11 @@
   justify-content: space-between;
   padding: 0.5rem 1rem;
 
+  .delete-reservation {
+    cursor: default;
+    background-color: var(--main);
+  }
+
   .delete-reservation-img {
     filter: invert(14%) sepia(92%) saturate(7468%) hue-rotate(1deg) brightness(97%) contrast(120%);
   }

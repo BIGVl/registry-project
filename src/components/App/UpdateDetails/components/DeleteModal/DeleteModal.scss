@@ -19,10 +19,14 @@
     border-radius: 5px;
     .confirm,
     .cancel {
-      background-color: var(--action);
+      background-color: var(--secondary);
       padding: 0.6rem 1rem;
       border-radius: 5px;
       font-size: 0.95rem;
+      color: white;
+    }
+    .confirm {
+      background-color: red;
     }
   }
 }

@@ -1,22 +1,19 @@
 import { DocumentData } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 import { LocationContext, UserIDContext } from '../../../../../Contexts';
-import { FormData } from '../../../../../globalInterfaces';
+import { EntryDetails, FormData } from '../../../../../globalInterfaces';
 import deleteDates from '../../../../../helpers/deleteDates';
 import deleteEntry from '../../../../../helpers/deleteEntry';
 import getCustomerInfo from '../../../../../helpers/getCustomerInfo';
 import './DeleteModal.scss';
 
 interface Props {
-  entryDetails: {
-    year: number;
-    month: number;
-    customerId: number;
-  };
-  setOpenDelete: (value: boolean) => void;
+  entryDetails: EntryDetails;
+  deleteModalOpen: (value: boolean) => void;
+  updateModalOpen: (value: boolean) => void;
 }
 
-const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
+const DeleteModal = ({ entryDetails, deleteModalOpen, updateModalOpen }: Props) => {
   const userID = useContext(UserIDContext);
   const location = useContext(LocationContext);
   const userIdString = userID ?? '';
@@ -41,7 +38,8 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
       customerData?.rooms,
       entryDetails.customerId
     );
-    setOpenDelete(false);
+    deleteModalOpen(false);
+    updateModalOpen(false);
   };
 
   return (
@@ -50,7 +48,7 @@ const DeleteModal = ({ entryDetails, setOpenDelete }: Props) => {
         <button onClick={submit} className="confirm">
           Sterge intrarea
         </button>
-        <button onClick={() => setOpenDelete(false)} className="cancel">
+        <button onClick={() => deleteModalOpen(false)} className="cancel">
           Inapoi
         </button>
       </div>

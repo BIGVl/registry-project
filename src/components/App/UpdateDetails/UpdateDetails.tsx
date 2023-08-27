@@ -6,7 +6,7 @@ import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
 import './UpdateDetails.scss';
 import saveEntry from '../../../helpers/saveEntry';
 import saveRooms from '../../../helpers/saveRooms';
-import { FormData } from '../../../globalInterfaces';
+import { EntryDetails, FormData } from '../../../globalInterfaces';
 import deleteDates from '../../../helpers/deleteDates';
 import checkRooms from '../../../helpers/checkRooms';
 import daysBetweenDates from '../../../helpers/daysBetweenDates';
@@ -21,11 +21,7 @@ import SubmitButton from './components/SubmitButton/SubmitButton';
 import TopSection from './components/TopSection/TopSection';
 
 interface Props {
-  entryDetails: {
-    year: number;
-    month: number;
-    customerId: number;
-  };
+  entryDetails: EntryDetails;
   setOpenDetails: (value: boolean) => void;
   rooms: number;
 }
@@ -176,7 +172,12 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
         </div>
       )}
       <div className="update-form-container">
-        <TopSection setIsMounted={setIsMounted} setOpenDetails={setOpenDetails} />
+        <TopSection
+          setIsMounted={setIsMounted}
+          setOpenDetails={setOpenDetails}
+          entryDetails={entryDetails}
+          updateModalOpen={setOpenDetails}
+        />
         <form action="" className={`update-form`} noValidate onSubmit={submit}>
           <ContactSection
             name={customerData.name}

@@ -28,7 +28,6 @@ export default function MoneySection({
 
   return (
     <div className="update-money-container">
-      {' '}
       {editMode ? (
         <section className="update-money">
           <div className="price-per-room">
@@ -86,7 +85,7 @@ export default function MoneySection({
             })}
           </div>
           <div className="advance value-container">
-            Avans <div className="value"> {advance} lei </div>
+            Avans <div className="value"> {advance ? advance : 0} lei </div>
           </div>
           <div className="discount value-container ">
             Discount <div className="value"> {discount} lei </div>

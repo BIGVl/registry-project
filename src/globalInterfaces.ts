@@ -25,3 +25,9 @@ export interface FormData extends DocumentData {
 export interface FormDataIded extends FormData {
   id: string;
 }
+
+export interface EntryDetails {
+  year: number;
+  month: number;
+  customerId: number;
+}

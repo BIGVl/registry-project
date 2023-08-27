@@ -31,7 +31,7 @@
 
 .update-form-container {
   max-height: 90%;
-  max-width: 90%;
+  max-width: min(90%, 650px);
   background-color: var(--main);
   transform: scale(0.1);
   transition: transform 0.2s ease;

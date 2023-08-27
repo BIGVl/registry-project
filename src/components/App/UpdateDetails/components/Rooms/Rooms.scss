@@ -2,6 +2,8 @@
 .update-rooms-container {
   grid-area: rooms;
   font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
 
   .update-rooms {
     display: flex;
@@ -40,13 +42,11 @@
   .display-rooms {
     align-self: center;
     display: flex;
-    background-color: transparent;
     flex-direction: column;
     gap: 0.5rem;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
+    background-color: transparent;
     max-width: 10rem;
+    font-size: 1.2rem;
     .rooms-container {
       display: flex;
       flex-direction: row;
