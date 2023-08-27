@@ -17,6 +17,7 @@ export default function ContactSection({ name, phone, onChange, editSection, set
     .split(' ')
     .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
     .join(' ');
+  const phoneNumberFormatted = `${phone.substring(0, 4)}-${phone.substring(4, 7)}-${phone.substring(7, 10)} `;
 
   return (
     <div className="update-contact-container">
@@ -40,7 +41,7 @@ export default function ContactSection({ name, phone, onChange, editSection, set
       ) : (
         <button className="display-contact" onClick={() => setEditSection('contact')}>
           <div className="name"> {upperName} </div>
-          <div className="phone"> Telefon {phone} </div>
+          <div className="phone"> Telefon {phoneNumberFormatted} </div>
         </button>
       )}
     </div>
