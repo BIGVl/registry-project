@@ -1,5 +1,8 @@
 .update-persons-container {
   grid-area: persons;
+  justify-self: center;
+  align-self: center;
+  max-height: 3rem;
 
   //Read styles
   .update-persons {

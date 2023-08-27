@@ -42,13 +42,13 @@ export default function DatesSection({ entryDate, leaveDate, onChange, editSecti
           <div className="entry-date">
             Intrare
             <div className="date">
-              {new Date(entryDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: '2-digit' })}
+              {new Date(entryDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })}
             </div>
           </div>
           <div className="leave-date">
             Iesire
             <div className="date">
-              {new Date(leaveDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: '2-digit' })}
+              {new Date(leaveDate).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })}
             </div>
           </div>
         </button>

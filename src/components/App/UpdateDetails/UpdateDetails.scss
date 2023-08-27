@@ -43,9 +43,10 @@
   display: grid;
   grid-template-areas:
     'contact contact'
+    'persons money'
     'rooms money'
     'dates money'
-    'persons submit';
+    'submit  submit';
   gap: 1rem 10px;
 
   @media (max-width: 650px) {

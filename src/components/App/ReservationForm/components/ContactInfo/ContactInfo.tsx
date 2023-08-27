@@ -14,7 +14,7 @@ const ContactInfo = ({ updateFormData }: Props) => {
       </label>
       <label className="phone-label">
         Numar de telefon
-        <input onChange={updateFormData} type="number" name="phone" id="phone-cx" />
+        <input onChange={updateFormData} type="number" name="phone" id="phone-cx" maxLength={10} minLength={10} />
       </label>
     </fieldset>
   );

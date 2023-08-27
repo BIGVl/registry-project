@@ -32,8 +32,12 @@ export default function CustomersSection({ adults, kids, onChange, editSection, 
         </section>
       ) : (
         <div className="display-persons" onClick={() => setEditSection('customer')}>
-          <div className="adults"> {adults} adulti</div>
-          <div className="kids"> {kids ? kids : '0'} copii </div>
+          <div className="adults value-container ">
+            Adulti <div className="value"> {adults} </div>
+          </div>
+          <div className="kids value-container ">
+            Copii <div className="value"> {kids ? kids : '0'} </div>
+          </div>
         </div>
       )}
     </div>
