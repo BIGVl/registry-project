@@ -15,7 +15,7 @@
 
   &.mounted {
     opacity: 1;
-    .update-form {
+    .update-form-container {
       transform: scale(1);
     }
   }
@@ -23,47 +23,35 @@
   &.unmounted {
     opacity: 0;
 
-    .update-form {
+    .update-form-container {
       transform: scale(0.1);
     }
   }
 }
 
-.update-form {
+.update-form-container {
   max-height: 90%;
   max-width: 90%;
-  display: grid;
-  grid-template-areas:
-    'close close'
-    'contact contact'
-    'rooms dates'
-    'persons money'
-    '. money'
-    '. submit';
-  gap: 2rem;
-  padding: 1rem;
   background-color: var(--main);
-  border-radius: 5px;
   transform: scale(0.1);
   transition: transform 0.2s ease;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.update-form {
+  display: grid;
+  grid-template-areas:
+    'contact contact'
+    'rooms money'
+    'dates money'
+    'persons submit';
+  gap: 1rem 10px;
 
   @media (max-width: 650px) {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-  }
-
-  .close-update-form {
-    grid-area: close;
-  }
-
-  @media (max-height: 730px) {
-    padding-top: 3rem;
-
-    .close-update-form {
-      position: absolute;
-      top: 6px;
-    }
   }
 
   label {
@@ -112,5 +100,21 @@
 
   .error-layout {
     position: absolute;
+  }
+}
+
+// The value classed is used for values of data in this component
+.value-container {
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 30px;
+  display: flex;
+  gap: 1rem;
+  font-weight: 500;
+
+  .value {
+    background-color: var(--third);
+    padding: 1px 10px;
+    border-radius: 30px;
   }
 }

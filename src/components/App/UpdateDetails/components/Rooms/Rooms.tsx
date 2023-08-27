@@ -54,42 +54,46 @@ export default function ({ rooms, customersRooms, setCustomerData, entryDate, le
     e.preventDefault();
     setEditSection('room');
   }
-  return editMode ? (
+  return (
     <div className="update-rooms-container">
-      Camere
-      <div className="rooms">
-        {roomsArr.map((room: number) => {
-          return (
-            <label key={`room${room}`}>
-              {room}
-              <input
-                onChange={handleCheck}
-                type="checkbox"
-                value={room}
-                name={`rooms`}
-                className={`room`}
-                checked={customersRooms.includes(room)}
-              />
-            </label>
-          );
-        })}
-      </div>
-      <div className="close">
-        <ExitEditModeButton setEditSection={setEditSection} />
-      </div>
+      {editMode ? (
+        <div className="update-rooms">
+          Camere
+          <div className="rooms">
+            {roomsArr.map((room: number) => {
+              return (
+                <label key={`room${room}`}>
+                  {room}
+                  <input
+                    onChange={handleCheck}
+                    type="checkbox"
+                    value={room}
+                    name={`rooms`}
+                    className={`room`}
+                    checked={customersRooms.includes(room)}
+                  />
+                </label>
+              );
+            })}
+          </div>
+          <div className="close">
+            <ExitEditModeButton setEditSection={setEditSection} />
+          </div>
+        </div>
+      ) : (
+        <button onClick={enterEditMode} className="display-rooms">
+          Camere
+          <div className="rooms-container">
+            {customersRooms.map((room: number) => {
+              return (
+                <div key={room} className="room">
+                  {room}
+                </div>
+              );
+            })}
+          </div>
+        </button>
+      )}
     </div>
-  ) : (
-    <button onClick={enterEditMode} className="display-rooms">
-      Camere
-      <div className="rooms-container">
-        {customersRooms.map((room: number) => {
-          return (
-            <div key={room} className="room">
-              {room}
-            </div>
-          );
-        })}
-      </div>
-    </button>
   );
 }

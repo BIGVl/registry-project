@@ -14,24 +14,28 @@ interface Props {
 export default function CustomersSection({ adults, kids, onChange, editSection, setEditSection }: Props) {
   const editMode = editSection === 'customer';
 
-  return editMode ? (
-    <section className="update-persons">
-      <label>
-        Adulti
-        <input type="number" name="adults" className="adults" value={adults} onChange={onChange} />
-      </label>
-      <label>
-        Copii
-        <input type="number" name="kids" className="kids" value={kids} onChange={onChange} />
-      </label>
-      <div className="close">
-        <ExitEditModeButton setEditSection={setEditSection} />
-      </div>
-    </section>
-  ) : (
-    <div className="display-persons" onClick={() => setEditSection('customer')}>
-      <div className="adults"> {adults} adulti</div>
-      <div className="kids"> {kids ? kids : '0'} copii </div>
+  return (
+    <div className="update-persons-container">
+      {editMode ? (
+        <section className="update-persons">
+          <label>
+            Adulti
+            <input type="number" name="adults" className="adults" value={adults} onChange={onChange} />
+          </label>
+          <label>
+            Copii
+            <input type="number" name="kids" className="kids" value={kids} onChange={onChange} />
+          </label>
+          <div className="close">
+            <ExitEditModeButton setEditSection={setEditSection} />
+          </div>
+        </section>
+      ) : (
+        <div className="display-persons" onClick={() => setEditSection('customer')}>
+          <div className="adults"> {adults} adulti</div>
+          <div className="kids"> {kids ? kids : '0'} copii </div>
+        </div>
+      )}
     </div>
   );
 }

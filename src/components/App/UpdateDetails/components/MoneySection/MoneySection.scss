@@ -1,73 +1,81 @@
-//Edit mode styles
-.update-money {
+.update-money-container {
   grid-area: money;
 
-  .price-per-room {
+  //Edit mode styles
+  .update-money {
+    .price-per-room {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .price-on-room-label {
+        margin-bottom: -20px;
+
+        .price-on-room {
+          width: 7rem;
+        }
+
+        .lei {
+          align-self: flex-end;
+          transform: translateY(-140%);
+          padding-right: 5px;
+          padding-left: 5px;
+          background-color: white;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+      }
+    }
+
+    .balance {
+      font-weight: 500;
+      font-size: 1.3rem;
+      display: flex;
+      gap: 0.8rem;
+    }
+  }
+
+  //Display only styles
+  .display-money {
+    grid-area: money;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    font-size: 1rem;
+    border: 4px solid white;
+    border-radius: 10px;
+    padding: 1rem;
+    gap: 0.5rem;
 
-    .price-on-room-label {
-      margin-bottom: -20px;
-
-      .price-on-room {
-        width: 7rem;
-      }
-
-      .lei {
-        align-self: flex-end;
-        transform: translateY(-140%);
-        padding-right: 5px;
-        padding-left: 5px;
-        background-color: white;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-      }
-    }
-  }
-
-  .balance {
-    font-weight: 500;
-    font-size: 1.3rem;
-    display: flex;
-    gap: 0.8rem;
-  }
-}
-
-//Display only styles
-.display-money {
-  grid-area: money;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  font-size: 1rem;
-  border: 4px solid white;
-  padding: 1rem;
-
-  .prices-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 1.2rem;
-    .price-of-room {
-      flex-basis: calc(50% - 0.9rem);
+    .prices-container {
       display: flex;
-      gap: 10px;
-      margin-bottom: 1rem;
-      .room {
-        border-image: linear-gradient(180deg, var(--secondary), var(--third)) 1 / 2px;
-        padding: 5px 10px;
-        color: var(--secondary);
-        font-weight: 600;
-      }
-      .price {
-        align-self: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      row-gap: 1.2rem;
+      .price-of-room {
+        flex-basis: calc(50% - 0.9rem);
+        display: flex;
+        gap: 10px;
+        margin-bottom: 1rem;
+        .room {
+          border: 2px solid var(--third);
+          border-radius: 5px;
+          padding: 5px 10px;
+          color: var(--secondary);
+          font-weight: 600;
+        }
+        .price {
+          align-self: center;
+          font-weight: 500;
+        }
       }
     }
-  }
-  .advance {
+    .balance {
+      font-size: 1.3rem;
+      margin-top: 0.4rem;
+    }
   }
 }

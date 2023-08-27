@@ -1,35 +1,41 @@
-// Edit mode
-.update-contact-section {
-  grid-area: contact;
-
-  .name-phone {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  input {
-    width: 18rem;
-  }
-
-  .close {
-    margin-top: 1rem;
-  }
-}
-
-//Display-only mode
-.display-contact {
-  background-color: transparent;
+.update-contact-container {
   grid-area: contact;
   display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  gap: 1.5rem;
+  justify-content: center;
 
-  .name {
-    font-size: 1.6rem;
+  // Edit mode
+  .update-contact {
+    .name-phone {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    input {
+      width: 18rem;
+    }
+
+    .close {
+      margin-top: 1rem;
+    }
   }
 
-  .phone {
-    padding-top: 0.5rem;
+  //Display-only mode
+  .display-contact {
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 1.5rem;
+
+    .name {
+      font-size: 2rem;
+    }
+
+    .phone {
+      padding-top: 0.5rem;
+      font-size: 1rem;
+    }
   }
 }

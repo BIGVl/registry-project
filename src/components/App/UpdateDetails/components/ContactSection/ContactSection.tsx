@@ -18,27 +18,31 @@ export default function ContactSection({ name, phone, onChange, editSection, set
     .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
     .join(' ');
 
-  return editMode ? (
-    <section className="update-contact-section">
-      <div className="name-phone">
-        <label>
-          Nume
-          <input type="text" name="name" className="name" value={upperName} onChange={onChange} />
-        </label>
+  return (
+    <div className="update-contact-container">
+      {editMode ? (
+        <section className="update-contact">
+          <div className="name-phone">
+            <label>
+              Nume
+              <input type="text" name="name" className="name" value={upperName} onChange={onChange} />
+            </label>
 
-        <label>
-          Telefon
-          <input type="number" name="phone" className="phone" value={phone} onChange={onChange} />
-        </label>
-      </div>
-      <div className="close">
-        <ExitEditModeButton setEditSection={setEditSection} />
-      </div>
-    </section>
-  ) : (
-    <button className="display-contact" onClick={() => setEditSection('contact')}>
-      <div className="name"> {upperName} </div>
-      <div className="phone"> Telefon {phone} </div>
-    </button>
+            <label>
+              Telefon
+              <input type="number" name="phone" className="phone" value={phone} onChange={onChange} />
+            </label>
+          </div>
+          <div className="close">
+            <ExitEditModeButton setEditSection={setEditSection} />
+          </div>
+        </section>
+      ) : (
+        <button className="display-contact" onClick={() => setEditSection('contact')}>
+          <div className="name"> {upperName} </div>
+          <div className="phone"> Telefon {phone} </div>
+        </button>
+      )}
+    </div>
   );
 }

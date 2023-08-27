@@ -1,19 +1,22 @@
-//Read styles
-.update-persons {
+.update-persons-container {
   grid-area: persons;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.7rem;
-  input {
-    width: 50%;
-  }
-}
 
-//Display only styles
-.display-persons {
-  grid-area: persons;
-  align-self: center;
-  display: flex;
-  gap: 4rem;
+  //Read styles
+  .update-persons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.7rem;
+    input {
+      width: 50%;
+    }
+  }
+
+  //Display only styles
+  .display-persons {
+    grid-area: persons;
+    align-self: center;
+    display: flex;
+    gap: 4rem;
+  }
 }

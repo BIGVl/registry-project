@@ -3,7 +3,6 @@ import { ChangeEvent, FormEvent, MouseEvent, useContext, useEffect, useMemo, use
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import getCustomerInfo from '../../../helpers/getCustomerInfo';
 import { ReactComponent as Cancel } from '../../../assets/cancel.svg';
-import { ReactComponent as Back } from '../../../assets/arrow-left.svg';
 import './UpdateDetails.scss';
 import saveEntry from '../../../helpers/saveEntry';
 import saveRooms from '../../../helpers/saveRooms';
@@ -11,6 +10,7 @@ import { FormData } from '../../../globalInterfaces';
 import deleteDates from '../../../helpers/deleteDates';
 import checkRooms from '../../../helpers/checkRooms';
 import daysBetweenDates from '../../../helpers/daysBetweenDates';
+
 //Children components
 import ContactSection from './components/ContactSection/ContactSection';
 import Rooms from './components/Rooms/Rooms';
@@ -18,6 +18,7 @@ import DatesSection from './components/DatesSection/DatesSection';
 import CustomersSection from './components/CustomersSection/CustomersSection';
 import MoneySection from './components/MoneySection/MoneySection';
 import SubmitButton from './components/SubmitButton/SubmitButton';
+import TopSection from './components/TopSection/TopSection';
 
 interface Props {
   entryDetails: {
@@ -174,80 +175,73 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
           </div>
         </div>
       )}
+      <div className="update-form-container">
+        <TopSection setIsMounted={setIsMounted} setOpenDetails={setOpenDetails} />
+        <form action="" className={`update-form`} noValidate onSubmit={submit}>
+          <ContactSection
+            name={customerData.name}
+            phone={customerData.phone}
+            onChange={change}
+            editSection={editSection}
+            setEditSection={setEditSection}
+          />
+          <CustomersSection
+            adults={customerData.adults}
+            kids={customerData.kids}
+            onChange={change}
+            editSection={editSection}
+            setEditSection={setEditSection}
+          />
 
-      <form action="" className={`update-form`} noValidate onSubmit={submit}>
-        <Back
-          className="close-update-form"
-          onClick={() => {
-            setIsMounted(false);
-            setTimeout(() => {
-              setOpenDetails(false);
-            }, 400);
-          }}
-        />
-        <ContactSection
-          name={customerData.name}
-          phone={customerData.phone}
-          onChange={change}
-          editSection={editSection}
-          setEditSection={setEditSection}
-        />
-        <CustomersSection
-          adults={customerData.adults}
-          kids={customerData.kids}
-          onChange={change}
-          editSection={editSection}
-          setEditSection={setEditSection}
-        />
-
-        <DatesSection
-          entryDate={customerData.entryDate}
-          leaveDate={customerData.leaveDate}
-          onChange={change}
-          editSection={editSection}
-          setEditSection={setEditSection}
-        />
-        <Rooms
-          rooms={rooms}
-          customersRooms={customerData.rooms}
-          setCustomerData={setCustomerData}
-          entryDate={customerData.entryDate}
-          leaveDate={customerData.leaveDate}
-          editSection={editSection}
-          setEditSection={setEditSection}
-        />
-        <MoneySection
-          rooms={customerData.rooms}
-          prices={customerData.prices}
-          advance={customerData.advance}
-          discount={customerData.discount}
-          balance={customerData.balance}
-          onChange={change}
-          editSection={editSection}
-          setEditSection={setEditSection}
-        />
-        <SubmitButton customerData={customerData} setErrorMessage={setErrorMessage} setConfirmSubmit={setConfirmSubmit} />
-        {confirmSubmit && (
-          <div className="confirm-submission-layout">
-            <div className="confirm-submission-container">
-              Confirma schimbarile facute pentru intrarea pe numele {customerData.name} .
-              <div className="confirm-buttons-container">
-                <button type="submit" className="submit-confirm">
-                  Confirm
-                </button>
-                <button
-                  className="exit-confirm"
-                  onClick={() => {
-                    setConfirmSubmit(false);
-                  }}
-                >
-                  Inapoi
-                </button>
+          <DatesSection
+            entryDate={customerData.entryDate}
+            leaveDate={customerData.leaveDate}
+            onChange={change}
+            editSection={editSection}
+            setEditSection={setEditSection}
+          />
+          <Rooms
+            rooms={rooms}
+            customersRooms={customerData.rooms}
+            setCustomerData={setCustomerData}
+            entryDate={customerData.entryDate}
+            leaveDate={customerData.leaveDate}
+            editSection={editSection}
+            setEditSection={setEditSection}
+          />
+          <MoneySection
+            rooms={customerData.rooms}
+            prices={customerData.prices}
+            advance={customerData.advance}
+            discount={customerData.discount}
+            balance={customerData.balance}
+            onChange={change}
+            editSection={editSection}
+            setEditSection={setEditSection}
+          />
+          <SubmitButton customerData={customerData} setErrorMessage={setErrorMessage} setConfirmSubmit={setConfirmSubmit} />
+          {confirmSubmit && (
+            <div className="confirm-submission-layout">
+              <div className="confirm-submission-container">
+                Confirma schimbarile facute pentru intrarea pe numele {customerData.name} .
+                <div className="confirm-buttons-container">
+                  <button type="submit" className="submit-confirm">
+                    Confirm
+                  </button>
+                  <button
+                    className="exit-confirm"
+                    onClick={() => {
+                      setConfirmSubmit(false);
+                    }}
+                  >
+                    Inapoi
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </form>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
