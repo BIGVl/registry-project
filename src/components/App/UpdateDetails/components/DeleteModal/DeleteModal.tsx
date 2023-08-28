@@ -29,17 +29,19 @@ const DeleteModal = ({ entryDetails, deleteModalOpen, updateModalOpen }: Props) 
   }, []);
 
   const submit = async () => {
-    await deleteEntry(`${location}${userID}`, `${entryDetails.customerId}`);
-    await deleteDates(
-      location,
-      userIdString,
-      customerData?.entryDate,
-      customerData?.leaveDate,
-      customerData?.rooms,
-      entryDetails.customerId
-    );
-    deleteModalOpen(false);
-    updateModalOpen(false);
+    if (customerData) {
+      await deleteEntry(`${location}${userID}`, `${entryDetails.customerId}`);
+      await deleteDates(
+        location,
+        userIdString,
+        customerData.entryDate,
+        customerData.leaveDate,
+        customerData.rooms,
+        entryDetails.customerId
+      );
+      deleteModalOpen(false);
+      updateModalOpen(false);
+    }
   };
 
   return (
