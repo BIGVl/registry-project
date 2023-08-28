@@ -74,9 +74,7 @@ export default function MoneySection({
         <button className="display-money" onClick={() => setEditSection('money')}>
           <div className="prices-container">
             {rooms.map((room) => {
-              console.log(room);
               const price = prices[room] ? prices[room] : 0;
-              console.log(price);
               return (
                 <div id={room.toString()} className="price-of-room" key={room}>
                   <div className="room"> {room} </div> <div className="price"> {price} lei </div>

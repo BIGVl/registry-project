@@ -72,7 +72,6 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
   useMemo(() => {
     setCustomerData((prev) => {
       const { total, advance, discount } = prev;
-      console.log(total, advance, discount);
       return {
         ...prev,
         balance: Math.ceil(total - advance - (total * discount) / 100)
