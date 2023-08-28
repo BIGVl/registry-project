@@ -5,7 +5,7 @@ import { ReactComponent as ArrowLeft } from '../../../assets/arrow-left.svg';
 import { ReactComponent as ArrowRight } from '../../../assets/arrow-right.svg';
 import { LocationContext, UserIDContext } from '../../../Contexts';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { db } from '../../../../firebase';
 
 interface PropTypes {
   rows: number;

@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
 interface FormData {
   fullName: string;

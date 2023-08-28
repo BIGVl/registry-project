@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import { auth, db } from '../../../firebase';
+import { auth, db } from '../../../../firebase';
 import { UserInfo } from '../../../globalInterfaces';
 import './HamburgerMenu.scss';
 import { deleteDoc, doc, DocumentData, updateDoc } from 'firebase/firestore';

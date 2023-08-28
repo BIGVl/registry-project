@@ -1,5 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 
 const getCxNr = async (userID: string | null, location: string, setCustomerID: (value: number) => void) => {
   //If we save the customer first time we give it a new id incremental

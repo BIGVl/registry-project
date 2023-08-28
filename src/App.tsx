@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { Fragment, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { LocationContext, UserIDContext } from './Contexts';
-import { auth, db } from './firebase';
+import { auth, db } from '../firebase';
 import LoginPage from './Pages/Login/LoginPage';
 import TablePage from './Pages/Table/TablePage';
 import { UserInfo } from './globalInterfaces';

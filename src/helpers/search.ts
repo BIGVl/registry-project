@@ -10,7 +10,7 @@ import {
   query,
   startAfter
 } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import { FormDataIded } from '../globalInterfaces';
 import { Dispatch, SetStateAction } from 'react';
 

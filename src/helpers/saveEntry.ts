@@ -1,5 +1,5 @@
 import { doc, DocumentData, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 //Save new entry or update a existing one
 const saveEntry = async (locationUserID: string, formData: DocumentData, customerID: number) => {
   if (customerID) {
