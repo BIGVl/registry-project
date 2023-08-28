@@ -7,9 +7,12 @@
 .childs-l {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 0.4rem;
 
   input {
-    width: 3rem;
+    text-align: center;
+    width: 5.5rem;
   }
 }

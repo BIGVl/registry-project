@@ -18,17 +18,19 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
             return (
               <label key={room} className="price-on-room-label">
                 camera {room}
-                <input
-                  data-id={room}
-                  type="number"
-                  id={'priceRoom'}
-                  name="priceRoom"
-                  className="price-on-room"
-                  onChange={(e) => {
-                    updateFormData(e);
-                  }}
-                />
-                lei
+                <div className="value">
+                  <input
+                    data-id={room}
+                    type="number"
+                    id={'priceRoom'}
+                    name="priceRoom"
+                    className="price-on-room"
+                    onChange={(e) => {
+                      updateFormData(e);
+                    }}
+                  />
+                  lei
+                </div>
               </label>
             );
           })}

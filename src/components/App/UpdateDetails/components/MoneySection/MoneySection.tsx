@@ -43,6 +43,7 @@ export default function MoneySection({
                       value={price}
                       data-id={room}
                       type="number"
+                      min={0}
                       id={'priceRoom'}
                       name="priceRoom"
                       className="price-on-room"
@@ -57,11 +58,11 @@ export default function MoneySection({
           </div>
           <label>
             Avans
-            <input type="number" name="advance" className="advance" value={advance} onChange={onChange} />
+            <input type="number" min={0} name="advance" className="advance" value={advance} onChange={onChange} />
           </label>
           <label>
             Reducere
-            <input type="number" name="discount" className="discount" value={discount} onChange={onChange} />
+            <input type="number" min={0} name="discount" className="discount" value={discount} onChange={onChange} />
           </label>
           <div className="balance">
             De plata <p className="sum-remaining"> {balance}</p>

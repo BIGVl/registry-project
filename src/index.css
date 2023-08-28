@@ -42,6 +42,17 @@ li {
     cursor: pointer;
 }
 
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::outer {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
 .App {
     min-height: 100vh;
     padding-bottom: 6rem;

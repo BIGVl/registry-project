@@ -10,11 +10,11 @@ const NrOfCustomers = ({ updateFormData }: Props) => {
     <fieldset className="adults-childs">
       <label id="adults-l" className="adults-l">
         Adulti
-        <input onChange={updateFormData} type="number" name="adults" id="adults" />
+        <input onChange={updateFormData} type="number" name="adults" id="adults" min={0} />
       </label>
       <label id="childs-l" className="childs-l">
         Copii
-        <input onChange={updateFormData} type="number" name="kids" id="childs" />
+        <input onChange={updateFormData} type="number" name="kids" id="childs" min={0} />
       </label>
     </fieldset>
   );
