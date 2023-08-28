@@ -11,12 +11,12 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
   return (
     <fieldset className="money-field">
       <div className="price-on-room-container">
-        Pret pe camera pe noapte
+        <div className="title"> Pret pe camera pe noapte </div>
         {rooms
           .sort((a, b) => (a > b ? 1 : -1))
           .map((room) => {
             return (
-              <label key={room} className="price-on-room-label">
+              <label key={room} className="price-on-room-label" htmlFor="priceRoom">
                 camera {room}
                 <div className="value">
                   <input
@@ -35,34 +35,38 @@ const MoneySection = ({ rooms, updateFormData, balance }: Props) => {
             );
           })}
       </div>
-      <label className="advance-label">
+      <label className="advance-label" htmlFor="advance">
         Avans
-        <input
-          onChange={(e) => {
-            updateFormData(e);
-          }}
-          type="number"
-          name="advance"
-          id="advance"
-          className="advance"
-        />
-        lei
+        <div className="value">
+          <input
+            onChange={(e) => {
+              updateFormData(e);
+            }}
+            type="number"
+            name="advance"
+            id="advance"
+            className="advance"
+          />
+          lei
+        </div>
       </label>
-      <label className="discount-label">
+      <label className="discount-label" htmlFor="discount">
         Reducere
-        <input
-          onChange={(e) => {
-            updateFormData(e);
-          }}
-          type="number"
-          name="discount"
-          id="reducere"
-          className="reducere"
-        />
-        %
+        <div className="value">
+          <input
+            onChange={(e) => {
+              updateFormData(e);
+            }}
+            type="number"
+            name="discount"
+            id="reducere"
+            className="reducere"
+          />
+          %
+        </div>
       </label>
       <div id="balance" className="balance">
-        De platit : {balance} lei
+        De platit {balance} lei
       </div>
     </fieldset>
   );

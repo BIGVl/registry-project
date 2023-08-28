@@ -7,39 +7,55 @@
   font-family: inherit;
   margin-top: 2rem;
 
+  .value {
+    background-color: white;
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  label {
+    background-color: var(--third);
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  input {
+    font-size: 1rem;
+    width: 9rem;
+  }
+  input:focus {
+    outline: none;
+  }
+
   .price-on-room-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    font-size: 1.3rem;
 
-    .price-on-room-label {
-      display: flex;
-      gap: 0.4rem;
-      font-size: 1rem;
-    }
-
-    .price-on-room {
-      width: 7rem;
+    .title {
+      font-size: 1.3rem;
     }
   }
 
   .advance-label,
   .discount-label {
-    display: flex;
-    gap: 0.4rem;
-
-    input {
-      width: 5rem;
-    }
+    font-size: 1.1rem;
+    width: 100%;
   }
 
   .balance {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     justify-self: center;
     align-self: center;
-    color: black;
+    color: white;
+    background-color: var(--secondary);
+    border-radius: 5px;
+    padding: 8px 16px;
   }
 }
