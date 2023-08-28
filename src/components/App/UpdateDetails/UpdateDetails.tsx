@@ -123,6 +123,7 @@ export default function UpdateDetails({ entryDetails, setOpenDetails, rooms }: P
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    console.log('Submit happens');
     const areRoomsFree = await checkRooms(
       customerData.rooms,
       customerData.entryDate,
