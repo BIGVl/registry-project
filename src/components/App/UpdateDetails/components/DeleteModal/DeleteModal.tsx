@@ -29,10 +29,6 @@ const DeleteModal = ({ entryDetails, deleteModalOpen, updateModalOpen }: Props) 
     getData();
   }, []);
 
-  userID &&
-    customerData &&
-    deleteDates(location, userID, customerData.entryDate, customerData.leaveDate, customerData.rooms, entryDetails.customerId);
-
   const submit = async () => {
     if (customerData && userID) {
       await deleteEntry(`${location}${userID}`, `${entryDetails.customerId}`);
