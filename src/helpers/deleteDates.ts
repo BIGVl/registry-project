@@ -10,40 +10,53 @@ export default async function deleteDates(
   rooms: string[],
   customerId: number
 ) {
-  console.log('Rooms:', rooms);
-  let currentDate = new Date(entryDate);
-  let docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
-  let data = docSnap.data();
-  console.log('First data:', data);
-  for (const room of rooms) {
-    const dateOfLeave = new Date(leaveDate);
-    let previousMonth = new Date(entryDate);
-    currentDate = new Date(entryDate);
+  const currentDate = new Date(entryDate);
+  const leaveMonth = new Date(leaveDate);
+  const occupiedMonths = getOccupiedMonths(currentDate, leaveMonth);
+  console.log(occupiedMonths);
 
-    while (currentDate <= dateOfLeave) {
-      if (currentDate.getMonth() !== previousMonth.getMonth()) {
-        await setDoc(doc(db, `${location}${userID}${previousMonth.getFullYear()}`, `${previousMonth.getMonth() + 1}`), data);
-        docSnap = await getDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`));
-        data = docSnap.data();
-        previousMonth.setFullYear(currentDate.getFullYear());
-        previousMonth.setMonth(currentDate.getMonth());
-      }
-      if (data) {
-        const day: string = data[room][currentDate.getDate()];
-        if (day && day.includes(`${customerId}`)) {
-          if (day.includes(`/`)) {
-            day.indexOf(`${customerId}`) < day.indexOf('/')
-              ? (data[room][currentDate.getDate()] = day.slice(0, day.indexOf('/')))
-              : (data[room][currentDate.getDate()] = day.slice(day.indexOf('/') + 1));
-          } else {
-            delete data[room][currentDate.getDate()];
+  occupiedMonths.forEach((year) => {
+    year.months.forEach(async (month) => {
+      const docRef = doc(db, `${location}${userID}${year.year}`, `${month}`);
+      const docSnap = await getDoc(docRef);
+      const data = docSnap.data();
+
+      for (const room of rooms) {
+        if (data) {
+          const roomData = data[room];
+          for (const occupiedDay in roomData) {
+            if (roomData[occupiedDay].includes(customerId.toString())) {
+              delete roomData[occupiedDay];
+            }
           }
+          data[room] = roomData;
         }
-        console.log(room, day);
       }
-      currentDate.setDate(currentDate.getDate() + 1);
+      console.log(data);
+      await setDoc(docRef, data);
+    });
+  });
+}
+
+function getOccupiedMonths(startDate: Date, endDate: Date) {
+  const occupiedMonths = [];
+
+  // Calculate the start and end years
+  const startYear = startDate.getFullYear();
+  const endYear = endDate.getFullYear();
+
+  // Iterate through each year from start to end
+  for (let year = startYear; year <= endYear; year++) {
+    const startMonth = year === startYear ? startDate.getMonth() : 0;
+    const endMonth = year === endYear ? endDate.getMonth() : 11;
+
+    const yearMonths = [];
+    for (let month = startMonth; month <= endMonth; month++) {
+      yearMonths.push(month + 1);
     }
-    await setDoc(doc(db, `${location}${userID}${currentDate.getFullYear()}`, `${currentDate.getMonth() + 1}`), data);
-    console.log(data);
+
+    occupiedMonths.push({ year, months: yearMonths });
   }
+
+  return occupiedMonths;
 }
